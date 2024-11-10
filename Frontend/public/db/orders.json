@@ -1,0 +1,62 @@
+[
+  {
+    "id": "2001",
+    "username": "raj_kumar",
+    "customerName": "Rajesh Kumar",
+    "serviceType": "Plumbing",
+    "serviceAddress": "123 Ashoka Road, New Delhi, DL, 110001",
+    "appointmentDate": "2024-09-20T10:00:00Z",
+    "serviceDetails": "Fix leaking kitchen sink and check for any potential issues.",
+    "status": "Scheduled",
+    "serviceProviderName": "John Doe"
+  },
+  {
+    "id": "2002",
+    "username": "raj_kumar",
+    "customerName": "Anita Sharma",
+    "serviceType": "Electrician",
+    "serviceAddress": "456 Gandhi Nagar, Mumbai, MH, 400020",
+    "appointmentDate": "2024-09-22T14:00:00Z",
+    "serviceDetails": "Install new ceiling fans in the living room and bedroom.",
+    "status": "Completed",
+    "serviceProviderName": "David Singh",
+    "rating": 4.5,
+    "review": "Great service, the fans were installed perfectly.",
+    "getHelp": true
+  },
+  {
+    "id": "2003",
+    "username": "raj_kumar",
+    "customerName": "Suresh Patel",
+    "serviceType": "House Cleaning",
+    "serviceAddress": "789 MG Road, Bangalore, KA, 560001",
+    "appointmentDate": "2024-09-18T09:00:00Z",
+    "serviceDetails": "Deep clean all rooms, including carpets and upholstery.",
+    "status": "In Progress"
+  },
+  {
+    "id": "2004",
+    "username": "raj_kumar",
+    "customerName": "Priya Singh",
+    "serviceType": "HVAC",
+    "serviceAddress": "321 Nehru Street, Chennai, TN, 600001",
+    "appointmentDate": "2024-09-25T16:00:00Z",
+    "serviceDetails": "Inspect and service the air conditioning unit.",
+    "status": "Scheduled",
+    "serviceProviderName": "Priya Sharma"
+  },
+  {
+    "id": "2005",
+    "username": "raj_kumar",
+    "customerName": "Amit Verma",
+    "serviceType": "Landscaping",
+    "serviceAddress": "654 Park Avenue, Hyderabad, TG, 500001",
+    "appointmentDate": "2024-09-30T11:00:00Z",
+    "serviceDetails": "Trim hedges, mow the lawn, and clean garden beds.",
+    "status": "Completed",
+    "serviceProviderName": "Rakesh Mehta",
+    "rating": 5,
+    "review": "The garden looks fantastic after the service!",
+    "getHelp": true
+  }
+]

@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
+
 import Details from './Details';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Reviews } from './Reviews';
+
 
 const Card = ({ imageSrc, title }) => (
   <div className="m-4 p-1 text-center w-30 h-32 text-gray-900 transition-shadow duration-300 overflow-visible hover:shadow-lg">
@@ -12,6 +14,97 @@ const Card = ({ imageSrc, title }) => (
 );
 
 const Appliance = () => {
+
+  
+  const handleBookNow = () => {
+    
+      
+      navigate('/booking');
+  
+  };
+  const services = [
+    {
+      id: 1,
+      imgSrc: 'https://media.istockphoto.com/id/1353114711/photo/close-up-image-of-unrecognisable-person-doing-a-maintenance-service-on-a-household-filtration.jpg?s=612x612&w=0&k=20&c=NIMYCik-K0SUHDoI3FVD_9x9qcsBGyXf0kkfzHBbg-g=',
+      title: 'Appliance  Compressor Repair',
+      description: [
+        'Thorough servicing of appliance compressors',
+        'Filter replacement and comprehensive cleaning'
+      ],
+      // price: 120
+    },
+    {
+      id: 2,
+      imgSrc: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThf6ou9ZEt19JPPZtaTeI2bcjfaHRMczbFEbVEjPem8Qwkos-0Pe9RFjRePotO5_uCvJk&usqp=CAU',
+      title: 'Appliance  Filter Replacement',
+      description: [
+        'Advanced filter replacement technology',
+        'Deep cleaning of air filters'
+      ],
+      // price: 80
+    },
+    {
+      id: 3,
+      imgSrc: 'https://tse4.mm.bing.net/th?id=OIP.A_j-Llwh9Y2sSRsuX3GoqQHaDu&pid=Api&P=0&h=180',
+      title: 'Appliance Gas Refill',
+      description: [
+        'Complete gas refill for refrigerators',
+        'Includes inspection and repair of leaks'
+      ],
+      // price: 100
+    },
+    {
+      id: 4,
+      imgSrc: 'https://tse4.mm.bing.net/th?id=OIP.vm36fnWRKXKChjahir4uEwHaE8&pid=Api&P=0&h=180',
+      title: 'Appliance Installation',
+      description: [
+        'Expert installation of new appliances',
+        'Full diagnostic and testing post-installation'
+      ],
+      // price: 120
+    },
+    {
+      id: 5,
+      imgSrc: 'https://media.istockphoto.com/id/1347513910/photo/microwave-control.jpg?s=612x612&w=0&k=20&c=kTHeSYMCHxPSHTqoy2U_RjqnA01tvaQvqymofctrITI=',
+      title: 'Appliance Servicing',
+      description: [
+        'Comprehensive servicing for appliances',
+        'Includes repairs and safety checks'
+      ],
+      // price: 80
+    },
+    {
+      id: 6,
+      imgSrc: 'https://tse1.mm.bing.net/th?id=OIP.MOl_Fp2e77BMIhd8KwNw3QHaEI&pid=Api&P=0&h=180',
+      title: 'Duct Cleaning',
+      description: [
+        'Thorough cleaning of HVAC ducts',
+        'Includes inspection and removal of debris'
+      ],
+      // price: 80
+    },
+    {
+      id: 7,
+      imgSrc: 'https://media.istockphoto.com/id/1410734240/photo/electrician-installing-an-oven-at-a-house.jpg?s=612x612&w=0&k=20&c=o9AL96Rg__M4QPnunpKh2ECo3dnGQr8oBRuTgIrJVG0=',
+      title: 'Evaporator Coil Cleaning',
+      description: [
+        'Detailed cleaning of evaporator coils',
+        'Includes inspection and maintenance of the coil'
+      ],
+      // price: 85
+    },
+    {
+      id: 8,
+      imgSrc: 'https://media.istockphoto.com/id/542214568/photo/he-knows-those-pipes-like-the-back-of-his-hands.jpg?s=612x612&w=0&k=20&c=O62eQCe5qKBpiffhcn53lUdNSmCA-PtNDhgbugtjN8k=',
+      title: 'Thermostat Replacement',
+      description: [
+        'Replacement of faulty thermostats',
+        'Includes calibration and testing'
+      ],
+      // price: 70
+    }
+  ];
+
   const cardItems = [
     { id: 1, imageSrc: 'https://media.istockphoto.com/id/1308686330/photo/technician-examining-dishwasher.jpg?s=612x612&w=0&k=20&c=dOnBvAdU8y_OlEjDbN_DxAUkSVUxXwg4OSIra5yX93o=', title: 'Appliance Installation' },
     { id: 2, imageSrc: 'https://media.istockphoto.com/id/614135768/photo/repairman-is-repairing-a-washing-machine-on-the-white-background.jpg?s=612x612&w=0&k=20&c=nKCPfBCkfKEBBKWwK4muG8wdhyJoBRIHlLH6JZEBG6k=', title: 'Appliance Servicing' },
@@ -40,24 +133,23 @@ const Appliance = () => {
 
   return (
     <>
-    
-      <div className="flex flex-col-reverse justify-between gap-2.5 md:flex-row ">
+      <div className="flex flex-col-reverse justify-between gap-2.5 md:flex-row">
         {/* Left Section */}
         <div className="md:w-1/2 text-black flex flex-wrap p-2.5 sticky top-0 max-h-[calc(100vh-40px)] overflow-y-auto" ref={leftSectionRef}>
           <div className="mb-2.5 mt-2.5 pl-4">
-          <h2 className="text-5xl font-extrabold text-center mb-4">Appliances Repair</h2>
-            <p className="mt-2">Don't let appliance issues slow you down. ShimServices is here to help. When appliances break, ShimServices fixes them fast?</p>
+            <h2 className="text-5xl font-extrabold text-center mb-4">Appliances Repair</h2>
+            <p className="mt-2">Don't let appliance issues slow you down. ShimServices is here to help. When appliances break, ShimServices fixes them fast.</p>
             <div className="flex items-center underline">
               <img src="https://t3.ftcdn.net/jpg/04/20/03/48/360_F_420034841_AKpgqQGkkUyeD7oWc9y8vGTMwT4GmbHm.jpg" className="h-5 w-20 mt-2" alt="rating" />
               <p className="ml-2">6M+ bookings till now</p>
             </div>
+            <button onClick={handleBookNow} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button>
           </div>
           <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-          {cardItems.map(item => (
-            <Card key={item.id} imageSrc={item.imageSrc} title={item.title} />
-          ))}
+            {cardItems.map(item => (
+              <Card key={item.id} imageSrc={item.imageSrc} title={item.title} />
+            ))}
           </div>
-          
         </div>
 
         {/* Right Section */}
@@ -98,39 +190,48 @@ const Appliance = () => {
       {/* Additional Section */}
       <div className="flex flex-col-reverse md:flex-row p-2.5 m-6">
         <div className="flex flex-col text-xl md:w-1/2">
-        <hr></hr>
-          <h2 className='font-bold text-center mt-4'>What we offer</h2>
-          <div>
-          <div className="mb-4">
-  ShimServices provides reliable, expert repair services for a range of home appliances to ensure they run smoothly. Our offerings include:
-  
-  <ul className="list-disc list-inside mt-4">
-    <li><strong>AC Repair & Service:</strong> Comprehensive cleaning, part replacement, and cooling efficiency checks.</li>
-    
-    <li><strong>Refrigerator Repair:</strong> Complete diagnostic, part replacements, and cooling system fixes.</li>
-    
-    <li><strong>Washing Machine Repair:</strong> Expert solutions for motor, drum, and drainage issues.</li>
-    
-    <li><strong>Microwave Repair:</strong> Heating element fixes, part replacements, and safety checks.</li>
-    
-    <li><strong>Television Repair:</strong> Screen and system repairs for both LCD and LED TVs.</li>
-    
-    <li><strong>Geyser Repair:</strong> Thermostat checks, heating element replacement, and leakage fixes.</li>
-  </ul>
+          <hr />
+          <h2 className="text-3xl font-semibold text-center text-gray-800 mt-4 mb-2">
+  What We Offer
+</h2>
+<p className="text-lg text-center text-gray-600">
+  ShimServices provides reliable and expert repair services for all your home appliances, ensuring convenience and peace of mind.
+</p>
 
-  Count on ShimServices for hassle-free, professional appliance repair!
-</div>
+          <ul className="list-none space-y-3 mt-4 text-gray-700">
+  <li className="flex items-center">
+    <i className="fas fa-wrench text-blue-600 mr-2"></i> 
+    <span className="font-medium text-lg">AC Repair & Service</span>
+  </li>
+  <li className="flex items-center">
+    <i className="fas fa-snowflake text-indigo-600 mr-2"></i> 
+    <span className="font-medium text-lg">Refrigerator Repair</span>
+  </li>
+  <li className="flex items-center">
+    <i className="fas fa-tint text-blue-600 mr-2"></i> 
+    <span className="font-medium text-lg">Washing Machine Repair</span>
+  </li>
+  <li className="flex items-center">
+    <i className="fas fa-bolt text-yellow-500 mr-2"></i> 
+    <span className="font-medium text-lg">Microwave Repair</span>
+  </li>
+  <li className="flex items-center">
+    <i className="fas fa-tv text-purple-600 mr-2"></i> 
+    <span className="font-medium text-lg">Television Repair</span>
+  </li>
+  <li className="flex items-center">
+    <i className="fas fa-water text-teal-600 mr-2"></i> 
+    <span className="font-medium text-lg">Geyser Repair</span>
+  </li>
+</ul>
 
-          <hr></hr>
-          <div className='mt-4'>
-            <Reviews/>
-          </div>
-          </div>
+          <Reviews />
         </div>
         <div className="flex-6">
-          <Details />
+          <Details services={services} service_name={"Appliance Repair"} />
         </div>
       </div>
+      
     </>
   );
 };

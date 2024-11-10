@@ -20,16 +20,20 @@ function Services() {
           </button>
         </div>
 
-        {/* Update the grid layout here */}
+        {/*grid layout here */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-8">
+         <Link to="/electrical" className="text-inherit no-underline">
           <ServiceCard
             heading="Electrical Repair"
             image="https://tse2.mm.bing.net/th?id=OIP.PNKf3_tFyS15I0wuyl8uzwHaHa&pid=Api&P=0&h=180"
           />
+          </Link>
+          <Link to="/plumbing" className="text-inherit no-underline">
           <ServiceCard
             heading="Plumbing"
             image="https://webstockreview.net/images/plumber-clipart-21.jpg"
           />
+          </Link>
           <Link to="/beauty" className="text-inherit no-underline">
             <ServiceCard
               heading="Beauty Services"
@@ -42,30 +46,43 @@ function Services() {
               image="https://tse3.mm.bing.net/th?id=OIP.ElBjNs5gIpqIc5KCviOmGAHaHu&pid=Api&P=0&h=180"
             />
           </Link>
+          <Link to="/carpentry" className="text-inherit no-underline">
           <ServiceCard
             heading="Carpentry"
             image="https://tse2.mm.bing.net/th?id=OIP.zyrzPSA4bWw6CUb9we0oIQAAAA&pid=Api&P=0&h=180"
           />
+          </Link>
+          <Link to="/gardening" className="text-inherit no-underline">
           <ServiceCard
             heading="Gardening"
             image="https://tse1.mm.bing.net/th?id=OIP.NKA0OX49_PYvoMdRV-vqEwHaHa&pid=Api&P=0&h=180"
           />
+          </Link>
+          <Link to="/painting" className="text-inherit no-underline">
           <ServiceCard
             heading="Painting"
             image="https://tse1.mm.bing.net/th?id=OIP.f4FtyCG7Qq0qhu_ihZf2-QAAAA&pid=Api&P=0&h=180"
           />
+          </Link>
+          <Link to="/pestcontrol" className="text-inherit no-underline">
           <ServiceCard
             heading="Pest Control"
-            image="https://tse3.explicit.bing.net/th?id=OIP.kmrQ-dvG9rAbyCXswDQ-tgHaHa&pid=Api&P=0&h=180"
+            image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSndP0lpxeHDhwamxqOgBnplZ3-E1ijxY-CEQ&s"
           />
+          </Link>
+         
+          <Link to="/housecleaning" className="text-inherit no-underline">
           <ServiceCard
             heading="House Cleaning"
             image="https://tse2.mm.bing.net/th?id=OIP.8K7xMhlQ1yKYprBgTz8FigAAAA&pid=Api&P=0&h=180"
           />
+          </Link>
+          <Link to="/network" className="text-inherit no-underline">
           <ServiceCard
             heading="Network Services"
             image="https://tse4.mm.bing.net/th?id=OIP.MS6K_WJSKuK97ydOyUTS1AHaFH&pid=Api&P=0&h=180"
           />
+          </Link>
         </div>
       </div>
     </>

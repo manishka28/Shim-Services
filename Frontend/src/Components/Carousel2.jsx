@@ -2,6 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { Link } from 'react-router-dom';
 
 const Carousel2 = () => {
   const settings = {
@@ -15,15 +16,15 @@ const Carousel2 = () => {
   };
 
   return (
-    <div className='bg-yellow-200 bg-opacity-60 p-8 rounded-lg shadow-lg max-w-4xl mx-auto'>
+    <div className='bg-white/10 backdrop-blur-sm bg-opacity-60 p-8 rounded-lg shadow-lg max-w-4xl mx-auto'>
       <Slider {...settings}>
         <div className='text-center'>
           <img
-            src="https://cdn.pixabay.com/photo/2024/03/06/12/13/ev-charger-installation-in-essex-8616406_640.png"
+            src="https://tse3.mm.bing.net/th?id=OIP.-fuLAFDgBJCcY77p8jEw9QHaDt&pid=Api&P=0&h=180"
             alt="Slide 1"
             className="w-100 h-64 object-cover mx-auto"
           />
-          <p className="text-gray-700 mt-4">EV Charger Installation</p>
+          <p className="text-white text-2xl font-serif mt-4">Cleaning</p>
         </div>
         <div className='text-center'>
           <img
@@ -31,15 +32,15 @@ const Carousel2 = () => {
             alt="Slide 2"
             className="w-100 h-64 object-cover mx-auto"
           />
-          <p className="text-gray-700 mt-4">IT Support Services</p>
+          <p className="text-white text-2xl font-serif mt-4">IT Support Services</p>
         </div>
         <div className='text-center'>
           <img
-            src="https://cdn.pixabay.com/photo/2020/01/05/20/06/lipstick-4743984_960_720.jpg"
+            src="https://tse3.mm.bing.net/th?id=OIP.xBvPXJb1cO3coFGWDG4CYgHaE8&pid=Api&P=0&h=180"
             alt="Slide 3"
             className="w-100 h-64 object-cover mx-auto"
           />
-          <p className="text-gray-700 mt-4">Makeup Services</p>
+          <p className="text-white text-2xl font-serif mt-4">Plumbing Services</p>
         </div>
         <div className='text-center'>
           <img
@@ -47,23 +48,23 @@ const Carousel2 = () => {
             alt="Slide 4"
             className="w-100 h-64 object-cover mx-auto"
           />
-          <p className="text-gray-700 mt-4">Car Mechanic Services</p>
+          <p className="text-white text-2xl font-serif mt-4">Car Mechanic Services</p>
         </div>
         <div className='text-center'>
           <img
-            src="https://media.istockphoto.com/id/509040406/photo/painter-painting-a-wall-with-paint-roller.jpg"
+            src="https://media.istockphoto.com/id/509040406/photo/painter-painting-a-wall-with-paint-roller.jpg?s=612x612&w=0&k=20&c=XRAosOBMqY1WKs_j2Bdt_rlH45-aXu74kMpkfaf5klU="
             alt="Slide 5"
             className="w-100 h-64 object-cover mx-auto"
           />
-          <p className="text-gray-700 mt-4">Painting Services</p>
+          <p className="text-white text-2xl font-serif mt-4">Painting Services</p>
         </div>
       </Slider>
 
       {/* Fixed button below the carousel */}
       <div className="mt-8 flex justify-center">
-        <button className="bg-green-700 hover:bg-green-800 text-white py-2 px-6 rounded-lg">
-          Become a Service Provider
-        </button>
+        
+     
+   
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const Hero = () => {
           Your reliable partner for expert home services, offering convenience and peace of mind with every repair and maintenance task.
         </p>
         <button className="bg-green-700 hover:bg-blue-700 text-white font-bold py-2 px-4 md:px-6 rounded-md transition duration-300">
-          Book Now
+          Explore
         </button>
       </div>
 

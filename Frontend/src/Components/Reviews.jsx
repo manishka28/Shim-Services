@@ -1,162 +1,151 @@
-import { AiFillStar, AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
-import React from "react";
+import { AiFillStar } from "react-icons/ai";  
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-export const Reviews = () => {
-  const [showMore, setShowMore] = React.useState({});
+export const Reviews = ({ serviceName }) => {
+  const [reviews, setReviews] = useState([]);
+  const [ratingDistribution, setRatingDistribution] = useState({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
+  const [averageRating, setAverageRating] = useState(0);
+  const [showMore, setShowMore] = useState(false); // state to control showing more reviews
 
-  const toggleShowMore = (technician) => {
-    setShowMore((prevState) => ({
-      ...prevState,
-      [technician]: !prevState[technician],
-    }));
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4002/reviews/${serviceName}`);
+        const reviewsData = response.data.reviews;
+        setReviews(reviewsData);
+
+        // Calculate rating distribution and average rating
+        const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+        let totalRating = 0;
+        reviewsData.forEach((review) => {
+          distribution[review.Rating] += 1;
+          totalRating += review.Rating;
+        });
+
+        setRatingDistribution(distribution);
+        setAverageRating(totalRating / reviewsData.length);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [serviceName]);
+
+  const totalReviews = reviews.length;
+
+  const ratingLabels = {
+    5: "Excellent",
+    4: "Good",
+    3: "Average",
+    2: "Below Average",
+    1: "Poor",
   };
 
-  const technicians = [
-    {
-      name: "Sajid Saifi",
-      location: "Saket, New Delhi, Delhi, India",
-      rating: 4.7,
-      image: "https://res.cloudinary.com/urbanclap/image/upload/t_medium_res_profile_thumb,q_auto:low,f_auto/images/5c0df5942e506e26001c19ea/1544427470485-9de668412835c3affe92a75fff0c7f0a.jpeg",
-      reviews: [
-        {
-          reviewer: "Sanjay",
-          rating: 5.0,
-          review: "Thank you for a timely visit and service of my AC. I have paid in cash the balance amount. Thank you!",
-        },
-        {
-          reviewer: "Amit",
-          rating: 4.8,
-          review: "Great service! Very professional and punctual.",
-        },
-      ],
-    },
-    {
-      name: "Rahul Kumar",
-      location: "Connaught Place, New Delhi, India",
-      rating: 4.5,
-      image: "https://res.cloudinary.com/urbanclap/image/upload/t_medium_res_profile_thumb,q_auto:low,f_auto/images/profile.jpg",
-      reviews: [
-        {
-          reviewer: "Rohan",
-          rating: 4.5,
-          review: "Very helpful and friendly service. Got my AC fixed in no time.",
-        },
-        {
-          reviewer: "Rita",
-          rating: 4.2,
-          review: "Service was satisfactory, but could be more punctual.",
-        },
-      ],
-    },
-    {
-      name: "Aman Verma",
-      location: "South Extension, New Delhi, India",
-      rating: 4.9,
-      image: "https://res.cloudinary.com/urbanclap/image/upload/t_medium_res_profile_thumb,q_auto:low,f_auto/images/profile2.jpg",
-      reviews: [
-        {
-          reviewer: "Anjali",
-          rating: 5.0,
-          review: "Amazing service. Very thorough and polite.",
-        },
-        {
-          reviewer: "Mehul",
-          rating: 4.9,
-          review: "Best service I have experienced in a while. Highly recommended.",
-        },
-      ],
-    },
-  ];
+  // Show only the first 4 reviews initially, or all if showMore is true
+  const reviewsToDisplay = showMore ? reviews : reviews.slice(0, 4);
 
   return (
     <>
-      <h2 id="technicians" className="text-2xl font-bold my-4 text-center">Ratings & Reviews</h2>
-      <ul className="list-none m-0 p-0">
-        {technicians.map((tech, index) => (
-          <li key={index} className="mb-6">
-            <div className="flex items-start space-x-4 p-4 border-b border-gray-200">
-              {/* Technician Info */}
-              <div className="flex-shrink-0">
-                <img
-                  src={tech.image}
-                  alt="Technician"
-                  className="w-20 h-20 rounded-full"
-                />
-              </div>
-              <div className="flex-grow">
-                <h4 className="text-lg font-semibold">{tech.name}</h4>
-                <p className="text-sm text-gray-600">{tech.location}</p>
-                <div className="flex items-center mt-2">
-                  <AiFillStar className="text-yellow-500" />
-                  <span className="ml-1 text-green-700 font-bold">{tech.rating}</span>
-                  <span className="ml-2 text-sm">({tech.reviews.length} reviews)</span>
-                </div>
+      
+      <h1 className="font-bold text-4xl mt-3 mb-5 text-center">Rating and Reviews</h1>
+      {/* Average Rating and Total Reviews */}
+      <div className="text-center mb-6">
+        <h2 className="text-6xl font-bold">{averageRating.toFixed(1)}</h2>
+        <div className="flex justify-center items-center mb-1">
+          {[...Array(5)].map((_, index) => (
+            <AiFillStar
+              key={index}
+              className={index < Math.round(averageRating)
+                ? "text-yellow-500"
+                : "text-gray-300"}
+            />
+          ))}
+        </div>
+        <p className="text-gray-600">based on {totalReviews} reviews</p>
+      </div>
+
+      {/* Rating Distribution */}
+      <div className="mt-4 flex-col justify-between mb-8">
+        {Object.entries(ratingDistribution)
+          .sort(([a], [b]) => b - a)
+          .map(([stars, count]) => (
+            <div key={stars} className="flex items-center my-2">
+              <span className="flex items-center w-36 text-gray-800">
+                <AiFillStar
+                  className={ 
+                    stars === '5'
+                      ? "text-green-800"
+                      : stars === '4'
+                      ? "text-green-500"
+                      : stars === '3'
+                      ? "text-yellow-500"
+                      : stars === '2'
+                      ? "text-orange-500"
+                      : "text-red-500"
+                  }
+                /> {/* Adjusted icon color */}
+                <span className="ml-2 text-base font-medium">{ratingLabels[stars]}</span>
+              </span>
+
+              <div className="w-3/5 h-3 mx-4 bg-gray-200 rounded-full">
+                <div
+                  className={`h-3 rounded-full ${
+                    stars === '5'
+                      ? "bg-green-800"
+                      : stars === '4'
+                      ? "bg-green-500"
+                      : stars === '3'
+                      ? "bg-yellow-500"
+                      : stars === '2'
+                      ? "bg-orange-500"
+                      : "bg-red-500"
+                  }`}
+                  style={{ width: `${(count / totalReviews) * 100}%` }}
+                ></div>
               </div>
             </div>
+          ))}
+      </div>
 
-            {/* Reviews Section */}
-            <div className="p-4">
-              <ul className="list-none space-y-4">
-                {/* Show first review by default */}
-                <li>
-                  <div className="flex space-x-4">
-                    <div className="flex-shrink-0">
-                      {/* Avatar or placeholder */}
-                      <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                        <span className="text-gray-700">{tech.reviews[0].reviewer[0]}</span>
-                      </div>
-                    </div>
-                    <div className="flex-grow">
-                      <h4 className="font-semibold">{tech.reviews[0].reviewer}</h4>
-                      <div className="flex items-center mb-1">
-                        <AiFillStar className="text-yellow-500" />
-                        <span className="ml-1 text-green-700 font-bold">{tech.reviews[0].rating}</span>
-                      </div>
-                      <p className="text-sm">{tech.reviews[0].review}</p>
-                    </div>
-                  </div>
-                </li>
+      {/* Individual Reviews */}
+      <ul className="list-none m-0 p-0">
+        {reviewsToDisplay.map((review, index) => (
+          <li key={index} className="mb-6">
+            <div className="flex items-start space-x-4 p-4 border-b border-gray-200">
+              {/* Customer Initial Circle */}
+              <div className="flex items-center justify-center w-14 h-14 bg-yellow-500 rounded-full text-2xl font-bold text-black">
+                {/* {review.U_Name.charAt(0).toUpperCase()} */}
+                {review.U_Name.split(" ").map((word) => word[0]).join("") || "U"}
+              </div>
 
-                {/* Conditionally render more reviews */}
-                {showMore[tech.name] &&
-                  tech.reviews.slice(1).map((review, idx) => (
-                    <li key={idx}>
-                      <div className="flex space-x-4">
-                        <div className="flex-shrink-0">
-                          {/* Avatar or placeholder */}
-                          <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                            <span className="text-gray-700">{review.reviewer[0]}</span>
-                          </div>
-                        </div>
-                        <div className="flex-grow">
-                          <h4 className="font-semibold">{review.reviewer}</h4>
-                          <div className="flex items-center mb-1">
-                            <AiFillStar className="text-yellow-500" />
-                            <span className="ml-1 text-green-700 font-bold">{review.rating}</span>
-                          </div>
-                          <p className="text-sm">{review.review}</p>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-
-                {/* Toggle button */}
-                <li>
-                  <button
-                    onClick={() => toggleShowMore(tech.name)}
-                    className="flex items-center text-blue-600 mt-4"
-                  >
-                    <div className="mr-1">
-                      {showMore[tech.name] ? <AiOutlineArrowUp /> : <AiOutlineArrowDown />}
-                    </div>
-                    <span>{showMore[tech.name] ? "Show Less" : "Click to Read More Reviews"}</span>
-                  </button>
-                </li>
-              </ul>
+              {/* Review Information */}
+              <div className="flex-grow">
+                <h4 className="text-lg font-medium">{review.U_Name}</h4>
+                <h3 className="text-gray-600">{review.Service_Category}</h3>
+                <div className="flex items-center mt-2">
+                  <AiFillStar className="text-yellow-500" />
+                  <span className="ml-1 text-green-700 font-medium">{review.Rating}</span>
+                </div>
+                <p className="text-sm mt-2">{review.Review}</p>
+              </div>
             </div>
           </li>
         ))}
       </ul>
+
+      {/* Show more button */}
+      {totalReviews > 4 && (
+        <div className="text-center mt-4">
+          <button
+            onClick={() => setShowMore(!showMore)}
+            className="text-blue-500 hover:text-blue-700 font-medium"
+          >
+            {showMore ? "See less" : "See more reviews"}
+          </button>
+        </div>
+      )}
     </>
   );
 };

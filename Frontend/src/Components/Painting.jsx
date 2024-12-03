@@ -106,7 +106,7 @@ const Painting = () => {
               <img src="https://t3.ftcdn.net/jpg/04/20/03/48/360_F_420034841_AKpgqQGkkUyeD7oWc9y8vGTMwT4GmbHm.jpg" className="h-5 w-20 mt-2" alt="rating" />
               <p className="ml-2">6M+ bookings till now</p>
             </div>
-            <button onClick={handleBookNow} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button>
+            {/* <button onClick={handleBookNow} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button> */}
           </div>
           <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4'>
             {cardItems.map(item => (
@@ -154,7 +154,7 @@ const Painting = () => {
       <div className="flex flex-col-reverse md:flex-row p-2.5 m-6">
         <div className="flex flex-col text-xl md:w-1/2">
           <hr />
-          <h2 className="text-3xl font-semibold text-center text-gray-800 mt-4 mb-2">What We Offer</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-800 mt-4 mb-2">What We Offer</h2>
 <p className="text-lg text-center text-gray-600 mb-4">
   ShimServices provides professional Painting services for homes and offices.
 </p>
@@ -174,9 +174,9 @@ const Painting = () => {
   </li>
 </ul>
 
-          <Reviews />
+          <Reviews serviceName={"Painting"} />
         </div>
-        <div className="flex-6">
+        <div className="flex-6 mx-4 w-1/2">
           <Details services={services} service_name={"Painting"} />
         </div>
       </div>

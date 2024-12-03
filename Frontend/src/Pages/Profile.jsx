@@ -4,6 +4,11 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import ServiceProviderOrders from "../Components/ServiceProviderOrders";
 import SalaryOfSP from "../Components/SalaryOfSP";
+import { Link } from "react-router-dom";
+import { io } from "socket.io-client";
+
+// Initialize Socket.IO client
+const socket = io("http://localhost:4002");
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -11,6 +16,7 @@ const Profile = () => {
   const [services, setServices] = useState([]);
   const [city, setCity] = useState("");
   const [mobile, setMobile] = useState("");
+  const [orders, setOrders] = useState([]);
 
   const fullName = currentUser?.U_Name || "User";
   const email = currentUser?.U_Email || "user@example.com";
@@ -26,9 +32,7 @@ const Profile = () => {
           console.error("Error fetching services:", error);
         }
       };
-      fetchServices();
 
-      // Fetch city and mobile for the service provider
       const fetchCityAndMobile = async () => {
         try {
           const response = await axios.get(`http://localhost:4002/sp_city_mobile/${email}`);
@@ -40,25 +44,51 @@ const Profile = () => {
           console.error("Error fetching city and mobile:", error);
         }
       };
+
+      fetchServices();
       fetchCityAndMobile();
+
+      // Listen for order status updates in real-time (using Socket.IO)
+      socket.on("orderAccepted", (orderId) => {
+        setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId));
+      });
+    }
+  }, [isServiceProvider, email]);
+
+  // Fetch orders (for service provider)
+  useEffect(() => {
+    if (isServiceProvider) {
+      const fetchOrders = async () => {
+        try {
+          const response = await axios.get(`http://localhost:4002/sp_orders/${email}`);
+          setOrders(response.data);
+        } catch (error) {
+          console.error("Error fetching orders:", error);
+        }
+      };
+
+      fetchOrders();
     }
   }, [isServiceProvider, email]);
 
   return (
-    <div className="flex justify-between p-6 bg-gray-100 min-h-screen">
-      <div className="w-1/3 bg-white p-6 rounded-lg shadow-md">
+    <div className="flex flex-col md:flex-row lg:flex-row justify-between p-6 bg-gray-100 min-h-screen">
+      {/* Profile Sidebar */}
+      <div className="w-full md:w-1/3 lg:w-1/3 bg-white p-6 rounded-lg shadow-md">
         <div className="text-center">
-          <div className="rounded-full w-32 h-32 bg-blue-500 flex items-center justify-center mx-auto text-white text-4xl">
+          <div className="rounded-full w-32 h-32 bg-yellow-500 flex items-center justify-center mx-auto text-black font-bold text-4xl">
             {fullName.split(" ").map((word) => word[0]).join("") || "U"}
           </div>
           <h2 className="text-2xl font-bold mt-4">{fullName}</h2>
           <p className="text-gray-500">{email}</p>
         </div>
         <div className="mt-6 space-y-4">
-          <div className="flex items-center">
-            <i className="fas fa-map-marker-alt text-gray-600"></i>
-            <p className="ml-2">{city}</p>
-          </div>
+          {city && (
+            <div className="flex items-center">
+              <i className="fas fa-map-marker-alt text-gray-600"></i>
+              <p className="ml-2">{city}</p>
+            </div>
+          )}
           <div className="flex items-center">
             <i className="fa-solid fa-phone-alt text-gray-600"></i>
             <p className="ml-2">{mobile}</p>
@@ -70,44 +100,47 @@ const Profile = () => {
 
         {/* Service Display for Service Provider */}
         {isServiceProvider && (
-        <div className="mt-6 space-y-4">
-          <h3 className="text-lg font-semibold flex items-center space-x-2">
-            <i className="fas fa-cogs text-blue-500"></i>
-            <span>Services Offered</span>
-          </h3>
-          <div className="space-y-2">
-            {services.length > 0 ? (
-              services.map((service) => (
-                <div key={service.Service_ID} className="flex items-center space-x-2 p-4 bg-gray-100 rounded-md shadow-md">
-                  <i className="fas fa-check-circle text-green-500"></i>
-                  <span className="font-semibold">{service.Service_Name}</span>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500">No services available.</p>
-            )}
-          </div>
+          <div className="mt-6 space-y-4">
+            <h3 className="text-lg font-semibold flex items-center space-x-2">
+              <i className="fas fa-cogs text-blue-500"></i>
+              <span>Services Offered</span>
+            </h3>
+            <div className="space-y-2">
+              {services.length > 0 ? (
+                services.map((service) => (
+                  <div key={service.Service_ID} className="flex items-center space-x-2 p-4 bg-gray-100 rounded-md shadow-md">
+                    <i className="fas fa-check-circle text-green-500"></i>
+                    <span className="font-semibold">{service.Service_Name}</span>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500">No services available.</p>
+              )}
+            </div>
 
-          {/* Salary Component */}
-          <SalaryOfSP SP_Email={email} />
-        </div>
-      )}
+            {/* Salary Component */}
+            <SalaryOfSP SP_Email={email} />
+          </div>
+        )}
       </div>
 
+      {/* Orders and Service Management */}
       {isServiceProvider ? (
-        <div className="w-2/3 bg-white p-6 rounded-lg shadow-md">
-          <ServiceProviderOrders SPEmail={email} />
+        <div className="w-full md:w-2/3 lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
+          <ServiceProviderOrders SPEmail={email} SPCity={city} orders={orders} />
         </div>
       ) : (
         <div className="w-2/3 flex items-center justify-center bg-white p-6 rounded-lg shadow-md">
           <img
             src="https://www.svgrepo.com/show/259579/search.svg"
             alt="Profile"
-            className="m-4 p-4 h-full w-96 mx-auto"
+            className="h-full w-96 mx-auto"
           />
-          <button className="bg-green-600 text-white py-2 px-6 rounded-lg">
-            Explore Services
-          </button>
+          <Link to="/services">
+            <button className="bg-green-600 text-white py-2 px-6 rounded-lg">
+              Explore Services
+            </button>
+          </Link>
         </div>
       )}
     </div>

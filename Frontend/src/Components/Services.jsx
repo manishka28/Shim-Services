@@ -6,19 +6,19 @@ function Services() {
     <>
       <div className="bg-black text-white min-h-screen lg-6">
         <div className="text-center pt-8">
-          <h2 className="text-3xl font-bold italic">Discover Services</h2>
+          <h2 className="text-3xl mt-8 mb-5 font-bold italic">Discover Services</h2>
         </div>
 
-        <div className="flex justify-center pt-4">
+        {/* <div className="flex justify-center pt-4">
           <input
             type="text"
             placeholder="Search..."
             className="w-2/5 p-2 bg-transparent border border-gray-400 rounded-md text-white"
           />
-          <button className="ml-2 p-2 bg-green-700 hover:bg-blue-700 text-white rounded-md">
+          <button className="ml-2 p-2 bg-green-600 hover:bg-green-700 text-white rounded-md">
             Search
           </button>
-        </div>
+        </div> */}
 
         {/*grid layout here */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 p-8">

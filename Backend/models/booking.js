@@ -67,45 +67,40 @@ export const cancelBooking = (bookId, callback) => {
 
 export const acceptBooking = (bookId, spEmail) => {
   return new Promise((resolve, reject) => {
-    // Parameter validation
-    // if (!bookId || typeof bookId !== 'string') {  // Treating bookId as a string
-    //   return reject({ error: 'Invalid or missing bookId', details: bookId: ${bookId} });
-    // }
-    // if (!spEmail || typeof spEmail !== 'string') {
-    //   return reject({ error: 'Invalid or missing spEmail', details: spEmail: ${spEmail} });
-    // }
-
-    // Query to update Book_Status and SP_Email
+    // Query to update Book_Status and SP_Email only if SP_Email is NULL
     const updateBookingQuery = `
       UPDATE booking 
       SET Book_Status = ?, SP_Email = ? 
-      WHERE Book_ID = ?
+      WHERE Book_ID = ? AND (SP_Email IS NULL OR SP_Email = '') AND Book_Status= 'Pending' 
     `;
 
-    // Execute the query
-    
     connection.query(updateBookingQuery, ['Accepted', spEmail, bookId], (err, result) => {
       if (err) {
-        console.error('Database query error:', err);
-        return reject({ error: 'Database query error', details: err.message });
+        console.error('Database update error:', err);
+        return reject({ error: 'Database update error', details: err.message });
       }
 
       if (result.affectedRows === 0) {
-        // No booking was updated, likely because the Book_ID doesn't match any record
-        console.warn('No booking found with the given Book_ID:', bookId);
-        return reject({ error: 'Booking not found', details: `Book_ID: ${bookId}` });
+        // No row was updated, meaning SP_Email was already set
+        return reject({ error: 'This order has already been accepted by another service provider' });
       }
 
       // Success response
-      // console.log(`Booking ${bookId} accepted by ${spEmail}.`);
       resolve({ message: 'Booking accepted and SP_Email updated successfully' });
     });
   });
 };
 
+
+
+
+
+
+
 // Get all bookings
 export const getAllBookings = (callback) => {
-  connection.query('SELECT * FROM booking', (err, results) => {
+  connection.query(`SELECT * FROM booking`
+    , (err, results) => {
     if (err) {
       console.error('Error executing query:', err);
       return callback(err, null);

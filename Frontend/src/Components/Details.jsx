@@ -129,7 +129,7 @@ const Details = ({services,service_name}) => {
               ))}
             </ul>
             {/* <p className="font-bold text-green-600">Initial Price: ₹{service.price}</p> */}
-            <button onClick={() => handleBookNow(service)} className="border-2 border-green-600 text-black px-4 py-2 rounded-md transition-all duration-300 hover:bg-green-600 hover:text-white">Book Now</button>
+            <button onClick={() => handleBookNow(service)} className="border-2 border-green-600 text-black mt-2 px-4 py-2 rounded-md transition-all duration-300 hover:bg-green-600 hover:text-white">Book Now</button>
           </div>
         ))}
       </div>

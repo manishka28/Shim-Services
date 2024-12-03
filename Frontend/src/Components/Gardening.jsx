@@ -121,7 +121,7 @@ const Gardening = () => {
         />
         <p className="ml-2">6M+ bookings till now</p>
       </div>
-      <button onClick={handleBookNow} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button>
+      {/* <button onClick={handleBookNow} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Book Now</button> */}
     </div>
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {services.map(item => (
@@ -184,7 +184,7 @@ const Gardening = () => {
 <div className="flex flex-col-reverse md:flex-row p-2.5 m-6">
   <div className="flex flex-col text-xl md:w-1/2">
     <hr />
-    <h2 className="text-3xl font-semibold text-center text-gray-800 mt-4 mb-2">What We Offer</h2>
+    <h2 className="text-3xl font-bold text-center text-gray-800 mt-4 mb-2">What We Offer</h2>
 <p className="text-lg text-center text-gray-600 mb-4">
 We provide a range of reliable gardening services to transform your outdoor space:</p>
 <ul className="list-none mt-4 space-y-2">
@@ -205,9 +205,9 @@ We provide a range of reliable gardening services to transform your outdoor spac
   </li>
 </ul>
 
-    <Reviews/>
+    <Reviews serviceName={"Gardening Services"}/>
   </div>
-  <div className="flex-6">
+  <div className="flex-6 mx-4 w-1/2">
     <Details services={services} service_name={"Gardening Services"} />
   </div>
 </div>

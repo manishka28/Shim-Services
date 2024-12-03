@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import axios from 'axios';
 const BillModal = ({ order, onClose, onBillGenerated }) => {
   const [laborEntries, setLaborEntries] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
+  const [serviceCharge, setServiceCharge] = useState(0);  // New state for service charge
   const [paymentMethod, setPaymentMethod] = useState("");
   const [billGenerated, setBillGenerated] = useState(false); // New state to track if bill has been generated
   const [billData, setBillData] = useState(null); // Store generated bill details
@@ -30,13 +31,17 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
     }
 
     setLaborEntries(updatedLaborEntries);
-    setTotalCost(updatedLaborEntries.reduce((acc, entry) => acc + entry.total, 0));
+    const newTotalCost = updatedLaborEntries.reduce((acc, entry) => acc + entry.total, 0);
+    setTotalCost(newTotalCost);
+    setServiceCharge(newTotalCost * 0.05); // 5% service charge
   };
 
   const handleDeleteLaborEntry = (index) => {
     const updatedLaborEntries = laborEntries.filter((_, i) => i !== index);
     setLaborEntries(updatedLaborEntries);
-    setTotalCost(updatedLaborEntries.reduce((acc, entry) => acc + entry.total, 0));
+    const newTotalCost = updatedLaborEntries.reduce((acc, entry) => acc + entry.total, 0);
+    setTotalCost(newTotalCost);
+    setServiceCharge(newTotalCost * 0.05); // 5% service charge
   };
 
   const handlePaymentMethodChange = (e) => {
@@ -44,37 +49,38 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
   };
 
   const handleGenerateBill = async () => {
-  const newBillData = {
-    Book_ID: order.Book_ID,
-    Bill_Date: formattedDate,
-    Bill_Mode: paymentMethod,
-    Labor_Entries: laborEntries,
+    const newBillData = {
+      Book_ID: order.Book_ID,
+      Bill_Date: formattedDate,
+      Bill_Mode: paymentMethod,
+      Labor_Entries: laborEntries,
+      Service_Charge: serviceCharge,  // Include service charge in the bill
+      Total: totalCost + serviceCharge  // Add service charge to total
+    };
+
+    try {
+      const response = await axios.post('http://localhost:4002/bills', newBillData);
+      console.log(response);
+      
+      // Set the new billData with response values
+      setBillData({
+        ...newBillData, // Include the newBillData
+        Bill_ID: response.data.data.Bill_ID, // Add the Bill_ID from the response
+      });
+
+      // Save generated bill data
+      setBillGenerated(true); // Set billGenerated to true
+      onBillGenerated(order.Book_ID);
+    } catch (error) {
+      console.error("Error generating bill:", error);
+      alert("Error generating bill.");
+    }
   };
 
-  try {
-    const response = await axios.post('http://localhost:4002/bills', newBillData);
-    console.log(response);
-    
-    // Set the new billData with response values
-    setBillData({
-      ...newBillData, // Include the newBillData
-      Bill_ID: response.data.data.Bill_ID, // Add the Bill_ID from the response
-      // Add any other necessary properties from response.data if needed
-    });
-
-    // Save generated bill data
-    setBillGenerated(true); // Set billGenerated to true
-    onBillGenerated(order.Book_ID);
-  } catch (error) {
-    console.error("Error generating bill:", error);
-    alert("Error generating bill.");
-  }
-};
-
-
   return (
-    <div className="fixed inset-0 pt-3 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed z-3 inset-0 pt-3 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg w-1/2 max-h-[80vh] overflow-auto shadow-lg border border-gray-300">
+      
         <div className="border-b pb-4 mb-4 text-center">
           <h2 className="text-2xl font-bold text-gray-700">Invoice</h2>
           <p className="text-sm text-gray-500">Thank you for your service!</p>
@@ -98,6 +104,10 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
               <div className="flex justify-between">
                 <p className="font-semibold text-gray-600">Service Name:</p>
                 <p>{order.Service_Name}</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="font-semibold text-gray-600">Service Category:</p>
+                <p>{order.Service_Category}</p>
               </div>
               <div className="flex justify-between">
                 <p className="font-semibold text-gray-600">Address:</p>
@@ -184,16 +194,29 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
               </div>
             )}
 
+            {/* Display the service charge */}
+            <div className="mt-4 flex justify-between font-semibold text-lg">
+              <p>Service Charge (5%):</p>
+              <p>{serviceCharge.toFixed(2)}</p>
+            </div>
+
+            {/* Display the total amount */}
+            <div className="mt-4 flex justify-between font-semibold text-lg">
+              <p>Total Amount:</p>
+              <p>{(totalCost + serviceCharge).toFixed(2)}</p>
+            </div>
+
             <div className="mt-4">
-              <p className="font-semibold text-gray-600">Payment Method:</p>
+              <label className="mr-2 font-semibold text-gray-600">Payment Mode:</label>
               <select
                 value={paymentMethod}
                 onChange={handlePaymentMethodChange}
-                className="border w-full px-3 py-2 rounded-md"
+                className="border px-2 py-1"
               >
                 <option value="">Select Payment Method</option>
-                <option value="online">Online</option>
-                <option value="cash">Cash</option>
+                <option value="Cash">Cash</option>
+                
+                <option value="UPI">UPI</option>
               </select>
             </div>
 
@@ -205,17 +228,24 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
                 Generate Bill
               </button>
             </div>
+            <div className="mt-6 text-center items-end">
+      <button
+        onClick={onClose}
+        className="bg-blue-500 text-white  py-2 px-6 rounded-md shadow hover:bg-blue-600 transition duration-200"
+      >
+        <i className="fas fa-times mr-2"></i>
+        Close
+      </button>
+    </div>
           </>
         ) : (
-          <>
-  <div className="p-6 bg-white rounded-lg shadow-md text-gray-700">
+          <div className="p-6 bg-white rounded-lg shadow-md text-gray-700">
     <h3 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-      <i className="fas fa-file-invoice text-green-500 mr-2"></i>
+    <i className="fas fa-file-invoice text-green-500 mr-2"></i>
       Bill Generated Successfully
-    </h3>
-    
-    <div className="space-y-2 text-gray-600">
-      <p className="flex items-center">
+    </h3>  <div className="space-y-2 text-gray-600">
+
+                <p className="flex items-center">
         <i className="fas fa-receipt text-blue-500 mr-2"></i>
         <strong>Bill ID:</strong>
         <span className="ml-2">{billData.Bill_ID}</span>
@@ -243,11 +273,11 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
       <p className="flex items-center">
         <i className="fas fa-dollar-sign text-blue-500 mr-2"></i>
         <strong>Total Cost:</strong>
-        <span className="ml-2">{totalCost}</span>
+        <span className="ml-2">{(totalCost + serviceCharge).toFixed(2)}</span>
       </p>
     </div>
 
-    <div className="mt-6 text-center">
+           <div className="mt-6 text-center">
       <button
         onClick={onClose}
         className="bg-blue-500 text-white py-2 px-6 rounded-md shadow hover:bg-blue-600 transition duration-200"
@@ -257,7 +287,6 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
       </button>
     </div>
   </div>
-</>
 
         )}
       </div>

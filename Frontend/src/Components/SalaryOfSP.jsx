@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PaymentBySP from './PaymentBySP'; // Import your PaymentBySP component
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 const SalaryOfSP = ({ SP_Email }) => {
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth();
@@ -28,7 +29,7 @@ const SalaryOfSP = ({ SP_Email }) => {
           year: currentYear,
         },
       });
-      console.log("curr salary resp",salaryResponse.data);
+      // console.log("curr salary resp",salaryResponse.data);
       
       setCurrentMonthSalary(salaryResponse.data.Salary || 0);
 
@@ -39,9 +40,9 @@ const SalaryOfSP = ({ SP_Email }) => {
           year: currentYear,
         },
       });
-      console.log("curr amt res",amountResponse.data.amount_to_pay);
+      // console.log("curr amt res",amountResponse.data.amount_to_pay);
       setCurrentMonthAmountToPay(amountResponse.data.amount_to_pay || 0);
-      console.log("Current Amount to Pay",currentMonthAmountToPay);
+      // console.log("Current Amount to Pay",currentMonthAmountToPay);
       
     } catch (error) {
       console.error('Error fetching current month data:', error);
@@ -66,7 +67,7 @@ const SalaryOfSP = ({ SP_Email }) => {
             year: selectedYear,
           },
         });
-        console.log(`salary for ${month} ${response.data.Salary}`);
+        // console.log(`salary for ${month} ${response.data.Salary}`);
         // console.log("salary monthly");
         
         
@@ -101,7 +102,7 @@ const SalaryOfSP = ({ SP_Email }) => {
         const totalAmountToPay = isNaN(response.data.amount_to_pay) ? 0 : response.data.amount_to_pay;
         cashTotals.push(totalAmountToPay);
       }
-      console.log(`amount to pay for ${month} is ${response.data}`);
+      // console.log(`amount to pay for ${month} is ${response.data}`);
       
 
       setAmountToPayMonthly(cashTotals);
@@ -133,7 +134,7 @@ const SalaryOfSP = ({ SP_Email }) => {
     }
   };
   const handlePaymentSuccess = (paymentId) => {
-    console.log("Payment successful with ID:", paymentId);
+    // console.log("Payment successful with ID:", paymentId);
   
     // Prepare the details to send to the API (including SP email, month, year, and updated amount)
     const details = {
@@ -146,7 +147,7 @@ const SalaryOfSP = ({ SP_Email }) => {
     // Call the /updateAmountToPay API
     axios.post('http://localhost:4002/updateAmountToPay', details)
       .then((response) => {
-        console.log('Amount updated successfully:', response.data);
+        // console.log('Amount updated successfully:', response.data);
         // Additional actions can be added here after updating the amount
         // For example, resetting the amount or updating the UI
         // setAmount(0); // Reset amount if needed
@@ -158,104 +159,145 @@ const SalaryOfSP = ({ SP_Email }) => {
   };
 
   return (
-    <div className="mt-6 p-4 bg-gray-100 rounded-md shadow-md">
-      {/* Fixed section: Current Month and Year Information */}
-      <h3 className="text-lg font-semibold flex items-center space-x-2">
-        <i className="fas fa-money-bill text-green-500"></i>
-        <span>Salary Information for {new Date(currentYear, currentMonth).toLocaleString('en', { month: 'long' })} {currentYear}</span>
-      </h3>
-      <div className="mt-4">
-        <span className="font-medium">Amount to Pay (Current Month):</span> ₹{currentMonthAmountToPay || 0}
-      </div>
-      <div className="mt-2">
-        <span className="font-medium">Salary (Online Total for Current Month):</span> ₹{currentMonthSalary || 0}
-      </div>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
+      {/* Top Balance Section */}
+      <div className="bg-yellow-400  text-white w-full  max-w-md p-7 rounded-t-lg shadow-md text-center relative">
+        <img className="rounded-full w-32 h-32 object-cover mx-auto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH0uFfj2Po56PqivrK1zqWl1xLtSYZQYqcpw&s"/>
+        <h2 className="text-xl py-3 text-gray-800 font-bold">Salary Information for {new Date(currentYear, currentMonth).toLocaleString('en', { month: 'long' })} {currentYear}</h2>
+        <div className='flex'>
+        <p className="text-lg py-3 text-gray-800 font-semibold mt-2 flex items-center">
+          <FontAwesomeIcon icon={faArrowUp} className="mr-2 text-green-600" />
+          Service Payment Balance: </p>
+        <div className="text-gray-800 font-semibold mt-2 py-3 text-lg">₹{currentMonthSalary || 0}</div>
+        
+        </div>
+        <div className='flex  mb-4'>
+        <p className="text-lg  text-gray-800 font-semibold mt-2 flex items-center">
+          <FontAwesomeIcon icon={faArrowDown} className="mr-2 text-red-600" />
+          Cash Payment Charge:
+            {/* <span className="text-gray-800">₹{currentMonthAmountToPay || 0}</span> */}
 
-      {/* Show Pay Now button only if amount to pay for current month is greater than zero */}
-      {currentMonthAmountToPay > 0 && (
-        <button
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={() => handlePayNowClick(currentMonthAmountToPay)}
-        >
-          Pay Now
+        </p>
+        {currentMonthAmountToPay > 0 && (
+            <button
+              className="mt-2 ml-2 font-semibold text-lg bg-green-600 text-black px-3 py-2 rounded-3xl hover:bg-green-700 transition"
+              onClick={() => handlePayNowClick(currentMonthAmountToPay)}
+            >
+              Pay <span className="text-gray-800">₹{currentMonthAmountToPay || 0}</span>
+            </button>
+          )}
+        </div>
+        
+        <button className="absolute top-1 right-3 text-2xl text-gray-800">
+          <i className="fas fa-bell"></i>
         </button>
-      )}
+        
+      </div>
 
-      {/* Year Selection Dropdown */}
-      
-<div className="mt-6">
-  <label className="mr-2 text-lg">Select Year:</label>
-  <select
-    value={selectedYear || ''}
-    onChange={handleYearChange}
-    className="p-2 border rounded-md"
-  >
-    <option value="">--Select Year--</option>
-    {/* Dynamically generate years from 2023 to current year */}
-    {Array.from({ length: currentYear - 2022 }, (_, index) => 2023 + index).map(year => (
-      <option key={year} value={year}>
-        {year}
-      </option>
-    ))}
-  </select>
-</div>
-
-
-      {selectedYear && (
-        <>
-          <h3 className="mt-6 text-lg font-semibold flex items-center space-x-2">
-            <i className="fas fa-calendar-day text-blue-500"></i>
+      {/* Salary Information Section */}
+      <div className="bg-white w-full   max-w-md z-2 p-2 rounded-md shadow-md -mt-3">
+      <h3 className="text-lg font-semibold flex items-center space-x-2">
+            <i className="fas fa-money-bill text-green-500"></i>
             <span>Salary Information for {selectedYear}</span>
           </h3>
-          <div className="mt-4">
-            <table className="w-full border">
-              <thead>
-                <tr>
-                  <th className="border px-4 py-2">Month</th>
-                  <th className="border px-4 py-2">Amount to Pay (Cash Total)</th>
-                  <th className="border px-4 py-2">Salary (Online Total)</th>
-                  {/* <th className="border px-4 py-2">Action</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                {Array.from({ length: 12 }).map((_, monthIndex) => (
-                  <tr key={monthIndex}>
-                    <td className="border px-4 py-2">
-                      {new Date(0, monthIndex).toLocaleString('en', { month: 'long' })}
-                    </td>
-                    <td className="border px-4 py-2">
-                      ₹{amountToPayMonthly[monthIndex] || 0}
-                    </td>
-                    <td className="border px-4 py-2">
-                      ₹{salaryMonthly[monthIndex] || 0}
-                    </td>
-                    <td className="border px-4 py-2">
-                      {amountToPayMonthly[monthIndex] > 0 && (
-                        <button
-                          className="bg-blue-500 text-white px-4 py-2 rounded"
-                          onClick={() => handlePayNowClick(amountToPayMonthly[monthIndex])}
-                        >
-                          Pay Now
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* <div className="p-4 bg-yellow-200 rounded-lg shadow-lg mb-6">
+          <h3 className="text-lg font-semibold flex items-center space-x-2">
+            <i className="fas fa-money-bill text-green-500"></i>
+            <span>Salary Information for {new Date(currentYear, currentMonth).toLocaleString('en', { month: 'long' })} {currentYear}</span>
+          </h3>
+          <div className="mt-2 font-medium">
+            Cash Payment Charge: <span className="text-gray-800">₹{currentMonthAmountToPay || 0}</span>
           </div>
-        </>
-      )}
+          <div className="mt-1 font-medium">
+            Service Payment Balance: <span className="text-gray-800">₹{currentMonthSalary || 0}</span>
+          </div>
 
-      {showPaymentModal && (
-        <PaymentBySP
-          amount={amountToPay}
-          onClose={() => setShowPaymentModal(false)} 
-          onPaymentSuccess={handlePaymentSuccess}
-          // Pass the closeModal function to the modal component
-        />
-      )}
-    </div>
+          {/* Pay Now button for current month */}
+          {/* {currentMonthAmountToPay > 0 && (
+            <button
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded shadow"
+              onClick={() => handlePayNowClick(currentMonthAmountToPay)}
+            >
+              Pay Now
+            </button>
+          )}
+        </div>  */}
+
+        {/* Year Selection Dropdown */}
+        <div className="flex items-center justify-between">
+          <label className="mr-2 text-lg">Select Year:</label>
+          <select
+            value={selectedYear || ''}
+            onChange={handleYearChange}
+            className="p-2 border rounded-md"
+          >
+            <option value="">--Select Year--</option>
+            {Array.from({ length: currentYear - 2022 }, (_, index) => 2023 + index).map(year => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Salary Information Table */}
+        {selectedYear && (
+          <>
+            <h3 className="mt-6 text-lg font-semibold flex items-center space-x-2">
+              <i className="fas fa-calendar-day text-blue-500"></i>
+              <span>Salary Information for {selectedYear}</span>
+            </h3>
+            <div className="mt-4">
+              <table className="w-full border">
+                <thead>
+                  <tr>
+                    <th className="border px-2 py-2">Month</th>
+                    <th className="border px-2 py-2">Cash Payment Charge</th>
+                    <th className="border px-2 py-2">Service Payment Balance</th>
+                    {/* <th className="border px-4 py-2">Action</th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.from({ length: 12 }).map((_, monthIndex) => (
+                    <tr key={monthIndex}>
+                      <td className="border px-4 py-2">
+                        {new Date(0, monthIndex).toLocaleString('en', { month: 'long' })}
+                      </td>
+                      <td className="border px-4 py-2">
+                        ₹{amountToPayMonthly[monthIndex] || 0}
+                      </td>
+                      <td className="border px-4 py-2">
+                        ₹{salaryMonthly[monthIndex] || 0}
+                      </td>
+                      {/* <td className="border px-4 py-2">
+                        {amountToPayMonthly[monthIndex] > 0 && (
+                          <button
+                            className="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded"
+                            onClick={() => handlePayNowClick(amountToPayMonthly[monthIndex])}
+                          >
+                            Pay Now
+                          </button>
+                        )}
+                      </td> */}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+
+        {/* Payment Modal */}
+        {showPaymentModal && (
+          <PaymentBySP
+            amount={currentMonthAmountToPay}
+            onClose={() => setShowPaymentModal(false)}
+            onPaymentSuccess={handlePaymentSuccess}
+          />
+        )}
+      </div>
+      </div>
+
   );
 };
 

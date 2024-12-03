@@ -2,8 +2,10 @@ import React from 'react';
 import Login from './Login';
 import SignUp from './SignUp';
 
-const DialogBox = ({ isOpen, closeDialog, isLoginForm, toggleForm }) => {
+const DialogBox = ({ isOpen, closeDialog, isLoginForm, toggleForm,loginRole }) => {
     if (!isOpen) return null; // Do not render if dialog is not open
+    console.log(loginRole.isAdmin);
+    
 
     return (
         <div className='fixed inset-0 bg-gray-900 bg-opacity-70 flex justify-center items-center z-30'>
@@ -26,7 +28,10 @@ const DialogBox = ({ isOpen, closeDialog, isLoginForm, toggleForm }) => {
                     {/* Form Section */}
                     <div className={`w-1/2 h-full flex items-center justify-center transition-transform duration-700 ${isLoginForm ? '-translate-x-full' : 'translate-x-0'}`}>
                         {isLoginForm ? (
-                            <Login onSwitchToSignUp={toggleForm} closeDialog={closeDialog} />
+                            <Login 
+                            onSwitchToSignUp={toggleForm} 
+                            closeDialog={closeDialog}
+                            isAdmin={loginRole.isAdmin}/>
                         ) : (
                             <SignUp onSwitchToLogin={toggleForm} closeDialog={closeDialog} />
                         )}

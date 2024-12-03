@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react';  
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
+import { useNavigate } from 'react-router-dom';
+import { FaRupeeSign } from 'react-icons/fa'; // Import rupee sign icon
 import CancelModal from './CancelModal';
 
 function Order({ order, onHelp, onCancel, payNow }) {
-  console.log("order", order);
-  console.log("paynow", payNow);
-
-  const navigate = useNavigate(); // Initialize navigate hook for routing
-
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false); // State for Cancel Modal
+  const navigate = useNavigate();
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [orderToCancel, setOrderToCancel] = useState(null);
+  // const [successMessage, setSuccessMessage] = useState(""); // Success message for this specific order
 
   const { 
     Book_ID, SP_Email, U_Email, Book_Status, Service_Name, 
@@ -31,26 +29,37 @@ function Order({ order, onHelp, onCancel, payNow }) {
 
   const handleCancel = (orderId) => {
     setOrderToCancel(orderId);
-    setIsCancelModalOpen(true); // Open cancel modal
+    setIsCancelModalOpen(true);
   };
 
   const confirmCancel = async () => {
     try {
       await axios.delete(`http://localhost:4002/bookings/${orderToCancel}`);
-      setIsCancelModalOpen(false); // Close cancel modal after confirming
+      setIsCancelModalOpen(false);
       onCancel(orderToCancel);
+      setSuccessMessage("Order canceled successfully!"); // Set success message for this order
     } catch (error) {
       console.error('Error canceling order:', error);
     }
   };
 
-  const handlePayNow = (orderId) => {
-    navigate('/payment', { state: { bookId: Book_ID } });  // Pass bookId in state
+  const handlePayNow = () => {
+    navigate('/payment', { state: { bookId: Book_ID } });
   };
 
   return (
     <>
-      <div className="bg-gray-100 shadow-md rounded-lg p-6 mb-4">
+      <div className="relative bg-gray-100 shadow-md rounded-lg p-6 mb-4 transform transition-all duration-500 hover:scale-105 hover:shadow-xl">
+        {payNow && (
+          <div className="absolute top-2 right-2 p-2 bg-green-500 rounded-full animate-pulse">
+            <FaRupeeSign
+              className="text-white"
+              title="Pay Now"
+              style={{ fontSize: '2rem' }}
+            />
+          </div>
+        )}
+
         <h3 className="text-lg font-semibold mb-2">Order ID: {Book_ID}</h3>
         <p className="text-gray-700"><strong>Customer:</strong> {U_Email}</p>
         <p className="text-gray-700"><strong>Service:</strong> {Service_Name}</p>
@@ -64,7 +73,13 @@ function Order({ order, onHelp, onCancel, payNow }) {
           Status: {Book_Status}
         </p>
 
-        {(Book_Status === 'Pending' || Book_Status === 'Scheduled' && !payNow) && (
+        {/* {successMessage && (
+          <div className="text-center text-green-500 font-semibold mb-4">
+            {successMessage}
+          </div>
+        )} */}
+
+        {(Book_Status === 'Pending' || (Book_Status === 'Scheduled' && !payNow)) && (
           <button
             onClick={() => handleCancel(Book_ID)}
             className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 mt-4"
@@ -76,17 +91,16 @@ function Order({ order, onHelp, onCancel, payNow }) {
         {payNow && (
           <button
             className="bg-blue-500 text-white m-4 p-2 rounded mt-4"
-            onClick={() => handlePayNow(Book_ID)}  // Navigate to the payment page with bookId in state
+            onClick={handlePayNow}
           >
             Pay Now
           </button>
         )}
       </div>
 
-      {/* Cancel Modal */}
       <CancelModal
         isOpen={isCancelModalOpen}
-        onClose={() => setIsCancelModalOpen(false)}  // Close cancel modal
+        onClose={() => setIsCancelModalOpen(false)}
         onConfirm={confirmCancel}
         message="Are you sure you want to cancel this order?"
       />

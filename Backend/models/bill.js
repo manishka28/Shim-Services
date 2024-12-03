@@ -23,7 +23,7 @@ export const addBill = (billData, callback) => {
   `;
 
   // Insert the bill data with labor entries and total cost
-  connection.query(query, [Book_ID, Bill_Date, Bill_Mode, JSON.stringify(Labor_Entries), Total_Cost], (err, result) => {
+  connection.query(query, [Book_ID, Bill_Date, Bill_Mode, JSON.stringify(Labor_Entries), Total_Cost + Total_Cost*0.05], (err, result) => {
     if (err) {
       console.error('Error inserting bill:', err);
       return callback({ error: err.code, message: err.message }, null);

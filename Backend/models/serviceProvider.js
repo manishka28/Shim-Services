@@ -27,7 +27,11 @@ export const addServiceProvider = (serviceProviderData, callback) => {
     GovernmentID,
     CityName,
     State,
-    Country
+    Country,
+    AccountNo,
+    IFSCcode,
+    Bank_Name,
+    Branch_Name
   } = serviceProviderData;
 
   // Check if the CityName exists before inserting
@@ -43,13 +47,13 @@ export const addServiceProvider = (serviceProviderData, callback) => {
     // Insert query for adding new service provider with all required columns
     const query = `
       INSERT INTO serviceprovider 
-      (SP_Email, SP_PIN, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, LanguageSpoken, GovernmentID, CityName, State, Country)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (SP_Email, SP_PIN, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, LanguageSpoken, GovernmentID, CityName, State, Country, AccountNo, IFSCcode, Bank_Name, Branch_Name)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
     `;
 
     connection.query(
       query,
-      [SP_Email, SP_PIN, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday,  LanguageSpoken, GovernmentID, CityName, State, Country],
+      [SP_Email, SP_PIN, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday,  LanguageSpoken, GovernmentID, CityName, State, Country, AccountNo, IFSCcode, Bank_Name, Branch_Name],
       (err, result) => {
         if (err) {
           console.error('Error inserting service provider:', err);
@@ -139,3 +143,52 @@ export const getCityAndMobileByEmail = (SP_Email, callback) => {
     });
   });
 };
+
+
+//shruti - for view sp
+export const getSPDetails = (SP_Email, callback) => {
+  const query = `SELECT * 
+FROM sp_services s 
+JOIN serviceprovider sp 
+ON s.SP_Email = sp.SP_Email 
+WHERE s.SP_Email = ?;
+`;
+  connection.query(query, [SP_Email], (error, results) => {
+    if (error) {
+      return callback(error, null); // Handle error
+    }
+    return callback(null, results); // Return results
+  });
+};
+
+
+export const getSPServices = (SP_Email, callback) => {
+  const query = `SELECT * FROM booking WHERE SP_Email = ?`; // Correct query to fetch all bookings for the service provider
+  
+  connection.query(query, [SP_Email], (error, results) => {
+    if (error) {
+      return callback(error, null); // Handle error
+    }
+
+    // Check if results are empty and return an appropriate message
+    if (results.length == 0) {
+      console.log("no service provided yet")
+      return callback(null, []);
+    }
+
+    // Return all results (multiple bookings)
+    return callback(null, results);
+  });
+};
+
+
+
+
+
+
+
+
+
+
+
+

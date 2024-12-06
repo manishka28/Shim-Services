@@ -19,7 +19,7 @@ const Report = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/reports-by-admin');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/reports-by-admin`);
         const data = response.data.data.map((report, index) => ({
           id: index + 1,
           reportId: report.Report_ID,
@@ -34,7 +34,7 @@ const Report = () => {
         setReportData(data);
         setFilteredData(data);
       } catch (error) {
-        console.error('Error fetching reports:', error);
+        //console.error('Error fetching reports:', error);
       }
     };
 
@@ -56,7 +56,7 @@ const Report = () => {
       const adminEmail = currentAdmin.A_Email;
       const report = filteredData.find((report) => report.reportId === id);
       if (!report) {
-        console.error('Report not found');
+        //console.error('Report not found');
         return;
       }
       const userEmail = report.spEmail;
@@ -81,7 +81,7 @@ const Report = () => {
         setReload(!reload);
       }
     } catch (error) {
-      console.error('Error updating report status:', error);
+      //console.error('Error updating report status:', error);
       toast.error('Failed to resolve report', {
         position: 'top-right',
         autoClose: 3000,
@@ -93,7 +93,7 @@ const Report = () => {
     try {
       const adminEmail = currentAdmin.A_Email;
 
-      const response = await axios.put(`http://localhost:4002/update-report-to-rejected/${reportId}`, { adminEmail });
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/update-report-to-rejected/${reportId}`, { adminEmail });
 
       if (response.status === 200) {
         toast.success('Report marked as rejected successfully', {
@@ -111,7 +111,7 @@ const Report = () => {
         setReload(!reload);
       }
     } catch (error) {
-      console.error('Error updating report status:', error);
+      //console.error('Error updating report status:', error);
       toast.error('Failed to update report status', {
         position: 'top-right',
         autoClose: 3000,

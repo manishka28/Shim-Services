@@ -16,7 +16,7 @@ const ViewAdmin = () => {
         // console.log("email", email); // Verify the value of the email parameter
 
         // Fetch admin details and services
-        const response = await fetch(`http://localhost:4002/adminDetails/${email}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/adminDetails/${email}`);
         const data = await response.json();
         // console.log("show data", data);
         if (data.length > 0) {
@@ -33,11 +33,11 @@ const ViewAdmin = () => {
         }
 
         // Fetch reports
-        const reportResponse = await fetch(`http://localhost:4002/adminReportAction/${email}`);
+        const reportResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/adminReportAction/${email}`);
         const reportData = await reportResponse.json();
         setReports(reportData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        //console.error("Error fetching data:", error);
       }
     };
 

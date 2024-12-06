@@ -5,7 +5,7 @@ import BillModal from "./BillModal";
 // import { io } from "socket.io-client";
 
 // Initialize Socket.IO connection
-// const socket = io("http://localhost:4002"); // Use your backend server URL
+// const socket = io("${import.meta.env.VITE_BACKEND_URL}"); // Use your backend server URL
 
 
 const ServiceProviderOrders = ({ SPEmail,SPCity,shouldFetch,setShouldFetch }) => {
@@ -21,17 +21,17 @@ const ServiceProviderOrders = ({ SPEmail,SPCity,shouldFetch,setShouldFetch }) =>
 
   const fetchPaymentMode = async (bookId) => {
     try {
-      const response = await axios.get(`http://localhost:4002/api/payment-mode/${bookId}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/payment-mode/${bookId}`);
       // console.log("Response from API:", response);  // Log response to check the structure
       if (response && response.data && response.data.paymentMode) {
         setShouldFetch(!shouldFetch);
         return response.data.paymentMode;  // Adjust this based on actual response structure
       } else {
-        console.error("Payment mode not found in the response.");
+        //console.error("Payment mode not found in the response.");
         return null;
       }
     } catch (error) {
-      console.error("Error fetching payment mode:", error);
+      //console.error("Error fetching payment mode:", error);
       return "Default";
     }
   };
@@ -46,7 +46,7 @@ const ServiceProviderOrders = ({ SPEmail,SPCity,shouldFetch,setShouldFetch }) =>
   try {
     // Send the updated completion status to the backend
     const updatedOrder = acceptedOrders.find(order => order.Book_ID === orderId);
-    await axios.put(`http://localhost:4002/booking/completion/${orderId}`, {
+    await axios.put(`${import.meta.env.VITE_BACKEND_URL}/booking/completion/${orderId}`, {
       isCompleted: !updatedOrder.isCompleted,
     });
 
@@ -55,13 +55,13 @@ const ServiceProviderOrders = ({ SPEmail,SPCity,shouldFetch,setShouldFetch }) =>
     setShouldFetch(!shouldFetch);
 
   } catch (error) {
-    console.error("Error updating completion status:", error);
+    //console.error("Error updating completion status:", error);
   }
 };
 
 const fetchBillForOrder = async (orderId) => {
   try {
-    const response = await axios.get(`http://localhost:4002/bills/${orderId}`);
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bills/${orderId}`);
     if (response.status === 200) {
       // console.log("Bill details fetched successfully", response.data);
       // console.log("Data:",response.data.Bill_Date);
@@ -88,16 +88,16 @@ const fetchBillForOrder = async (orderId) => {
           };
 
           const salaryResponse = await axios.post(
-            "http://localhost:4002/salary",  // Your API URL
+            `${import.meta.env.VITE_BACKEND_URL}/salary`,  // Your API URL
             salaryData
           );
           setShouldFetch(!shouldFetch);
           // console.log("Salary API response:", salaryResponse.data);
         } catch (error) {
-          console.error("Error calling /salary API:", error);
+          //console.error("Error calling /salary API:", error);
         }
   } catch (error) {
-    console.error("Error fetching bill details:", error);
+    //console.error("Error fetching bill details:", error);
   }
 };
 
@@ -107,12 +107,12 @@ const fetchBillForOrder = async (orderId) => {
 useEffect(() => {
   const fetchOrders = async () => {
     try {
-      const responseServiceName = await axios.get(`http://localhost:4002/services/${SPEmail}`);
+      const responseServiceName = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/services/${SPEmail}`);
       const serviceName = responseServiceName.data.services.map(service => service.Service_Name);
 
       // Attempt to fetch incoming orders
       try {
-        const response = await axios.get(`http://localhost:4002/available-bookings/${serviceName}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/available-bookings/${serviceName}`);
         // console.log(response);
         
         const incoming = response.data.filter(order => order.Book_Status === 'Pending' && order.Book_City===SPCity && order.U_Email!==SPEmail );
@@ -124,13 +124,13 @@ useEffect(() => {
           // console.log("No incoming orders.");
           setIncomingOrders([]);
         } else {
-          console.error("Error fetching incoming orders:", incomingError);
+          //console.error("Error fetching incoming orders:", incomingError);
         }
       }
 
       // Fetch accepted orders and add payment mode
       // Fetch accepted orders and add payment mode
-      const acceptedResponse = await axios.get(`http://localhost:4002/bookings/sp/${SPEmail}`);
+      const acceptedResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bookings/sp/${SPEmail}`);
       const accepted = acceptedResponse.data.filter(order => order.Book_Status === 'Scheduled');
       const updatedAcceptedOrders = await fetchBillsForOrders(accepted);
 
@@ -145,13 +145,13 @@ useEffect(() => {
 
       setAcceptedOrders(ordersWithPaymentMode); // Use ordersWithPaymentMode here
 
-      const completedResponse = await axios.get(`http://localhost:4002/bookings/sp/${SPEmail}`);
+      const completedResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bookings/sp/${SPEmail}`);
       const completed = completedResponse.data.filter(order => order.Book_Status === 'Completed');
       setCompletedOrders(completed);
 
       // setAcceptedOrders(ordersWithPaymentMode); // Use ordersWithPaymentMode here
     } catch (error) {
-      console.error("Error fetching services or accepted orders:", error);
+      //console.error("Error fetching services or accepted orders:", error);
     }
   };
 
@@ -167,7 +167,7 @@ useEffect(() => {
 
 
 
-  //       const acceptedResponse = await axios.get(`http://localhost:4002/bookings/sp/${SPEmail}`);
+  //       const acceptedResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bookings/sp/${SPEmail}`);
   //       const accepted = acceptedResponse.data.filter(order => order.Book_Status === 'Scheduled');
   //       const updatedAcceptedOrders = await fetchBillsForOrders(accepted);
         
@@ -175,7 +175,7 @@ useEffect(() => {
         
   //       setAcceptedOrders(ordersWithPaymentMode);
   //     } catch (error) {
-  //       console.error("Error fetching services or orders:", error);
+  //       //console.error("Error fetching services or orders:", error);
   //     }
   //   };
     
@@ -192,7 +192,7 @@ useEffect(() => {
         return;
       }
   
-      const response = await axios.put(`http://localhost:4002/update-status/${orderId}`, {
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/update-status/${orderId}`, {
         newStatus: 'Scheduled',
         SP_Email: SPEmail
       });
@@ -209,7 +209,7 @@ useEffect(() => {
         throw new Error('Failed to update the order status');
       }
     } catch (error) {
-      console.error("Error accepting order:", error);
+      //console.error("Error accepting order:", error);
       alert("An error occurred while accepting the order. Please try again.");
     }
   };
@@ -255,7 +255,7 @@ useEffect(() => {
 
   const checkBillExistence = async (bookId) => {
     try {
-      const response = await axios.get(`http://localhost:4002/bills/${bookId}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bills/${bookId}`);
       return response.data ? true : false;
     } catch (error) {
       return false;

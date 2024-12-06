@@ -11,11 +11,11 @@ const ViewUser = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:4002/userDetails/${email}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/userDetails/${email}`);
         const data = await response.json();
         setUserData(data[0]); // Assuming API returns an array with one user object
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        //console.error("Error fetching user data:", error);
       }
     };
 
@@ -26,11 +26,11 @@ const ViewUser = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`http://localhost:4002/allOrders/${email}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/allOrders/${email}`);
         const data = await response.json();
         setOrders(data); // Store Orders Data
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        //console.error("Error fetching orders:", error);
       }
     };
 

@@ -13,7 +13,7 @@ const ManageSalary = () => {
   useEffect(() => {
     const fetchSalaryData = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/get-sp-salary');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/get-sp-salary`);
         const dataWithIds = response.data.data.map((item, index) => ({
           id: index + 1, // Assign a unique index starting from 1
           ...item,
@@ -21,7 +21,7 @@ const ManageSalary = () => {
         setSalaryData(dataWithIds);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching salary data:', error);
+        //console.error('Error fetching salary data:', error);
         setLoading(false);
       }
     };

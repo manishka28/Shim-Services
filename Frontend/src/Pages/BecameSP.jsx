@@ -92,12 +92,12 @@ const BecomeServiceProviderForm = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/cities');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/cities`);
         // Sort the cities in ascending order by name
         const sortedCities = response.data.sort((a, b) => a.City_Name.localeCompare(b.City_Name));
         setCities(sortedCities);
       } catch (error) {
-        console.error('Error fetching cities:', error);
+        //console.error('Error fetching cities:', error);
       }
     };
   
@@ -242,7 +242,7 @@ const BecomeServiceProviderForm = () => {
     
   
     try {
-      const response = await fetch('http://localhost:4002/serviceproviders', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/serviceproviders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ const BecomeServiceProviderForm = () => {
   
       const result = await response.json();
       if (!response.ok) {
-        console.error('Error adding service provider:', result);
+        //console.error('Error adding service provider:', result);
         return;
       }
 
@@ -261,7 +261,7 @@ const BecomeServiceProviderForm = () => {
 
 
       // POST request to the second API (sp_services)
-      const serviceResponse = await fetch('http://localhost:4002/sp_services', {
+      const serviceResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sp_services`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -271,7 +271,7 @@ const BecomeServiceProviderForm = () => {
 
       const serviceResult = await serviceResponse.json();
       if (!serviceResponse.ok) {
-        console.error('Error adding service details:', serviceResult);
+        //console.error('Error adding service details:', serviceResult);
         return;
       }
 
@@ -281,7 +281,7 @@ const BecomeServiceProviderForm = () => {
         setCurrentUser({ ...currentUser, is_SP: 1 });
         
       try {
-        const updateResponse = await fetch(`http://localhost:4002/customers/${currentUser.U_Email}`, {
+        const updateResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/customers/${currentUser.U_Email}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -294,14 +294,14 @@ const BecomeServiceProviderForm = () => {
               // console.log('is_SP updated successfully:', updateResult);
               setIsPopupOpen(true);
           } else {
-              console.error('Error updating is_SP:', await updateResponse.json());
+              //console.error('Error updating is_SP:', await updateResponse.json());
           }
         } catch (updateError) {
-          console.error('Error updating is_SP:', updateError);
+          //console.error('Error updating is_SP:', updateError);
         }
     }
       } catch (error) {
-          console.error('Network error:', error);
+          //console.error('Network error:', error);
       }
     
       

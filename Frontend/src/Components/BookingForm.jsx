@@ -33,7 +33,7 @@ const BookingForm = ({ isOpen, onClose, serviceName, service }) => {
         const sortedCities = response.data.sort((a, b) => a.City_Name.localeCompare(b.City_Name));
         setCities(sortedCities);
       } catch (error) {
-        console.error('Error fetching cities:', error);
+        // console.error('Error fetching cities:', error);
       }
     };
     fetchCities();
@@ -122,11 +122,11 @@ const BookingForm = ({ isOpen, onClose, serviceName, service }) => {
 
     try {
       // console.log("sending",formDataToSend);
-      const response = await axios.post('http://localhost:4002/bookingPost', formDataToSend);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/bookingPost`, formDataToSend);
       // console.log('Booking successfully created:', response.data);
       setConfirmationDialog(true);
     } catch (error) {
-      console.error('Error creating booking:', error.response?.data || error.message);
+      // console.error('Error creating booking:', error.response?.data || error.message);
     }
   };
 

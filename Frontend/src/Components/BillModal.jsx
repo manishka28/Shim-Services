@@ -84,7 +84,7 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
     
 
     try {
-      const response = await axios.post('http://localhost:4002/bills', newBillData);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/bills`, newBillData);
       // console.log(response);
       
       // Set the new billData with response values
@@ -97,8 +97,8 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
       setBillGenerated(true); // Set billGenerated to true
       onBillGenerated(order.Book_ID);
     } catch (error) {
-      console.error("Error generating bill:", error);
-      alert("Error generating bill.");
+      // console.error("Error generating bill:", error);
+      // alert("Error generating bill.");
     }
   };
 

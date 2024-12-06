@@ -17,7 +17,7 @@ const Option = ({ onClose }) => {
         try {
             if (selectedOption === 'serviceProvider') {
                 // Update is_SP in the backend
-                await axios.put(`http://localhost:4002/customers/${userId}`, {
+                await axios.put(`${import.meta.env.VITE_BACKEND_URL}/customers/${userId}`, {
                     is_SP: true
                 });
             }
@@ -31,7 +31,7 @@ const Option = ({ onClose }) => {
             // Close the modal after navigation
             onClose();
         } catch (error) {
-            console.error('Error updating is_SP:', error);
+            // console.error('Error updating is_SP:', error);
         }
     };
 

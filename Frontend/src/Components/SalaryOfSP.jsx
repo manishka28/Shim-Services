@@ -27,7 +27,7 @@ const SalaryOfSP = ({ SP_Email }) => {
     try {
       const month = (currentMonth + 1).toString().padStart(2, '0');
 
-      const salaryResponse = await axios.get('http://localhost:4002/fetchSalaryForSPMonthly', {
+      const salaryResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetchSalaryForSPMonthly`, {
         params: {
           SP_Email,
           month,
@@ -38,7 +38,7 @@ const SalaryOfSP = ({ SP_Email }) => {
       
       setCurrentMonthSalary(salaryResponse.data.Salary || 0);
 
-      const amountResponse = await axios.get('http://localhost:4002/fetchAmountToPayForSPMonthly', {
+      const amountResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetchAmountToPayForSPMonthly`, {
         params: {
           SP_Email,
           month,
@@ -50,7 +50,7 @@ const SalaryOfSP = ({ SP_Email }) => {
       // console.log("Current Amount to Pay",currentMonthAmountToPay);
       
     } catch (error) {
-      console.error('Error fetching current month data:', error);
+      //console.error('Error fetching current month data:', error);
       setError('Error fetching current month data');
     }
   };
@@ -65,7 +65,7 @@ const SalaryOfSP = ({ SP_Email }) => {
       for (let month = 1; month <= 12; month++) {
         // const formattedMonth = month.toString().padStart(2, '0');
 
-        const response = await axios.get('http://localhost:4002/fetchSalaryForSPMonthly', {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetchSalaryForSPMonthly`, {
           params: {
             SP_Email,
             month: month,
@@ -84,7 +84,7 @@ const SalaryOfSP = ({ SP_Email }) => {
       setSalaryMonthly(onlineTotals);
       fetchCurrentMonthData();
     } catch (error) {
-      console.error('Error fetching salary monthly totals:', error);
+      //console.error('Error fetching salary monthly totals:', error);
       setError('Error fetching salary monthly totals');
     }
   };
@@ -98,7 +98,7 @@ const SalaryOfSP = ({ SP_Email }) => {
       for (let month = 1; month <= 12; month++) {
         // const formattedMonth = month.toString().padStart(2, '0');
 
-        const response = await axios.get('http://localhost:4002/fetchAmountToPayForSPMonthly', {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/fetchAmountToPayForSPMonthly`, {
           params: {
             SP_Email,
             month: month,
@@ -114,7 +114,7 @@ const SalaryOfSP = ({ SP_Email }) => {
 
       setAmountToPayMonthly(cashTotals);
     } catch (error) {
-      console.error('Error fetching cash total monthly totals:', error);
+      //console.error('Error fetching cash total monthly totals:', error);
       setError('Error fetching cash total monthly totals');
     }
   };
@@ -160,14 +160,14 @@ const SalaryOfSP = ({ SP_Email }) => {
     };
   
     // Call the /updateAmountToPay API
-    axios.post('http://localhost:4002/updateAmountToPay', details)
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}/updateAmountToPay`, details)
       .then((response) => {
         // console.log('Amount updated successfully:', response.data);
         setShouldFetch(!shouldFetch);
         // Additional actions can be added here after updating the amount
       })
       .catch((error) => {
-        console.error('Error updating amount:', error.response ? error.response.data : error.message);
+        //console.error('Error updating amount:', error.response ? error.response.data : error.message);
         // Handle error appropriately
       });
   };

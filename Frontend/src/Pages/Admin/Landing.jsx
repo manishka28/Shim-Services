@@ -47,12 +47,12 @@ const Landing = () => {
         
 
         // Make the API call with current month and year
-        const response = await axios.get(`http://localhost:4002/sales?month=${currentMonth}&year=${currentYear}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/sales?month=${currentMonth}&year=${currentYear}`);
 
         setTotalSales(response.data.totalSales);
         // console.log("totalSales", totalSales);
       } catch (error) {
-        console.error('Error fetching sales data:', error);
+        //console.error('Error fetching sales data:', error);
       }
     };
 
@@ -63,10 +63,10 @@ const Landing = () => {
   useEffect(() => {
     const fetchTotalSales = async () => {
       try {
-        const response = await axios.get(`http://localhost:4002/sales?month=${currentMonth}&year=${currentYear}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/sales?month=${currentMonth}&year=${currentYear}`);
         setTotalSales(response.data.totalSales);
       } catch (error) {
-        console.error('Error fetching sales data:', error);
+        //console.error('Error fetching sales data:', error);
       }
     };
     fetchTotalSales();
@@ -75,10 +75,10 @@ const Landing = () => {
   useEffect(() => {
     const fetchTotalRevenue = async () => {
       try {
-        const response = await axios.get(`http://localhost:4002/total-cost`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/total-cost`);
         setTotalRevenue(response.data.totalCost);
       } catch (error) {
-        console.error('Error fetching sales data:', error);
+        //console.error('Error fetching sales data:', error);
       }
     };
     fetchTotalRevenue();
@@ -88,7 +88,7 @@ const Landing = () => {
   useEffect(() => {
     const fetchRevenueData = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/revenue-data', {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/revenue-data`, {
           params: { month: selectedMonth + 1, year: selectedYear },
         });
   
@@ -118,7 +118,7 @@ const Landing = () => {
           setDailyRevenueData({ labels: [], datasets: [] });
         }
       } catch (error) {
-        console.error('Error fetching revenue data:', error);
+        //console.error('Error fetching revenue data:', error);
       }
     };
     fetchRevenueData();
@@ -244,7 +244,7 @@ const Landing = () => {
   // Data for Pie Charts
  useEffect(() => {
     // Fetch new customers data
-    axios.get('http://localhost:4002/new-customers-and-sps?month=12&year=2024&isSP=0')
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/new-customers-and-sps?month=${currentMonth}&year=${currentYear}&isSP=0`)
       .then(response => {
         // console.log("response new customer",response);
         setNewCustomers(response.data.totalCount); // Assuming response.data is the number of new customers
@@ -252,7 +252,7 @@ const Landing = () => {
       .catch(error => console.error('Error fetching new customers:', error));
 
     // Fetch new service providers data
-    axios.get('http://localhost:4002/new-customers-and-sps?month=12&year=2024&isSP=1')
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/new-customers-and-sps?month=${currentMonth}&year=${currentYear}&isSP=1`)
       .then(response => {
         // console.log("response new sp",response);
         
@@ -261,14 +261,14 @@ const Landing = () => {
       .catch(error => console.error('Error fetching new service providers:', error));
 
     // Fetch total customers data
-    axios.get('http://localhost:4002/total-customers-and-sps?isSP=0')
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/total-customers-and-sps?isSP=0`)
       .then(response => {
         setTotalCustomers(response.data.totalCount); // Assuming response.data is the total number of customers
       })
       .catch(error => console.error('Error fetching total customers:', error));
 
     // Fetch total service providers data
-    axios.get('http://localhost:4002/total-customers-and-sps?isSP=1')
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/total-customers-and-sps?isSP=1`)
       .then(response => {
         // console.log("response",response);
         
@@ -342,7 +342,7 @@ const Landing = () => {
     useEffect(() => {
       const fetchBookingCounts = async () => {
         try {
-          const response = await axios.get('http://localhost:4002/booking-count-by-service');
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/booking-count-by-service`);
           const apiData = response.data;
           const data = servicesData.labels.map((label, index) => {
             const service = apiData.find((item) => item.Service_Name === label);
@@ -360,7 +360,7 @@ const Landing = () => {
             ],
           });
         } catch (error) {
-          console.error('Error fetching booking counts:', error);
+          //console.error('Error fetching booking counts:', error);
         }
       };
   
@@ -410,7 +410,7 @@ const Landing = () => {
   useEffect(() => {
     const fetchCityBookingsData = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/booking-count-by-city');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/booking-count-by-city`);
         const data = response.data;
 
         // Map the API response to include coordinates and booking counts
@@ -422,7 +422,7 @@ const Landing = () => {
 
         setCityBookingsData(updatedCityBookingsData);
       } catch (error) {
-        console.error('Error fetching city bookings data:', error);
+        //console.error('Error fetching city bookings data:', error);
       }
     };
 

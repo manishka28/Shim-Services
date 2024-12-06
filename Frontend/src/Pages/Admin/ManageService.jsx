@@ -49,7 +49,7 @@ const [editService, setEditService] = useState({
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/admin/services');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/services`);
         const data = response.data.services.map((service, index) => ({
           id: index + 1,
           serviceName: service.Service_Name,
@@ -59,7 +59,7 @@ const [editService, setEditService] = useState({
         setServicesData(data);
         setFilteredData(data);
       } catch (error) {
-        console.error('Error fetching services:', error);
+        //console.error('Error fetching services:', error);
       }
     };
 
@@ -81,7 +81,7 @@ const [editService, setEditService] = useState({
 
   const handleAddService = async () => {
     try {
-      const response = await axios.post('http://localhost:4002/add-service-by-admin', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/add-service-by-admin`, {
         adminEmail: currentAdmin.A_Email,
         serviceName: newService.serviceName,
         serviceCategory: newService.serviceCategory,
@@ -103,7 +103,7 @@ const [editService, setEditService] = useState({
         setReload(!reload);
       }
     } catch (error) {
-      console.error('Error adding service:', error);
+      //console.error('Error adding service:', error);
       toast.error('Failed to add service. Please try again.');
     }
   };
@@ -120,7 +120,7 @@ const [editService, setEditService] = useState({
   };
   const handleEditSubmit = async () => {
     try {
-      const response = await axios.put('http://localhost:4002/update-service-price', {
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/update-service-price`, {
         serviceName: editService.serviceName,
         serviceCategory: editService.serviceCategory,
         initialPrice: parseFloat(editService.initialPrice),
@@ -132,7 +132,7 @@ const [editService, setEditService] = useState({
         setReload(!reload); // Trigger reload of data
       }
     } catch (error) {
-      console.error('Error updating service price:', error);
+      //console.error('Error updating service price:', error);
       toast.error('Failed to update service price. Please try again.');
     }
   };
@@ -148,7 +148,7 @@ const [editService, setEditService] = useState({
   
     try {
       // Send a DELETE request to the backend
-      const response = await axios.delete('http://localhost:4002/delete-service', {
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/delete-service`, {
         data: {
           serviceName: serviceToDelete.serviceName,
           serviceCategory: serviceToDelete.serviceCategory,
@@ -162,7 +162,7 @@ const [editService, setEditService] = useState({
         setReload(!reload);
       }
     } catch (error) {
-      console.error('Error deleting service:', error);
+      //console.error('Error deleting service:', error);
       toast.error('Failed to delete service. Please try again.');
     }
   };

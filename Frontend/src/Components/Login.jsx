@@ -15,6 +15,8 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
     const { login } = useAuth();
     const { loginAdmin } = useAuthAdmin();
     const navigate = useNavigate();
+    // console.log("rnv",import.meta.env.VITE_BACKEND_URL);
+    
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -27,7 +29,7 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
         try {
             if (!isAdmin) {
                 // Fetch customers
-                const customerResponse = await fetch('http://localhost:4002/customers');
+                const customerResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/customers`);
                 const customers = await customerResponse.json();
                 // console.log('Customers:', customers);
 
@@ -59,7 +61,7 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
                 }
             } else {
                 // Fetch admins
-                const adminResponse = await fetch('http://localhost:4002/admins');
+                const adminResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/admins`);
                 const admins = await adminResponse.json();
                 // console.log('Admins:', admins);
 
@@ -86,7 +88,7 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
                 }
             }
         } catch (error) {
-            console.error('Error during login:', error);
+            // console.error('Error during login:', error);
             setErrorMessage('Failed to login. Please try again.');
             setSuccessMessage('');
         }

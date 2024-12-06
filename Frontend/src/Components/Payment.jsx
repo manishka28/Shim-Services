@@ -45,12 +45,12 @@ function Payment() {
   const fetchBillDetails = async () => {
     if (bookId) {  // Fetch only when bookId exists
       try {
-        const response = await axios.get(`http://localhost:4002/bills/${bookId}`);  // Endpoint to get the bill details
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/bills/${bookId}`);  // Endpoint to get the bill details
         // console.log("Response received:", response);
         
         setBillDetails(response.data);  // Set the fetched bill details in state
       } catch (error) {
-        console.error("Error fetching bill details:", error);
+        ////console.error("Error fetching bill details:", error);
       }
     }
   };
@@ -64,7 +64,7 @@ const createRazorpayOrder = async () => {
       // console.log("Total cost is zero. Skipping payment process.");
       
       const updateBookStatusResponse = await axios.put(
-        `http://localhost:4002/bookStatusAfterPayment/${billDetails.Book_ID}`,  // Update status endpoint
+        `${import.meta.env.VITE_BACKEND_URL}/bookStatusAfterPayment/${billDetails.Book_ID}`,  // Update status endpoint
         { newStatus: 'Completed' }
       );
       
@@ -73,14 +73,14 @@ const createRazorpayOrder = async () => {
       // Navigate to a confirmation or success page if needed
       navigate('/orders');
     } catch (error) {
-      console.error("Error updating book status for zero cost:", error);
+      ////console.error("Error updating book status for zero cost:", error);
     }
   } else {
     // Proceed with Razorpay order creation if cost is non-zero
     const data = JSON.stringify({ amount: billDetails.Total_Cost * 100, currency: "INR" });
     const config = {
       method: "post",
-      url: "http://localhost:4002/orders", // Your backend URL to handle the order
+      url: `${import.meta.env.VITE_BACKEND_URL}/orders`, // Your backend URL to handle the order
       headers: { 'Content-type': 'application/json' },
       data: data,
     };
@@ -89,7 +89,7 @@ const createRazorpayOrder = async () => {
       const response = await axios.request(config);
       handleRazorPayScreen(response.data.amount);
     } catch (error) {
-      console.error("Error creating order:", error);
+      ////console.error("Error creating order:", error);
     }
   }
 };
@@ -119,7 +119,7 @@ const handleRazorPayScreen = async (amount) => {
       try {
         // Step 1: Update the bill with razorpay_payment_id
         const updateBillResponse = await axios.put(
-          `http://localhost:4002/bills/${billDetails.Bill_ID}`,  // Update bill with razorpay_payment_id
+          `${import.meta.env.VITE_BACKEND_URL}/bills/${billDetails.Bill_ID}`,  // Update bill with razorpay_payment_id
           { razorpay_payment_id: response.razorpay_payment_id }
         );
         // console.log("Bill updated with Razorpay payment ID:", updateBillResponse.data);
@@ -135,12 +135,12 @@ const handleRazorPayScreen = async (amount) => {
         try {
           // console.log("Book ID inside try", billDetails.Book_ID);
           const updateBookStatusResponse = await axios.put(
-            `http://localhost:4002/bookStatusAfterPayment/${billDetails.Book_ID}`,  // Use Book_ID from the response
+            `${import.meta.env.VITE_BACKEND_URL}/bookStatusAfterPayment/${billDetails.Book_ID}`,  // Use Book_ID from the response
             { newStatus: 'Completed' }  // Update status to 'completed'
           );
           // console.log("Book status updated to completed:", updateBookStatusResponse.data);
         } catch (error) {
-          console.error("Error updating book status:", error);
+          ////console.error("Error updating book status:", error);
         }
 
 // Step 3: Call the /salary API with SP_Email, Total_Cost, Month, and Year
@@ -158,16 +158,16 @@ const handleRazorPayScreen = async (amount) => {
           };
 
           const salaryResponse = await axios.post(
-            "http://localhost:4002/salary",  // Your API URL
+            `${import.meta.env.VITE_BACKEND_URL}/salary`,  // Your API URL
             salaryData
           );
           // console.log("Salary API response:", salaryResponse.data);
         } catch (error) {
-          console.error("Error calling /salary API:", error);
+          ////console.error("Error calling /salary API:", error);
         }
 
       } catch (error) {
-        console.error("Error updating bill:", error);
+        ////console.error("Error updating bill:", error);
       }
     },
     theme: {

@@ -13,7 +13,7 @@ const DialogBox = ({ isOpen, closeDialog, isLoginForm, toggleForm,loginRole }) =
     
 
     return (
-        <div className='fixed inset-0 top-10 md:top-0 h-1/2 md:h-full m-16 md:m-2  bg-gray-900 bg-opacity-70 flex justify-center items-center z-30'>
+        <div className='fixed inset-0 top-10 md:top-0 h-3/4 md:h-full m-16 md:m-2  bg-gray-900 bg-opacity-70 flex justify-center items-center z-30'>
             <div className='relative w-full md:max-w-2xl lg:max-w-4xl h-full max-h-[90vh] md:max-h-[90vh] lg:max-h-[90vh] flex bg-white overflow-hidden rounded-lg'>
                 {/* Close Button */}
                 <button

@@ -19,7 +19,7 @@ function PaymentBySP({ amount, onClose, onPaymentSuccess }) {
     const data = JSON.stringify({ amount: amount * 100, currency: "INR" });
     const config = {
       method: "post",
-      url: "http://localhost:4002/orders",
+      url: `${import.meta.env.VITE_BACKEND_URL}/orders`,
       headers: { 'Content-type': 'application/json' },
       data: data
     };
@@ -30,7 +30,7 @@ function PaymentBySP({ amount, onClose, onPaymentSuccess }) {
         handleRazorPayScreen(response.data.amount);
       })
       .catch((error) => {
-        console.error("Error at create order:", error);
+        //console.error("Error at create order:", error);
       });
   };
 

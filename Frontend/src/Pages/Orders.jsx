@@ -31,12 +31,12 @@ function Orders() {
   useEffect(() => {
     const fetchData = async () => {
       if (!currentUser) {
-        console.error('No user is logged in.');
+        //console.error('No user is logged in.');
         return;
       }
 
       try {
-        const response = await fetch('http://localhost:4002/bookings');
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/bookings`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -61,7 +61,7 @@ function Orders() {
         setOrders(mappedOrders);
         await fetchBills(mappedOrders);
       } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
+        //console.error('There was a problem with the fetch operation:', error);
       }
     };
 
@@ -75,7 +75,7 @@ function Orders() {
     for (const order of orders) {
       if (order.status === 'Scheduled') {
         try {
-          const billResponse = await fetch(`http://localhost:4002/bills/${order.Book_ID}`);
+          const billResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/bills/${order.Book_ID}`);
           if (billResponse.ok) {
             const bill = await billResponse.json();
             billData[order.Book_ID] = bill;
@@ -84,10 +84,10 @@ function Orders() {
           } else if (billResponse.status === 404) {
             console.warn(`Bill not found for Book_ID: ${order.Book_ID}`);
           } else {
-            console.error(`Failed to fetch bill for Book_ID ${order.Book_ID}: Status ${billResponse.status}`);
+            //console.error(`Failed to fetch bill for Book_ID ${order.Book_ID}: Status ${billResponse.status}`);
           }
         } catch (error) {
-          console.error(`Error fetching bill for Book_ID ${order.Book_ID}:`, error);
+          //console.error(`Error fetching bill for Book_ID ${order.Book_ID}:`, error);
         }
       }
     }
@@ -145,7 +145,7 @@ function Orders() {
     try {
       // console.log("rate",selectedOrder?.Book_ID);
       
-      const response = await fetch('http://localhost:4002/api/insert-rating', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/insert-rating`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ function Orders() {
       closeForm();
       setDropdownOpen(false);
     } catch (error) {
-      console.error('Error submitting rating:', error);
+      //console.error('Error submitting rating:', error);
       toast.error('There was an error submitting your rating. Please try again.', { position: "top-center" });
     }
   };
@@ -182,7 +182,7 @@ function Orders() {
     }
 
     try {
-      const response = await fetch('http://localhost:4002/api/insert-report', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/insert-report`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ function Orders() {
       closeForm();
       setDropdownOpen(false);
     } catch (error) {
-      console.error('Error submitting report:', error);
+      //console.error('Error submitting report:', error);
       toast.error('There was an error submitting your report. Please try again.', { position: "top-center" });
     }
   };
@@ -220,7 +220,7 @@ function Orders() {
   //   }
 
   //   try {
-  //     const response = await fetch('http://localhost:4002/api/insert-report', {
+  //     const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/insert-report`, {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ function Orders() {
   //     setDropdownOpen(false);
       
   //   } catch (error) {
-  //     console.error('Error submitting report:', error);
+  //     //console.error('Error submitting report:', error);
   //     alert('There was an error submitting your report. Please try again.');
   //   }
   // };

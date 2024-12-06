@@ -30,7 +30,7 @@ connection.connect((err) => {
     console.error('Error connecting to the database:', err);
     return;
   }
-  console.log(`Connected to the MySQL database ${process.env.DB_NAME}`);
+  console.log(`Connected to the MySQL database ${process.env.MYSQL_DATABASE}`);
 });
 
 export default connection;

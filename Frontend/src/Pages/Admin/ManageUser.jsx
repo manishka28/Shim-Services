@@ -28,7 +28,7 @@ function ManageUser() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:4002/customers')
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/customers`)
       .then((response) => response.json())
       .then((data) => {
         const formattedData = data.map((user, index) => ({
@@ -42,7 +42,7 @@ function ManageUser() {
         setUsersData(formattedData);
       })
       .catch((error) => {
-        console.error('Error fetching users:', error);
+        //console.error('Error fetching users:', error);
       });
   }, []);
 

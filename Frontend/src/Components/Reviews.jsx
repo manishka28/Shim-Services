@@ -13,7 +13,7 @@ export const Reviews = ({ serviceName }) => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:4002/reviews/${serviceName}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/reviews/${serviceName}`);
         const reviewsData = response.data.reviews;
         setReviews(reviewsData);
 
@@ -28,7 +28,7 @@ export const Reviews = ({ serviceName }) => {
         setRatingDistribution(distribution);
         setAverageRating(totalRating / reviewsData.length);
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        // ////console.error("Error fetching reviews:", error);
       }
     };
 
@@ -52,7 +52,7 @@ export const Reviews = ({ serviceName }) => {
     const fetchReviewsforSP = async () => {
       try {
         // Construct the URL directly without encoding
-        const responseURL = `http://localhost:4002/ratings-for-sp/${serviceName}`;
+        const responseURL = `${import.meta.env.VITE_BACKEND_URL}/ratings-for-sp/${serviceName}`;
         
         // Fetch data from the API
         const response = await axios.get(responseURL);
@@ -90,7 +90,7 @@ export const Reviews = ({ serviceName }) => {
           console.warn("No ratings found in the response data.");
         }
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        // ////console.error("Error fetching reviews:", error);
       }
     };
 

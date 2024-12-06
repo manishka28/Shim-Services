@@ -22,7 +22,7 @@ function ManageTeam() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/api/admin');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin`);
         setUsersData(
           response.data.map((user, index) => ({
             id: index + 1, // Assign an auto-increment ID
@@ -34,7 +34,7 @@ function ManageTeam() {
           }))
         );
       } catch (error) {
-        console.error('Error fetching data:', error);
+        //console.error('Error fetching data:', error);
       }
     };
 

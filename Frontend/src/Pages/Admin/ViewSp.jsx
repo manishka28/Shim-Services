@@ -12,11 +12,11 @@ const ViewSp = () => {
   useEffect(() => {
     const fetchServiceProviderData = async () => {
       try {
-        const response = await fetch(`http://localhost:4002/serviceProviders/${email}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/serviceProviders/${email}`);
         const data = await response.json();
         setServiceProviderData(data); // Store Service Provider Data
       } catch (error) {
-        console.error("Error fetching service provider data:", error);
+        //console.error("Error fetching service provider data:", error);
       }
     };
 
@@ -27,12 +27,12 @@ const ViewSp = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const ordersResponse = await fetch(`http://localhost:4002/allOrders/${email}`);
+        const ordersResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/allOrders/${email}`);
         const ordersData = await ordersResponse.json();
         // console.log("Orders Data:", ordersData); // Debug log
         setOrders(ordersData); // Store Orders Data
       } catch (error) {
-        console.error("Error fetching orders/services data:", error);
+        //console.error("Error fetching orders/services data:", error);
       }
     };
 
@@ -44,11 +44,11 @@ const ViewSp = () => {
     const fetchServices = async () => {
       try {
         // Fetch Orders
-        const serviceResponse = await fetch(`http://localhost:4002/SPServices/${email}`);
+        const serviceResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/SPServices/${email}`);
         const serviceData = await serviceResponse.json();
         setServices(serviceData); 
       } catch (error) {
-        console.error("Error fetching orders/services data:", error);
+        //console.error("Error fetching orders/services data:", error);
       }
     };
 

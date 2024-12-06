@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 // import { io } from "socket.io-client";
 
 // Initialize Socket.IO client
-// const socket = io("http://localhost:4002");
+// const socket = io("${import.meta.env.VITE_BACKEND_URL}");
 
 const Profile = () => {
   const { currentUser } = useAuth();
@@ -29,22 +29,22 @@ const Profile = () => {
     if (isServiceProvider) {
       const fetchServices = async () => {
         try {
-          const response = await axios.get(`http://localhost:4002/sp_services/${email}`);
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}sp_services/${email}`);
           setServices(response.data);
         } catch (error) {
-          console.error("Error fetching services:", error);
+          //console.error("Error fetching services:", error);
         }
       };
 
       const fetchCityAndMobile = async () => {
         try {
-          const response = await axios.get(`http://localhost:4002/sp_city_mobile/${email}`);
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/sp_city_mobile/${email}`);
           if (response.data) {
             setCity(response.data.CityName || "Not Available");
             setMobile(response.data.SP_Phone || "Not Available");
           }
         } catch (error) {
-          console.error("Error fetching city and mobile:", error);
+          //console.error("Error fetching city and mobile:", error);
         }
       };
 
@@ -63,10 +63,10 @@ const Profile = () => {
     if (isServiceProvider) {
       const fetchOrders = async () => {
         try {
-          const response = await axios.get(`http://localhost:4002/sp_orders/${email}`);
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/sp_orders/${email}`);
           setOrders(response.data);
         } catch (error) {
-          console.error("Error fetching orders:", error);
+          //console.error("Error fetching orders:", error);
         }
       };
 

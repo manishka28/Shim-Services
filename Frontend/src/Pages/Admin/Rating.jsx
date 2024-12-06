@@ -24,7 +24,7 @@ const Rating = () => {
     // Fetch data from API
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:4002/api/ratings');
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/ratings`);
         const data = await response.json();
         // console.log("data",data.data);
         
@@ -33,7 +33,7 @@ const Rating = () => {
          // Assuming the data is in `data.data`
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching ratings:', error);
+        //console.error('Error fetching ratings:', error);
         setLoading(false);
       }
     };

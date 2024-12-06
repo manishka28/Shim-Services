@@ -38,12 +38,12 @@ function Order({ order, onHelp, onCancel, payNow }) {
 
   const confirmCancel = async () => {
     try {
-      await axios.delete(`http://localhost:4002/bookings/${orderToCancel}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/bookings/${orderToCancel}`);
       setIsCancelModalOpen(false);
       onCancel(orderToCancel);
       setSuccessMessage("Order canceled successfully!"); // Set success message for this order
     } catch (error) {
-      console.error('Error canceling order:', error);
+      // console.error('Error canceling order:', error);
     }
   };
 

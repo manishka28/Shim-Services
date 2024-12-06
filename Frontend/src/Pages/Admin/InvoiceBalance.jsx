@@ -13,7 +13,7 @@ function InvoiceBalance() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/invoiceBalance');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/invoiceBalance`);
         const fetchedData = response.data.map((item, index) => ({
           id: index + 1, // Unique ID for each row
           bookId: item.Book_ID || 'N/A',
@@ -38,7 +38,7 @@ function InvoiceBalance() {
         }));
         setInvoiceData(fetchedData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        //console.error('Error fetching data:', error);
       }
     };
 

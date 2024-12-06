@@ -87,8 +87,12 @@ app.post('/serviceproviders', (req, res) => {
 
 // Customer Routes
 app.get('/customers', (req, res) => {
+  
+  
   getAllCustomers((err, results) => {
     if (err) {
+      console.log(err);
+      
       console.error('Error retrieving customers:', err);
       return res.status(500).json({ error: 'Failed to retrieve customers' });
     }

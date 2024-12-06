@@ -76,7 +76,7 @@ const SignUp = ({ onSwitchToLogin, closeDialog }) => {
         const { email, fullname, password, phone, isSP } = signupValues;
 
         try {
-            const response = await fetch('http://localhost:4002/customers', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/customers`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

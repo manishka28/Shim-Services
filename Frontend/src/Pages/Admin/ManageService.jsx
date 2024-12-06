@@ -37,6 +37,13 @@ function ManageService() {
 
   const {currentAdmin} = useAuthAdmin();
   // console.log("current",currentAdmin.A_Email);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+const [editService, setEditService] = useState({
+  serviceName: '',
+  serviceCategory: '',
+  initialPrice: '',
+});
+
   
 
   useEffect(() => {
@@ -100,6 +107,36 @@ function ManageService() {
       toast.error('Failed to add service. Please try again.');
     }
   };
+  const handleEdit = (serviceId) => {
+    const serviceToEdit = servicesData.find((service) => service.id === serviceId);
+    if (serviceToEdit) {
+      setEditService({
+        serviceName: serviceToEdit.serviceName,
+        serviceCategory: serviceToEdit.serviceCategory,
+        initialPrice: serviceToEdit.initialPrice,
+      });
+      setEditDialogOpen(true);
+    }
+  };
+  const handleEditSubmit = async () => {
+    try {
+      const response = await axios.put('http://localhost:4002/update-service-price', {
+        serviceName: editService.serviceName,
+        serviceCategory: editService.serviceCategory,
+        initialPrice: parseFloat(editService.initialPrice),
+      });
+  
+      if (response.status === 200) {
+        toast.success('Service price updated successfully!');
+        setEditDialogOpen(false);
+        setReload(!reload); // Trigger reload of data
+      }
+    } catch (error) {
+      console.error('Error updating service price:', error);
+      toast.error('Failed to update service price. Please try again.');
+    }
+  };
+  
   const handleDelete = async (serviceId) => {
     // Find the service to delete based on its ID
     const serviceToDelete = servicesData.find((service) => service.id === serviceId);
@@ -138,12 +175,7 @@ function ManageService() {
       field: 'initialPrice',
       headerName: 'Initial Price',
       width: 150,
-      valueFormatter: (params) => {
-        if (!params || params === null || params === undefined) {
-          return '₹0.00';
-        }
-        return `₹${params}`;
-      },
+      valueFormatter: (params) => `₹${params || 0}`,
     },
     {
       field: 'actions',
@@ -167,9 +199,9 @@ function ManageService() {
           </IconButton>
         </div>
       ),
-    }
-    
+    },
   ];
+  
 
   return (
     <div style={{ width: '100%' }}>
@@ -245,6 +277,44 @@ function ManageService() {
           }}
         />
       </div>
+      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
+  <DialogTitle>Edit Service</DialogTitle>
+  <DialogContent>
+    <TextField
+      label="Service Name"
+      fullWidth
+      margin="dense"
+      value={editService.serviceName}
+      disabled
+    />
+    <TextField
+      label="Service Category"
+      fullWidth
+      margin="dense"
+      value={editService.serviceCategory}
+      disabled
+    />
+    <TextField
+      label="Initial Price"
+      type="number"
+      fullWidth
+      margin="dense"
+      value={editService.initialPrice}
+      onChange={(e) =>
+        setEditService({ ...editService, initialPrice: e.target.value })
+      }
+    />
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setEditDialogOpen(false)} color="secondary">
+      Cancel
+    </Button>
+    <Button onClick={handleEditSubmit} color="primary">
+      Save
+    </Button>
+  </DialogActions>
+</Dialog>
+
 
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <DialogTitle>Add New Service</DialogTitle>

@@ -8,14 +8,14 @@ import BillModal from "./BillModal";
 // const socket = io("http://localhost:4002"); // Use your backend server URL
 
 
-const ServiceProviderOrders = ({ SPEmail,SPCity }) => {
+const ServiceProviderOrders = ({ SPEmail,SPCity,shouldFetch,setShouldFetch }) => {
   const [incomingOrders, setIncomingOrders] = useState([]);
   const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [completedOrders,setCompletedOrders]=useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isCannotGenerateBillModalOpen, setIsCannotGenerateBillModalOpen] = useState(false);
-  const [shouldFetch, setShouldFetch] = useState(true);
+  // const [shouldFetch, setShouldFetch] = useState(true);
   // console.log("SP City",SPCity);
   
 

@@ -80,3 +80,26 @@ export const deleteServiceByAdmin = async (serviceName, serviceCategory) => {
     throw error; // Propagate the error for further handling (e.g., in the API controller)
   }
 };
+
+export const updateServicePrice = async (serviceName, serviceCategory, initialPrice) => {
+  try {
+    // SQL query to update the Initial_Price of a service
+    const query = `
+      UPDATE services
+      SET Initial_Price = ?
+      WHERE Service_Name = ? AND Service_Category = ?;
+    `;
+    
+    
+
+    // Execute the query with provided parameters
+    await connection.promise().query(query, [initialPrice, serviceName, serviceCategory]);
+
+    // console.log('Service price updated successfully.');
+  } catch (error) {
+    // console.log(error);
+    
+    // console.error('Error updating service price:', error);
+    throw error; // Propagate the error for further handling
+  }
+};

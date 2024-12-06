@@ -102,6 +102,17 @@ const Navigation = () => {
             </Link>
         </li>
     ))}
+    {!currentUser.is_SP && (
+                <li className='w-1/2'>
+                    <Link 
+                        to="/becomeSP" 
+                        className='block text-white py-3 px-4 text-center hover:bg-gray-100 hover:text-green-600 transition duration-300 ease-in-out border-t border-gray-200'
+                        onClick={() => setIsNavOpen(false)} // Close the menu when clicked
+                    >
+                        Become a Servicer
+                    </Link>
+                </li>
+            )}
     {currentUser && (
         <>
             <li className="w-1/2 relative" ref={ordersDropdownRef}>
@@ -137,17 +148,7 @@ const Navigation = () => {
                     </div>
                 )}
             </li>
-            {!currentUser.is_SP && (
-                <li className='w-1/2'>
-                    <Link 
-                        to="/becomeSP" 
-                        className='block text-white py-3 px-4 text-center hover:bg-gray-100 hover:text-green-600 transition duration-300 ease-in-out border-t border-gray-200'
-                        onClick={() => setIsNavOpen(false)} // Close the menu when clicked
-                    >
-                        Become a Servicer
-                    </Link>
-                </li>
-            )}
+            
         </>
     )}
 </ul>

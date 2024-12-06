@@ -19,6 +19,7 @@ const Profile = () => {
   const [city, setCity] = useState("");
   const [mobile, setMobile] = useState("");
   const [orders, setOrders] = useState([]);
+  const [shouldFetch,setShouldFetch]=useState(true);
 
   const fullName = currentUser?.U_Name || "User";
   const email = currentUser?.U_Email || "user@example.com";
@@ -121,7 +122,7 @@ const Profile = () => {
             </div>
 
             {/* Salary Component */}
-            <SalaryOfSP SP_Email={email} />
+            <SalaryOfSP SP_Email={email} shouldFetch={shouldFetch} />
           </div>
         )}
       </div>
@@ -129,7 +130,7 @@ const Profile = () => {
       {/* Orders and Service Management */}
       {isServiceProvider ? (
         <div className="w-full md:w-2/3 lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
-          <ServiceProviderOrders SPEmail={email} SPCity={city} orders={orders} />
+          <ServiceProviderOrders SPEmail={email} SPCity={city} orders={orders} shouldFetch={shouldFetch} setShouldFetch={setShouldFetch}/>
         </div>
       ) : (
         <div className="w-2/3 flex items-center justify-center bg-white p-6 rounded-lg shadow-md">

@@ -108,6 +108,16 @@ function ManageUser() {
       ),
     },
   ];
+  const filteredRows = usersData.filter((user) => {
+    // Apply role filter if a role is selected
+    const roleMatches = filteredRole ? user.role === filteredRole : true;
+  
+    // Apply status filter if a status is selected
+    const statusMatches = filteredStatus ? user.status === filteredStatus : true;
+  
+    return roleMatches && statusMatches;
+  });
+  
 
   return (
     <div className="w-full">
@@ -150,34 +160,35 @@ function ManageUser() {
   >
     <MuiMenuItem value="" sx={{ color: 'gray' }}>Select Status</MuiMenuItem>
     <MuiMenuItem value="Active">Active</MuiMenuItem>
-    <MuiMenuItem value="Inactive">Inactive</MuiMenuItem>
+    <MuiMenuItem value="Not Active">Inactive</MuiMenuItem>
   </Select>
 </FormControl>
 
       </div>
       </Box>
       
-        <DataGrid
-          rows={usersData}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5, 10, 20]}
-          disableSelectionOnClick
-          sx={{
-            '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: '#3f51b5',
-              color: 'black',
-              fontWeight: 'bold',
+      <DataGrid
+  rows={filteredRows}
+  columns={columns}
+  pageSize={5}
+  rowsPerPageOptions={[5, 10, 20]}
+  disableSelectionOnClick
+  sx={{
+    '& .MuiDataGrid-columnHeaders': {
+      backgroundColor: '#3f51b5',
+      color: 'black',
+      fontWeight: 'bold',
       fontSize: '16px',
-            },
-            '& .MuiDataGrid-cell:hover': {
-              backgroundColor: '#e3f2fd',
-            },
-            '& .MuiDataGrid-footerContainer': {
-              backgroundColor: '#e0e0e0',
-            },
-          }}
-        />
+    },
+    '& .MuiDataGrid-cell:hover': {
+      backgroundColor: '#e3f2fd',
+    },
+    '& .MuiDataGrid-footerContainer': {
+      backgroundColor: '#e0e0e0',
+    },
+  }}
+/>
+
       </div>
     </div>
   );

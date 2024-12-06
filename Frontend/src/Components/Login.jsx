@@ -97,10 +97,10 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
     };
 
     return (
-        <div className='flex items-center justify-center w-full p-6'>
-            <div className='flex flex-col w-full max-w-md p-6 bg-white rounded-lg'>
+        <div className='flex items-center justify-center w-full p-2 md:p-6'>
+            <div className='flex flex-col w-full max-w-md p-2 md:p-6 bg-white rounded-lg'>
                 <h2 className='text-2xl font-bold mb-6 text-center text-gray-900'>
-                    Welcome Back! to SHIM SERVICES
+                    Welcome Back!<br></br> to SHIM SERVICES
                 </h2>
                 <form className='flex flex-col gap-4' onSubmit={handleLogin}>
                     <input 

@@ -106,7 +106,8 @@ export const getAllBookings = (callback) => {
     u2.U_Name AS SP_Name
 FROM bookings b
 JOIN user u1 ON u1.U_Email = b.U_Email
-JOIN user u2 ON u2.U_Email = b.SP_Email
+LEFT JOIN user u2 ON u2.U_Email = b.SP_Email AND b.Book_Status != 'Pending';
+
 `
     , (err, results) => {
     if (err) {

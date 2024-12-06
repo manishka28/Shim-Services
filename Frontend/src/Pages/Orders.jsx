@@ -41,8 +41,10 @@ function Orders() {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
+        console.log("data",data);
+        
         const filteredOrders = data.filter(order => order.U_Email === currentUser.U_Email);
-        // console.log("Filtered",data);
+        console.log("Filtered",filteredOrders);
         
 
         const statusMap = {
@@ -65,6 +67,8 @@ function Orders() {
 
     fetchData();
   }, [currentUser]);
+  console.log("orders",orders);
+  
 
   const fetchBills = async (orders) => {
     let billData = {};

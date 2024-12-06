@@ -82,6 +82,7 @@ const SalaryOfSP = ({ SP_Email }) => {
       }
 
       setSalaryMonthly(onlineTotals);
+      fetchCurrentMonthData();
     } catch (error) {
       console.error('Error fetching salary monthly totals:', error);
       setError('Error fetching salary monthly totals');
@@ -122,14 +123,14 @@ const SalaryOfSP = ({ SP_Email }) => {
 
   useEffect(() => {
     fetchCurrentMonthData();
-  }, [SP_Email]);
+  }, [SP_Email,shouldFetch]);
 
   useEffect(() => {
     if (selectedYear) {
       fetchSalaryForSP();
       fetchAmountToPayForSP();
     }
-  }, [SP_Email, selectedYear]);
+  }, [SP_Email, selectedYear,shouldFetch]);
 
   const handleYearChange = (event) => {
     setSelectedYear(event.target.value ? Number(event.target.value) : null);

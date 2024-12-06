@@ -542,7 +542,7 @@ import { adminDetails, adminReportAction, getAllAdmin, invoiceBalance } from './
 import { log } from 'console';
 import { getOrders } from './models/orders.js';
 import { getBookingCountByCity, getBookingCountByService, getDailyRevenue, getMonthlySales, getNewCustomersAndSPs, getTotalCost, getTotalCustomersAndSPs } from './models/analytics.js';
-import { addServiceByAdmin, deleteServiceByAdmin, getAllAdminServices } from './models/manageservice.js';
+import { addServiceByAdmin, deleteServiceByAdmin, getAllAdminServices, updateServicePrice } from './models/manageservice.js';
 import { getAllSPSalaryByAdmin } from './models/managesalary.js';
 import { getAllReportsByAdmin,  updateReportStatusToRejected, updateReportToResolvedAndUserStatus } from './models/managerating.js';
 
@@ -1111,7 +1111,26 @@ app.post('/add-service-by-admin', async (req, res) => {
     res.status(500).json({ error: 'Error adding service' });
   }
 });
+app.put('/update-service-price', async (req, res) => {
+  const { serviceName, serviceCategory, initialPrice } = req.body;
+  // console.log(serviceName,serviceCategory,initialPrice);
+  
 
+  // Validate inputs
+  if (!serviceName || !serviceCategory || initialPrice == null) {
+    return res.status(400).json({ error: 'Missing required parameters.' });
+  }
+
+  try {
+    // Call the database function to update the price
+    
+    await updateServicePrice(serviceName, serviceCategory, initialPrice);
+
+    res.status(200).json({ message: 'Service price updated successfully.' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating service price.' });
+  }
+});
 app.delete('/delete-service', async (req, res) => {
   const { serviceName, serviceCategory } = req.body;
   // console.log("servicename",serviceName);

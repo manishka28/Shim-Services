@@ -37,10 +37,22 @@ app.use(express.json());
 
 
 // Middleware to enable CORS
+const allowedOrigins = [
+  'http://localhost:5173', // Local development
+  'https://shim-services5-production.up.railway.app' // Production frontend
+];
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173'||'https://shim-services5-production.up.railway.app' ,// Production frontend',
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true
+  origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+          console.log("Origin",origin);
+          
+          callback(null, true);
+      } else {
+          callback(new Error('Not allowed by CORS'));
+      }
+  },
+  credentials: true // Use if your requests involve cookies or authentication
 }));
 
 // Socket.io connection event

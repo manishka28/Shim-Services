@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';// Load environment variables
 import { createServer } from 'http'; // Import to create HTTP server
 import { Server } from 'socket.io'; // Import socket.io
 
-import { insertRating, insertReport, getRatingsByCategory, getAllRating } from './models/reviews.js';
+import { insertRating, insertReport, getRatingsByCategory, getAllRating, getServiceProviderRatings } from './models/reviews.js';
 import { getAllServiceProviders, addServiceProvider,getServiceNamesByServiceProvider, getCityAndMobileByEmail ,getSPDetails, getSPServices } from './models/serviceProvider.js';
 import { getAllCustomers, addCustomer, updateIsSP, userDetails } from './models/customer.js'; // Added updateIsSP import
 import { getAllBookings,getBookingsByServiceProvider, addBooking, acceptBooking,cancelBooking, deleteBooking,getAvailableBookingsForService } from './models/booking.js';
@@ -45,17 +45,17 @@ app.use(cors({
 
 // Socket.io connection event
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
+  // console.log(`User connected: ${socket.id}`);
 
   // Example event: notify when a new service provider is added
   socket.on('newServiceProvider', (data) => {
-    console.log('New service provider added:', data);
+    // console.log('New service provider added:', data);
     io.emit('updateServiceProviders', data); // Broadcast the update
   });
 
   // Additional events can be added here as needed
   socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
+    // console.log(`User disconnected: ${socket.id}`);
   });
 });     
 // app.use('/api', router); //prefix the routes with '/api'
@@ -316,6 +316,16 @@ app.post('/bookingPost', (req, res) => {
       return res.status(400).json({ message: `Missing required field: ${field}` });
     }
   }
+  addBookingPost(bookingData, (err, result) => {
+    if (err) {
+      console.error('Error adding booking:', err);
+      return res.status(500).json({ message: err.message });
+    }
+
+    res.status(201).json({ message: 'Booking created successfully', bookingId: bookingData.Book_ID });
+  });
+});
+
 
 //---Shruti
 
@@ -336,7 +346,7 @@ app.post('/bookings/accept-order/:bookId', async (req, res) => {
       message: 'Booking has been accepted by the service provider.',
       
     });
-console.log("emit ke niche");
+// console.log("emit ke niche");
     // Respond to the client
     res.json({ message: 'Booking accepted successfully', result });
   } catch (error) {
@@ -372,15 +382,6 @@ app.post('/bookings/cancel-order/:bookId', async (req, res) => {
 
 //--Shruti end
 
-  addBookingPost(bookingData, (err, result) => {
-    if (err) {
-      console.error('Error adding booking:', err);
-      return res.status(500).json({ message: err.message });
-    }
-
-    res.status(201).json({ message: 'Booking created successfully', bookingId: bookingData.Book_ID });
-  });
-});
 
   
   // Add booking to the database
@@ -541,7 +542,7 @@ import { adminDetails, adminReportAction, getAllAdmin, invoiceBalance } from './
 import { log } from 'console';
 import { getOrders } from './models/orders.js';
 import { getBookingCountByCity, getBookingCountByService, getDailyRevenue, getMonthlySales, getNewCustomersAndSPs, getTotalCost, getTotalCustomersAndSPs } from './models/analytics.js';
-import { addServiceByAdmin, deleteServiceByAdmin, getAllAdminServices } from './models/manageservice.js';
+import { addServiceByAdmin, deleteServiceByAdmin, getAllAdminServices, updateServicePrice } from './models/manageservice.js';
 import { getAllSPSalaryByAdmin } from './models/managesalary.js';
 import { getAllReportsByAdmin,  updateReportStatusToRejected, updateReportToResolvedAndUserStatus } from './models/managerating.js';
 
@@ -563,16 +564,22 @@ app.get('/', (req, res) => {
 
 app.post('/orders', async (req, res) => {
   const options = {
-    amount: req.body.amount,
+    amount:  Math.floor(req.body.amount),
     currency: req.body.currency,
     receipt: "receipt",
     payment_capture: 1,
   };
+  // console.log("options",options);
+  
 
   try {
     const response = await razorpay.orders.create(options);
+    // console.log("response",response);
+    
     res.json({ order_id: response.id, currency: response.currency, amount: response.amount });
   } catch (err) {
+    console.log("error",err);
+    
     res.status(500).send('Internal server error');
   }
 });
@@ -700,7 +707,7 @@ app.get('/fetchTotalCostForSPMonthly', (req, res) => {
 
 app.get('/fetchSalaryForSPMonthly', (req, res) => {
   const { SP_Email, month, year } = req.query;
-  console.log("request sent",req.query);
+  // console.log("request sent",req.query);
   
 
   // Call the function to fetch salary
@@ -715,7 +722,7 @@ app.get('/fetchSalaryForSPMonthly', (req, res) => {
 });
 app.get('/fetchAmountToPayForSPMonthly', (req, res) => {
   const { SP_Email, month, year } = req.query;
-  console.log("request sent",req.query);
+  // console.log("request sent",req.query);
   
 
   // Call the function to fetch salary
@@ -821,7 +828,7 @@ app.post('/api/insert-report', (req, res) => {
 app.get('/reviews/:Service_Name', async (req, res) => {
   const { Service_Name } = req.params;
 
-  console.log(Service_Name);
+  // console.log(Service_Name);
   
 
   // Ensure Service_Name is provided in the URL
@@ -841,7 +848,7 @@ app.get('/reviews/:Service_Name', async (req, res) => {
     }
 
     // Return reviews if found
-    console.log("Reviews:",reviews);
+    // console.log("Reviews:",reviews);
     
     res.json({ reviews });
   });
@@ -1104,11 +1111,30 @@ app.post('/add-service-by-admin', async (req, res) => {
     res.status(500).json({ error: 'Error adding service' });
   }
 });
+app.put('/update-service-price', async (req, res) => {
+  const { serviceName, serviceCategory, initialPrice } = req.body;
+  // console.log(serviceName,serviceCategory,initialPrice);
+  
 
+  // Validate inputs
+  if (!serviceName || !serviceCategory || initialPrice == null) {
+    return res.status(400).json({ error: 'Missing required parameters.' });
+  }
+
+  try {
+    // Call the database function to update the price
+    
+    await updateServicePrice(serviceName, serviceCategory, initialPrice);
+
+    res.status(200).json({ message: 'Service price updated successfully.' });
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating service price.' });
+  }
+});
 app.delete('/delete-service', async (req, res) => {
   const { serviceName, serviceCategory } = req.body;
-  console.log("servicename",serviceName);
-  console.log("servicecat",serviceCategory);
+  // console.log("servicename",serviceName);
+  // console.log("servicecat",serviceCategory);
   
 
   try {
@@ -1167,11 +1193,11 @@ app.put('/update-report-to-rejected/:reportId', async (req, res) => {
   try {
     // Assuming `updateReportStatusToRejected` is a function you have defined
     const result = await updateReportStatusToRejected(reportId, adminEmail);
-    console.log(result);
+    // console.log(result);
     res.status(200).json(result);
 
   } catch (error) {
-    console.log(result);
+    // console.log(result);
     res.status(500).json({ message: 'Error updating report', error: error.message });
   }
 });
@@ -1179,9 +1205,9 @@ app.put('/update-report-to-rejected/:reportId', async (req, res) => {
 
 app.put('/update-report-user/:reportId/:adminEmail/:userEmail', async (req, res) => {
   const { reportId, adminEmail, userEmail } = req.params;
-  console.log("reportid", reportId);
-  console.log("admin", adminEmail);
-  console.log("user", userEmail);
+  // console.log("reportid", reportId);
+  // console.log("admin", adminEmail);
+  // console.log("user", userEmail);
   
 
   try {
@@ -1191,7 +1217,7 @@ app.put('/update-report-user/:reportId/:adminEmail/:userEmail', async (req, res)
     
     
   } catch (error) {
-    console.log();
+    // console.log();
     
     res.status(500).json({ message: 'Error updating report and user status', error: error.message });
   }
@@ -1260,5 +1286,33 @@ app.get('/api/ratings', (req, res) => {
       message: 'Ratings fetched successfully',
       data: results,
     });
+  });
+});
+
+
+
+
+////rating by service provider/// Manishka
+
+app.get('/ratings-for-sp/:Service_Name',  (req, res) => {
+  const { Service_Name } = req.params;
+  // console.log("service name",Service_Name);
+  
+
+  if (!Service_Name) {
+    return res.status(400).json({ error: 'Service name is required.' });
+  }
+
+  getServiceProviderRatings(Service_Name, (err, results) => {
+    if (err) {
+      console.error('Error fetching service provider ratings:', err);
+      return res.status(500).json({ error: 'An error occurred while fetching ratings.' });
+    }
+
+    if (!results || results.length === 0) {
+      return res.status(404).json({ message: 'No ratings found for the specified service.' });
+    }
+
+    res.status(200).json({ ratings: results });
   });
 });

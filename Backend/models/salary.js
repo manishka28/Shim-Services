@@ -44,8 +44,8 @@ export const fetchTotalCostForSP = (details, callback) => {
   // Construct the query to fetch total cost for the service provider
   const query = `
     SELECT SUM(B.Total_Cost) AS TotalCost 
-    FROM Bill B 
-    JOIN Booking K ON K.Book_ID = B.Book_ID
+    FROM bill B 
+    JOIN bookings K ON K.Book_ID = B.Book_ID
     WHERE K.SP_Email = ? 
       AND K.Book_Status = "Completed" 
       AND B.Bill_Mode = ?`;
@@ -89,8 +89,8 @@ export const fetchTotalCostForSPByMonth = (details, callback) => {
   // Construct the query to fetch total cost for the specified month and year
   const query = `
     SELECT SUM(B.Total_Cost) AS TotalCost 
-    FROM Bill B 
-    JOIN Booking K ON K.Book_ID = B.Book_ID
+    FROM bill B 
+    JOIN bookings K ON K.Book_ID = B.Book_ID
     WHERE K.SP_Email = ? 
       AND K.Book_Status = "Completed" 
       AND B.Bill_Mode = ?
@@ -107,12 +107,12 @@ export const fetchTotalCostForSPByMonth = (details, callback) => {
 
     // Check if any result was returned
     if (result.length === 0 || result[0].TotalCost === null) {
-      console.log('No records found for the given criteria');
+      // console.log('No records found for the given criteria');
       result.push({ TotalCost: 0 });   // If no results, return a TotalCost of 0
     }
 
     // Return the result (ensure to access TotalCost properly)
-    console.log('Returning total cost for month:', result[0].TotalCost); // Log the final total cost
+    // console.log('Returning total cost for month:', result[0].TotalCost); // Log the final total cost
     callback(null, result[0].TotalCost);  // result[0] should contain the TotalCost
   });
 };
@@ -123,7 +123,7 @@ export const fetchSalaryForSPByMonth = (details, callback) => {
 
   // Check if the required fields are provided
   if (!SP_Email ||  !month || !year) {
-    console.log('Missing required fields:', { SP_Email, month, year }); // Debugging missing fields
+    // console.log('Missing required fields:', { SP_Email, month, year }); // Debugging missing fields
     return callback({ error: 'Missing required fields' }, null);
   }
 
@@ -142,16 +142,16 @@ AND year=?;`;
       return callback({ error: 'Database error occurred' }, null);  // Provide a generic error message
     }
 
-    console.log('Query result:', result); // Log the query result for debugging
+    // console.log('Query result:', result); // Log the query result for debugging
 
     // Check if any result was returned
     if (result.length === 0 || result[0].Salary === null) {
-      console.log('No records found for the given criteria');
+      // console.log('No records found for the given criteria');
       result.push({ Salary: 0 });   // If no results, return a TotalCost of 0
     }
 
     // Return the result (ensure to access TotalCost properly)
-    console.log('Returning total cost for month:', result[0].Salary); // Log the final total cost
+    // console.log('Returning total cost for month:', result[0].Salary); // Log the final total cost
     callback(null, result[0].Salary);  // result[0] should contain the TotalCost
   });
 };
@@ -160,7 +160,7 @@ export const fetchAmountToPayForSPByMonth = (details, callback) => {
 
   // Check if the required fields are provided
   if (!SP_Email ||  !month || !year) {
-    console.log('Missing required fields:', { SP_Email, month, year }); // Debugging missing fields
+    // console.log('Missing required fields:', { SP_Email, month, year }); // Debugging missing fields
     return callback({ error: 'Missing required fields' }, null);
   }
 
@@ -179,16 +179,16 @@ AND year=?;`;
       return callback({ error: 'Database error occurred' }, null);  // Provide a generic error message
     }
 
-    console.log('Query result:', result); // Log the query result for debugging
+    // console.log('Query result:', result); // Log the query result for debugging
 
     // Check if any result was returned
     if (result.length === 0 || result[0].amount_to_pay === null) {
-      console.log('No records found for the given criteria');
+      // console.log('No records found for the given criteria');
       result.push({ amount_to_pay: 0 });   // If no results, return a TotalCost of 0
     }
 
     // Return the result (ensure to access TotalCost properly)
-    console.log('Returning amnt to pay for month:', result[0].amount_to_pay); // Log the final total cost
+    // console.log('Returning amnt to pay for month:', result[0].amount_to_pay); // Log the final total cost
     callback(null, result[0].amount_to_pay);  // result[0] should contain the TotalCost
   });
 };
@@ -198,7 +198,7 @@ export const updateAmountToPayForSPByMonth = (details, callback) => {
 
   // Check if the required fields are provided
   if (!SP_Email || !month || !year || amountToPay === undefined) {
-    console.log('Missing required fields:', { SP_Email, month, year, amountToPay }); // Debugging missing fields
+    // console.log('Missing required fields:', { SP_Email, month, year, amountToPay }); // Debugging missing fields
     return callback({ error: 'Missing required fields' }, null);
   }
 
@@ -219,15 +219,15 @@ export const updateAmountToPayForSPByMonth = (details, callback) => {
       return callback({ error: 'Database error occurred' }, null);  // Provide a generic error message
     }
 
-    console.log('Query result:', result); // Log the query result for debugging
+    // console.log('Query result:', result); // Log the query result for debugging
 
     // Check if any rows were affected
     if (result.affectedRows === 0) {
-      console.log('No records updated for the given criteria');
+      // console.log('No records updated for the given criteria');
       return callback({ error: 'No records found to update' }, null);  // If no rows affected, return error
     }
 
-    console.log('Successfully updated amount to pay for month:', amountToPay); // Log the success
+    // console.log('Successfully updated amount to pay for month:', amountToPay); // Log the success
     callback(null, { success: true, amount_to_pay: amountToPay });  // Return the updated amount to pay
   });
 };

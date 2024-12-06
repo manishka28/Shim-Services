@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Admin() {
   const { currentAdmin } = useAuthAdmin();
-  console.log("admin in", currentAdmin);
+  // console.log("admin in", currentAdmin);
 
   const navigate = useNavigate();
 

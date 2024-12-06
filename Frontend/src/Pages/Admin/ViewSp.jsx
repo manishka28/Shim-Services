@@ -29,7 +29,7 @@ const ViewSp = () => {
       try {
         const ordersResponse = await fetch(`http://localhost:4002/allOrders/${email}`);
         const ordersData = await ordersResponse.json();
-        console.log("Orders Data:", ordersData); // Debug log
+        // console.log("Orders Data:", ordersData); // Debug log
         setOrders(ordersData); // Store Orders Data
       } catch (error) {
         console.error("Error fetching orders/services data:", error);

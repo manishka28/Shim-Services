@@ -118,7 +118,7 @@ export const getDailyRevenue = async (month, year) => {
         DATE(Bill_Date) AS date,
         SUM(Total_Cost) AS daily_revenue
       FROM 
-        Bill
+        bill
       WHERE 
         YEAR(Bill_Date) = ? AND MONTH(Bill_Date) = ?
       GROUP BY 
@@ -152,7 +152,7 @@ export const getBookingCountByService = async () => {
   try {
     const query = `
       SELECT COUNT(*) AS booking_count, Service_Name 
-      FROM booking 
+      FROM bookings 
       GROUP BY Service_Name;
     `;
     
@@ -170,7 +170,7 @@ export const getBookingCountByCity = async () => {
   try {
     const query = `
       SELECT COUNT(*) AS booking_count, Book_City 
-      FROM booking 
+      FROM bookings 
       GROUP BY Book_City;
     `;
     

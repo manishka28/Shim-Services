@@ -9,12 +9,16 @@ function Order({ order, onHelp, onCancel, payNow }) {
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [orderToCancel, setOrderToCancel] = useState(null);
   // const [successMessage, setSuccessMessage] = useState(""); // Success message for this specific order
+  // console.log("order",order);
+  
 
   const { 
     Book_ID, SP_Email, U_Email, Book_Status, Service_Name, 
     Service_Category, Appointment_Date, Book_HouseNo, Book_Area, Book_City, 
-    Book_State 
+    Book_State ,User_Name,SP_Name
   } = order;
+  // console.log("user",User_Name);
+  
 
   let statusColorClass = 'text-gray-500';
   if (Book_Status === 'Completed') {
@@ -61,13 +65,13 @@ function Order({ order, onHelp, onCancel, payNow }) {
         )}
 
         <h3 className="text-lg font-semibold mb-2">Order ID: {Book_ID}</h3>
-        <p className="text-gray-700"><strong>Customer:</strong> {U_Email}</p>
+        <p className="text-gray-700"><strong>Customer:</strong> {User_Name}</p>
         <p className="text-gray-700"><strong>Service:</strong> {Service_Name}</p>
         <p className="text-gray-700"><strong>Category:</strong> {Service_Category}</p>
         <p className="text-gray-700"><strong>Address:</strong> {Book_HouseNo}, {Book_Area}, {Book_City}, {Book_State}</p>
         <p className="text-gray-700"><strong>Appointment Date:</strong> {formattedDate}</p>
         {SP_Email && (
-          <p className="text-gray-700"><strong>Service Provider:</strong> {SP_Email}</p>
+          <p className="text-gray-700"><strong>Service Provider:</strong> {SP_Name}</p>
         )}
         <p className={`font-bold ${statusColorClass}`}>
           Status: {Book_Status}

@@ -6,17 +6,17 @@ export const AdminProvider = ({ children }) => {
     const [currentAdmin, setCurrentAdmin] = useState(null);
 
     const loginAdmin = (admin) => {
-        console.log('Logging in Admin Auth:', admin);
+        // console.log('Logging in Admin Auth:', admin);
         setCurrentAdmin(admin);
     };
 
     const logoutAdmin = () => {
-        console.log('Logging out Admin');
+        // console.log('Logging out Admin');
         setCurrentAdmin(null);
     };
 
     const signupAdmin = (admin) => {
-        console.log('Signing up Admin:', admin);
+        // console.log('Signing up Admin:', admin);
         setCurrentAdmin(prevState => 
             prevState ? { ...prevState, ...admin } : admin
         );
@@ -24,7 +24,7 @@ export const AdminProvider = ({ children }) => {
 
     useEffect(() => {
         if (currentAdmin !== null) {
-            console.log('currentAdmin updated:', currentAdmin);
+            // console.log('currentAdmin updated:', currentAdmin);
         }
     }, [currentAdmin]);
 

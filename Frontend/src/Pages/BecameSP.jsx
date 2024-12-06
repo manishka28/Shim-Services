@@ -207,7 +207,7 @@ const BecomeServiceProviderForm = () => {
 
     if(!validateFields())return;
 
-    console.log('Form data submitted:', formData);
+    // console.log('Form data submitted:', formData);
     const formDataToSend = {
       SP_Email: formData.email,
       SP_PIN: formData.pincode,
@@ -235,7 +235,7 @@ const BecomeServiceProviderForm = () => {
       Service_Name: formData.serviceCategory,
       Service_Experience: formData.experience
     };
-    console.log("sp_date",serviceDataToSend);
+    // console.log("sp_date",serviceDataToSend);
     
     
     // Proceed with sending formDataToSend to your API
@@ -257,7 +257,7 @@ const BecomeServiceProviderForm = () => {
         return;
       }
 
-      console.log('Service provider added successfully:', result);
+      // console.log('Service provider added successfully:', result);
 
 
       // POST request to the second API (sp_services)
@@ -275,7 +275,7 @@ const BecomeServiceProviderForm = () => {
         return;
       }
 
-      console.log('Service details added successfully:', serviceResult);
+      // console.log('Service details added successfully:', serviceResult);
        // Update is_SP field in customers table only after both API calls succeed
        if (setCurrentUser && currentUser) {
         setCurrentUser({ ...currentUser, is_SP: 1 });
@@ -291,7 +291,7 @@ const BecomeServiceProviderForm = () => {
 
           if (updateResponse.ok) {
               const updateResult = await updateResponse.json();
-              console.log('is_SP updated successfully:', updateResult);
+              // console.log('is_SP updated successfully:', updateResult);
               setIsPopupOpen(true);
           } else {
               console.error('Error updating is_SP:', await updateResponse.json());

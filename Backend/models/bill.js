@@ -55,7 +55,7 @@ export const getBillById = (Book_ID, callback) => {
     SELECT * FROM 
     bill B
     JOIN
-    booking BK
+    bookings BK
     ON B.Book_ID=BK.Book_ID
     WHERE BK.Book_ID = ?
     `, [Book_ID], (err, results) => {

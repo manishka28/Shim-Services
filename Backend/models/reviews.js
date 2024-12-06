@@ -5,9 +5,9 @@ export const getReviewsByServiceName = (Service_Name, callback) => {
     SELECT * FROM 
     rating R
     JOIN bill B ON R.Bill_ID = B.Bill_ID
-    JOIN Booking BK ON B.Book_ID = BK.Book_ID
+    JOIN bookings BK ON B.Book_ID = BK.Book_ID
     join user U on
-U.U_Email=BK.U_Email
+    U.U_Email=BK.U_Email
     WHERE Service_Name = ?;
   `;
   
@@ -70,7 +70,7 @@ export const insertReport = (reportData, callback) => {
   const { Book_Id, Report_Description, Report_Type, Report_Status } = reportData;
 
   // Step 1: Get U_Email and SP_Email from the booking table based on Book_Id
-  const query1 = `SELECT U_Email, SP_Email FROM booking WHERE Book_Id = ?`;
+  const query1 = `SELECT U_Email, SP_Email FROM bookings WHERE Book_Id = ?`;
 
   connection.query(query1, [Book_Id], (err, results) => {
       if (err) {
@@ -127,7 +127,7 @@ export const getRatingsByCategory = (category, callback) => {
     COUNT(*) AS total_reviews
     FROM rating r
     INNER JOIN bill bl ON r.Bill_ID = bl.Bill_ID
-    INNER JOIN booking b ON bl.Book_ID = b.Book_ID
+    INNER JOIN bookings b ON bl.Book_ID = b.Book_ID
     WHERE b.Service_Name = ?
     GROUP BY b.Service_Category;
   `;
@@ -145,11 +145,11 @@ export const getRatingsByCategory = (category, callback) => {
 //shruti admin dashboard rting
 export const getAllRating=(callback)=>{
   const query=`SELECT * FROM 
-    Booking
+    bookings
 JOIN 
-    Bill ON Booking.Book_ID = Bill.Book_ID
+    bill ON bookings.Book_ID = bill.Book_ID
 JOIN 
-    rating ON rating.Bill_ID = Bill.Bill_ID`;
+    rating ON rating.Bill_ID = bill.Bill_ID`;
     connection.query(query, (err, results)=>{
       if (err) {
         console.error("Error fetching rating:", err);
@@ -159,3 +159,42 @@ JOIN
       }
     })
 }
+
+
+
+//reviews by sp  Manishka
+export const getServiceProviderRatings = (serviceName, callback) => {
+  // console.log("service name in model",serviceName);
+  
+  const query = `
+    SELECT 
+    bk.SP_Email,
+    u1.U_Email,
+    u1.U_Name AS User_Name,  -- Name of the user who left the review
+    u2.U_Name AS SP_Name,    -- Name of the service provider
+    r.Rating,
+    r.Review,
+    r.Rate_Date,
+    AVG(r.Rating) OVER (PARTITION BY bk.SP_Email) AS Avg_Rating,
+    bk.Service_Category
+FROM rating r
+JOIN bill b ON r.Bill_ID = b.Bill_ID
+JOIN bookings bk ON bk.Book_ID = b.Book_ID
+JOIN user u1 ON bk.U_Email = u1.U_Email  -- User who left the review
+JOIN user u2 ON bk.SP_Email = u2.U_Email  -- Service provider
+WHERE bk.Service_Name = ?
+ORDER BY bk.SP_Email, r.Rate_Date;
+
+  `;
+
+  connection.query(query, [serviceName], (err, results) => {
+    if (err) {
+      // console.log("Error fetching service provider ratings:", err);
+      return callback(err, null);
+    }
+    if (results.length === 0) {
+      return callback({ message: "No ratings found for the specified service" }, null);
+    }
+    callback(null, results);
+  });
+};

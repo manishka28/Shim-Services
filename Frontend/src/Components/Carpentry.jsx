@@ -31,7 +31,8 @@ const Carpentry = () => {
         'Expert installation of custom cabinetry',
         'Precision alignment and secure mounting',
         'Includes cleanup and minor adjustments'
-      ]
+      ],
+      price:14999
     },
     {
       id: 2,
@@ -41,7 +42,9 @@ const Carpentry = () => {
         'Personalized furniture design and construction',
         'Crafted to fit unique spaces and styles',
         'High-quality materials for durability'
-      ]
+      ],
+      price:1299
+
     },
     {
       id: 3,
@@ -51,7 +54,8 @@ const Carpentry = () => {
         'Construction of sturdy, weather-resistant decks',
         'Customizable sizes and designs',
         'Includes staining and finishing'
-      ]
+      ],
+      price:899
     },
     {
       id: 4,
@@ -61,7 +65,8 @@ const Carpentry = () => {
         'Repair of damaged or misaligned doors',
         'Replacement of hinges, knobs, and locks',
         'Ensures smooth operation and secure closure'
-      ]
+      ],
+      price:799
     },
     {
       id: 5,
@@ -71,7 +76,8 @@ const Carpentry = () => {
         'Professional installation of hardwood, laminate, and tile',
         'Attention to detail for a seamless finish',
         'Preparation and cleanup included'
-      ]
+      ],
+      price:1299
     },
     {
       id: 6,
@@ -81,7 +87,8 @@ const Carpentry = () => {
         'Restoration of broken or damaged furniture',
         'Expert repairs for durability and appearance',
         'Sanding, refinishing, and reupholstering options'
-      ]
+      ],
+      price:899
     },
     {
       id: 7,
@@ -91,7 +98,8 @@ const Carpentry = () => {
         'Custom shelving solutions for homes and offices',
         'Secure and level installation',
         'Tailored to match your space and decor'
-      ]
+      ],
+      price:7999
     },
     {
       id: 8,
@@ -101,7 +109,8 @@ const Carpentry = () => {
         'Installation of baseboards, crown molding, and trim',
         'Precision cutting and fitting for a polished look',
         'Enhances the aesthetic of any room'
-      ]
+      ],
+      price:999
     }
   ];
   
@@ -241,9 +250,11 @@ const Carpentry = () => {
       <Reviews serviceName={"Carpentry"} />
     </div>
   </div>
-
-  <div className="flex-6 mx-4 w-1/2">
+  <div className="flex flex-col mx-4 md:w-1/2">
+        <h2 className='font-bold text-center mt-4 mb-2 text-3xl text-gray-800'>Schedule Your Service Today!</h2>
+  <div className="flex-6">
     <Details services={services} service_name={"Carpentry"} />
+  </div>
   </div>
 </div>
 

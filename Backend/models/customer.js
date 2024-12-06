@@ -16,7 +16,7 @@ export const getAllCustomers = (callback) => {
 
 // Add a new customer
 export const addCustomer = (customerData, callback) => {
-  const { U_Name, U_Email, U_Phone, U_Password, is_SP,joining_Date } = customerData;
+  const { U_Name, U_Email, U_Phone, U_Password, is_SP,joining_Date,Active } = customerData;
   
     // console.log('Checking for existing email or phone:', U_Email, U_Phone);
   
@@ -42,10 +42,10 @@ export const addCustomer = (customerData, callback) => {
     
       // Insert the customer with the hashed password
       const query = `
-        INSERT INTO user (U_Name, U_Email, U_Phone, U_Password, is_SP,joining_Date)
-        VALUES (?, ?, ?, ?, ?,?)
+        INSERT INTO user (U_Name, U_Email, U_Phone, U_Password, is_SP,joining_Date,Active)
+        VALUES (?, ?, ?, ?, ?,?,?)
       `;
-      connection.query(query, [U_Name, U_Email, U_Phone, hashedPassword, is_SP,joining_Date], (err, result) => {
+      connection.query(query, [U_Name, U_Email, U_Phone, hashedPassword, is_SP,joining_Date,Active], (err, result) => {
         if (err) {
           console.error('Error inserting customer:', err);
           return callback({ error: err.code, message: err.message }, null);
@@ -81,7 +81,7 @@ export const updateIsSP = (U_Email, is_SP, callback) => {
 };
 
 export const userDetails = (U_Email, callback) => {
-  const query = `SELECT * FROM USER WHERE U_Email = ?`;
+  const query = `SELECT * FROM user WHERE U_Email = ?`;
   connection.query(query, [U_Email], (err, results) => {
     if (err) {
       console.error("Error fetching user details:", err);

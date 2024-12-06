@@ -29,11 +29,11 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
                 // Fetch customers
                 const customerResponse = await fetch('http://localhost:4002/customers');
                 const customers = await customerResponse.json();
-                console.log('Customers:', customers);
+                // console.log('Customers:', customers);
 
                 // Find matching customer
                 const customer = customers.find(c => c.U_Email === loginValues.email);
-                console.log('Customer found:', customer);
+                // console.log('Customer found:', customer);
 
                 if (!customer) {
                     setErrorMessage('Invalid email or password');
@@ -61,11 +61,11 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
                 // Fetch admins
                 const adminResponse = await fetch('http://localhost:4002/admins');
                 const admins = await adminResponse.json();
-                console.log('Admins:', admins);
+                // console.log('Admins:', admins);
 
                 // Find matching admin
                 const admin = admins.find(c => c.A_Email === loginValues.email);
-                console.log('Admin found:', admin);
+                // console.log('Admin found:', admin);
 
                 if (!admin) {
                     setErrorMessage('Invalid email or password');
@@ -75,7 +75,7 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
 
                 if (loginValues.password === admin.A_Password) {
                     loginAdmin(admin);
-                    console.log('Admin login successful');
+                    // console.log('Admin login successful');
                     setSuccessMessage('Admin Login Successful!');
                     setErrorMessage('');
                     closeDialog();
@@ -97,10 +97,10 @@ const Login = ({ onSwitchToSignUp, closeDialog, isAdmin }) => {
     };
 
     return (
-        <div className='flex items-center justify-center w-full p-6'>
-            <div className='flex flex-col w-full max-w-md p-6 bg-white rounded-lg'>
+        <div className='flex items-center justify-center w-full p-2 md:p-6'>
+            <div className='flex flex-col w-full max-w-md p-2 md:p-6 bg-white rounded-lg'>
                 <h2 className='text-2xl font-bold mb-6 text-center text-gray-900'>
-                    Welcome Back! to SHIM SERVICES
+                    Welcome Back!<br></br> to SHIM SERVICES
                 </h2>
                 <form className='flex flex-col gap-4' onSubmit={handleLogin}>
                     <input 

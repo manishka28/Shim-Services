@@ -31,6 +31,7 @@ const PestControl = () => {
         'Effective treatment to eliminate ant infestations',
         'Long-lasting protection to keep ants away'
       ],
+      price:499
     },
     {
       id: 2,
@@ -40,6 +41,7 @@ const PestControl = () => {
         'Thorough extermination of bed bugs',
         'Safe and efficient methods to protect your home'
       ],
+      price:799
     },
     {
       id: 3,
@@ -49,6 +51,7 @@ const PestControl = () => {
         'Comprehensive insect control for all types',
         'Prevents future infestations'
       ],
+      price:899
     },
     {
       id: 4,
@@ -58,6 +61,7 @@ const PestControl = () => {
         'Targeted mosquito treatment',
         'Reduces mosquito populations around your home'
       ],
+      price:699
     },
     {
       id: 5,
@@ -67,6 +71,7 @@ const PestControl = () => {
         'Effective rodent removal solutions',
         'Safe methods to protect your property'
       ],
+      price:1799
     },
     {
       id: 6,
@@ -76,6 +81,7 @@ const PestControl = () => {
         'Professional termite treatment services',
         'Prevents and protects against termite damage'
       ],
+      price:2399
     }
   ];
   
@@ -193,8 +199,11 @@ const PestControl = () => {
 
           <Reviews serviceName={"Pest Control"} />
         </div>
-        <div className="flex-6 mx-4 w-1/2">
+        <div className="flex flex-col mx-4 md:w-1/2">
+        <h2 className='font-bold text-center mt-4 mb-2 text-3xl text-gray-800'>Schedule Your Service Today!</h2>
+        <div className="flex-6">
           <Details services={services} service_name={"Pest Control"} />
+        </div>
         </div>
       </div>
       

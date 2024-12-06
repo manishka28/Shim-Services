@@ -29,7 +29,7 @@ const Rating = () => {
         // console.log("data",data.data);
         
         setReviewData(data.data);
-        console.log("Review Data",reviewData);
+        // console.log("Review Data",reviewData);
          // Assuming the data is in `data.data`
         setLoading(false);
       } catch (error) {
@@ -54,7 +54,7 @@ const Rating = () => {
   const averageRating = (
     reviewData.reduce((sum, review) => sum + review.Rating, 0) / reviewCount
   ).toFixed(1);
-  console.log("average ",averageRating);
+  // console.log("average ",averageRating);
 
   const filteredData =
     selectedRating === 'All'

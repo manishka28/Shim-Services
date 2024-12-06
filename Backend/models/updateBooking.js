@@ -17,18 +17,18 @@ const client = twilio('ACb46b06526d1cb3bd34879cbadbad7cf7', '41af1d542cc3e8ac0ba
 // Function to update booking status and send email/SMS notifications
 export const updateBookingStatus = (bookingId, newStatus, SP_Email, callback) => { 
   // Update the booking status first
-  const query = 'UPDATE booking SET Book_Status = ?, SP_Email = ? WHERE Book_ID = ?';
+  const query = 'UPDATE bookings SET Book_Status = ?, SP_Email = ? WHERE Book_ID = ?';
 
   connection.query(query, [newStatus, SP_Email, bookingId], (err, result) => {
     if (err) {
-      console.error('Error updating booking status:', err);
+      console.error('Error updating bookings status:', err);
       return callback({ error: err.code, message: err.message }, null);
     }
 
     // After updating the booking status, fetch user details (name and phone)
     const fetchUserQuery = `
       SELECT *
-      FROM booking b
+      FROM bookings b
       JOIN user u ON b.U_Email = u.U_Email
       WHERE b.Book_ID = ?;
     `;
@@ -42,7 +42,7 @@ export const updateBookingStatus = (bookingId, newStatus, SP_Email, callback) =>
       const user = userResult[0];  // Assuming there's only one user per booking
 
       if (!user) {
-        console.log('User not found');
+        // console.log('User not found');
         return callback({ error: 'User not found', message: 'No user found with this booking ID' }, null);
       }
 
@@ -106,7 +106,7 @@ export const updateBookingStatus = (bookingId, newStatus, SP_Email, callback) =>
           from: '+16672132408', // Your Twilio number
           to: phoneNumber
         });
-        console.log('SMS sent successfully!');
+        // console.log('SMS sent successfully!');
       } catch (smsError) {
         console.error('Error sending SMS:', smsError);
       }
@@ -122,7 +122,7 @@ export const updateBookingStatus = (bookingId, newStatus, SP_Email, callback) =>
 // Function for handling booking status after payment
 export const updateBookingStatusAfterPayment = (bookingId, newStatus, callback) => {
   const query = `
-    UPDATE booking 
+    UPDATE bookings
     SET Book_Status = ? 
     WHERE Book_ID = ?;
   `;
@@ -139,7 +139,7 @@ export const updateBookingStatusAfterPayment = (bookingId, newStatus, callback) 
 // Function for handling checkbox (mark booking as completed)
 export const updateBookingStatusAfterCheckbox = (bookingId, callback) => {
   const query = `
-    UPDATE booking 
+    UPDATE bookings 
     SET Book_Status = 'Completed'
     WHERE Book_ID = ?;
   `;

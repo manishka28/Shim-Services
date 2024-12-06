@@ -87,7 +87,8 @@ const SignUp = ({ onSwitchToLogin, closeDialog }) => {
                     U_Password: password,
                     U_Phone: `+91${phone}`, // Phone number with prefix
                     is_SP: false,
-                    joining_Date:formattedDate
+                    joining_Date:formattedDate,
+                    Active:1
                 }),
             });
 
@@ -120,12 +121,12 @@ const SignUp = ({ onSwitchToLogin, closeDialog }) => {
     };
 
     return (
-        <div className='flex items-center justify-center w-full p-6'>
+        <div className='flex items-center justify-center w-full p-2 md:p-6'>
             <div className='flex flex-col w-full max-w-md bg-white rounded-lg'>
-                <h2 className='text-2xl font-bold mb-2 text-center text-gray-900'>
+                <h2 className='text-2xl font-bold mt-2 mb-2 text-center text-gray-900'>
                     Create Account
                 </h2>
-                <form className='flex flex-col gap-2'>
+                <form className='flex flex-col gap-1 md:gap-2'>
                     <input
                         type="email"
                         name="email"
@@ -177,7 +178,7 @@ const SignUp = ({ onSwitchToLogin, closeDialog }) => {
                             type="text"
                             value="+91"
                             readOnly
-                            className="p-3 border border-gray-300 rounded text-black text-sm bg-gray-100 w-16 cursor-not-allowed"
+                            className="p-1 md:p-3 border border-gray-300 rounded text-black text-sm bg-gray-100 w-8 md:w-16 cursor-not-allowed"
                         />
                         <input
                             type="text"

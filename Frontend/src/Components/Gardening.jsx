@@ -31,17 +31,17 @@ const Gardening = () => {
         'Designing customized garden layouts',
         'Plant selection and placement'
       ],
-      price: 100
+      price: 599
     },
     {
       id: 2,
       title: 'Hedge Trimming',
-      imgSrc: 'https://media.istockphoto.com/id/1128257160/photo/spring-time-plants-shopping.jpg?s=612x612&w=0&k=20&c=dfvJtinn7RMmED0LrfAA5dDk7te42UoEOoQv2kgzpXM=', // Add the actual image URL
+      imgSrc: 'https://media.istockphoto.com/id/1163739474/photo/gardener-trimming-hedge-in-garden.jpg?s=612x612&w=0&k=20&c=t0goua0NOQxij9OsMS_OaKI_MF8KaclMfkOC_yMnC_k=', // Add the actual image URL
       description: [
         'Trimming and shaping hedges',
         'Maintaining healthy hedge growth'
       ],
-      price: 60
+      price: 299
     },
     {
       id: 3,
@@ -51,7 +51,7 @@ const Gardening = () => {
         'Regular lawn mowing for neat appearance',
         'Grass trimming to desired height'
       ],
-      price: 50
+      price: 499
     },
     {
       id: 4,
@@ -61,17 +61,17 @@ const Gardening = () => {
         'Pruning trees for better growth and shape',
         'Removal of dead or damaged branches'
       ],
-      price: 70
+      price: 199
     },
     {
       id: 5,
       title: 'Weed Control',
-      imgSrc: 'https://media.istockphoto.com/id/1324918160/photo/professional-gardener-trimming-hedge.jpg?s=612x612&w=0&k=20&c=zumBbqam7P2pNpoGMrca4RhZGWW7zfRDUDE2zqABJTs=', // Add the actual image URL
+      imgSrc: 'https://media.istockphoto.com/id/1174599934/photo/spraying-pesticide-with-portable-sprayer-to-eradicate-garden-weeds-in-the-lawn-weedicide.jpg?s=612x612&w=0&k=20&c=H0bhJOED0apvQVxrKohEnn6iDhLIiHD3RuW0ePjS2oY=', // Add the actual image URL
       description: [
         'Efficient removal of unwanted weeds',
         'Preventing future weed growth'
       ],
-      price: 45
+      price: 299
     }
   ];
   
@@ -207,8 +207,11 @@ We provide a range of reliable gardening services to transform your outdoor spac
 
     <Reviews serviceName={"Gardening Services"}/>
   </div>
-  <div className="flex-6 mx-4 w-1/2">
+  <div className="flex flex-col mx-4 md:w-1/2">
+        <h2 className='font-bold text-center mt-4 mb-2 text-3xl text-gray-800'>Schedule Your Service Today!</h2>
+  <div className="flex-6">
     <Details services={services} service_name={"Gardening Services"} />
+  </div>
   </div>
 </div>
 

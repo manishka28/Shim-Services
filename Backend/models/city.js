@@ -2,7 +2,7 @@ import connection from '../db/connection.js';
 
 // Function to get all cities
 export const getAllCities = (callback) => {
-  const query = 'SELECT * FROM City';
+  const query = 'SELECT * FROM city';
   connection.query(query, (err, results) => { // Use connection.query
     if (err) {
       return callback(err, null);
@@ -21,7 +21,7 @@ export const addCity = (city, callback) => {
   }
 
   // Insert the city into the database
-  const query = 'INSERT INTO City (City_PIN, City_Name, City_State, City_Country) VALUES (?, ?, ?, ?)';
+  const query = 'INSERT INTO city (City_PIN, City_Name, City_State, City_Country) VALUES (?, ?, ?, ?)';
   connection.query(query, [City_PIN, City_Name, City_State, City_Country], (err, result) => { // Use connection.query
     if (err) {
       return callback(err, null);

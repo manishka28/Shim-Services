@@ -3,7 +3,7 @@ import connection from '../db/connection.js';
 
 // Get bookings for a specific city and service
 export const getBookingsByServiceAndCity = (serviceName, city, callback) => {
-    const query = 'SELECT * FROM booking WHERE Service_Name = ? AND Book_City = ? AND Book_Status = "pending"';
+    const query = 'SELECT * FROM bookings WHERE Service_Name = ? AND Book_City = ? AND Book_Status = "pending"';
     connection.query(query, [serviceName, city], (err, results) => {
         if (err) {
             console.error('Error executing query:', err);
@@ -17,7 +17,7 @@ export const getBookingsByServiceAndCity = (serviceName, city, callback) => {
 export const acceptBooking = async (bookingId) => {
     try {
         const [result] = await connection.query(
-            'UPDATE booking SET Book_Status = ? WHERE Book_ID = ?', 
+            'UPDATE bookings SET Book_Status = ? WHERE Book_ID = ?', 
             ['confirmed', bookingId]
         );
 
@@ -35,7 +35,7 @@ export const acceptBooking = async (bookingId) => {
 export const cancelBooking = async (bookingId) => {
     try {
         const [result] = await connection.query(
-            'UPDATE booking SET Book_Status = ? WHERE Book_ID = ?', 
+            'UPDATE bookings SET Book_Status = ? WHERE Book_ID = ?', 
             ['canceled', bookingId]
         );
 
@@ -56,7 +56,7 @@ export const cancelBooking = async (bookingId) => {
 //shruti view table
 export const getOrders=(U_Email, callback)=>{
    
-        const query = `SELECT * FROM booking WHERE U_Email = ?`; // Correct query to fetch all bookings for the service provider
+        const query = `SELECT * FROM bookings WHERE U_Email = ?`; // Correct query to fetch all bookings for the service provider
         
         connection.query(query, [U_Email], (error, results) => {
           if (error) {

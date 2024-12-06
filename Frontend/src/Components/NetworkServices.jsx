@@ -31,7 +31,7 @@ const NetworkServices = () => {
         'Setting up network infrastructure and devices',
         'Configuration of routers, switches, and access points'
       ],
-      price: 80
+      price: 699
     },
     {
       id: 2,
@@ -51,7 +51,7 @@ const NetworkServices = () => {
         'Identifying and resolving network issues',
         'Optimizing network performance and connectivity'
       ],
-      price: 70
+      price: 799
     },
     {
       id: 4,
@@ -61,7 +61,7 @@ const NetworkServices = () => {
         'Setting up secure and stable wireless networks',
         'Configuration of wireless access points and routers'
       ],
-      price: 60
+      price: 299
     }
   ];
   
@@ -175,8 +175,11 @@ const NetworkServices = () => {
     </ul>
     <Reviews serviceName={"Network Services"} />
   </div>
-  <div className="flex-6 mx-4 w-1/2">
+  <div className="flex flex-col mx-4 md:w-1/2">
+        <h2 className='font-bold text-center mt-4 mb-2 text-3xl text-gray-800'>Schedule Your Service Today!</h2>
+  <div className="flex-6">
     <Details services={services} service_name={"Network Services"} />
+  </div>
   </div>
 </div>
 

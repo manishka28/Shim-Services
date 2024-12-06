@@ -55,10 +55,10 @@ export const addServiceByAdmin = async (adminEmail, serviceName, serviceCategory
 export const deleteServiceByAdmin = async (serviceName, serviceCategory) => {
   try {
     // SQL query to delete data from the Services table
-    console.log(serviceName,serviceCategory);
+    // console.log(serviceName,serviceCategory);
     
     const query1 = `
-      DELETE FROM Services
+      DELETE FROM services
       WHERE Service_Name = ? AND Service_Category = ?;
     `;
 
@@ -74,9 +74,32 @@ export const deleteServiceByAdmin = async (serviceName, serviceCategory) => {
     // Execute the second query
     await connection.promise().query(query2, [serviceName, serviceCategory]);
 
-    console.log('Service deleted successfully.');
+    // console.log('Service deleted successfully.');
   } catch (error) {
     console.error('Error deleting service:', error);
     throw error; // Propagate the error for further handling (e.g., in the API controller)
+  }
+};
+
+export const updateServicePrice = async (serviceName, serviceCategory, initialPrice) => {
+  try {
+    // SQL query to update the Initial_Price of a service
+    const query = `
+      UPDATE services
+      SET Initial_Price = ?
+      WHERE Service_Name = ? AND Service_Category = ?;
+    `;
+    
+    
+
+    // Execute the query with provided parameters
+    await connection.promise().query(query, [initialPrice, serviceName, serviceCategory]);
+
+    // console.log('Service price updated successfully.');
+  } catch (error) {
+    // console.log(error);
+    
+    // console.error('Error updating service price:', error);
+    throw error; // Propagate the error for further handling
   }
 };

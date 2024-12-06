@@ -13,6 +13,82 @@ const Card = ({ imageSrc, title }) => (
 );
 
 const HouseCleaning = () => {
+
+  const services = [
+    {
+      id: 1,
+      imgSrc: 'https://media.istockphoto.com/id/2032428982/photo/close-up-of-cleaning-sink-with-faucet-in-bathroom-hands-in-gloves-with-detergent.jpg?s=612x612&w=0&k=20&c=rk9QdQLLSiZiaTNLz9fzh3YBQ1fYzvWfNeJDnhZ9YNo=',
+      title: 'Bathroom Cleaning',
+      description: [
+        'Thorough cleaning of all bathroom surfaces and fixtures',
+        //'Installation of new faucet systems and upgrades'
+      ],
+      price:1299
+    },
+    {
+      id: 2,
+      imgSrc: 'https://media.istockphoto.com/id/1146967802/photo/person-cleaning-carpet-with-vacuum-cleaner.jpg?s=612x612&w=0&k=20&c=UJC79wrTWavMoIas1vxjmokR7TawUVNZR7XMqMnCaFQ=',
+      title: 'Carpet Cleaning',
+      description: [
+        'Removal of dirt, stains, and odors from carpets',
+        //'Use of advanced tools to pinpoint and fix leaks efficiently'
+      ],
+      price:399
+    },
+    {
+      id: 3,
+      imgSrc: 'https://media.istockphoto.com/id/1419689809/photo/dirty-water-bubbling-in-the-nozzle-of-washing-vacuum-worker-using-professional-vacuum-cleaner.jpg?s=612x612&w=0&k=20&c=lbVFJ0dx7-6Na9EQXV0brSI1ZJiy0MP16C8DI5kQfMs=',
+      title: 'Deep Cleaning',
+      description: [
+        'Intensive cleaning of all areas, targeting hidden dirt and grime',
+        //'Repipe and replacement of worn-out piping systems'
+      ],
+      price:999
+    },
+    {
+      id: 4,
+      imgSrc: 'https://media.istockphoto.com/id/1139715687/photo/woman-in-yellow-gloves-washes-the-door-in-kitchen-cabinet.jpg?s=612x612&w=0&k=20&c=zaCCsFK77gTubJymaEiakXuGmHURMI4YyKcq7skVMVQ=',
+      title: 'Kitchen Cleaning',
+      description: [
+        'Cleaning and sanitizing kitchen surfaces, appliances, and floors',
+        //'Inspection and pumping of tanks to ensure proper function'
+      ],
+      price:1399
+    },
+    {
+      id: 5,
+      imgSrc: 'https://media.istockphoto.com/id/1368972405/photo/stone-tile-brush-post-construction-floor-cleaning.jpg?s=612x612&w=0&k=20&c=c4TdQU2CvPFSMhxBUfbBrWatKSUs8jPmmqC6zuc_3WY=',
+      title: 'Post-Construction Cleaning',
+      description: [
+        'Cleanup after construction or renovation, removing dust and debris',
+        //'Installation and replacement of toilet systems'
+      ],
+      price:1299
+    },
+    {
+      id: 6,
+      imgSrc: 'https://media.istockphoto.com/id/2168865002/photo/a-cleaning-lady-clicks-on-cleaning-icons-on-the-web.jpg?s=612x612&w=0&k=20&c=pYyqoo3ERPDgqPuvNjUp8PlK-mHx0ptp2OZDUweWbDw=',
+      title: 'Regular Cleaning',
+      description: [
+        'Routine cleaning of general living spaces for upkeep',
+        //'Inspection and maintenance of water heaters for optimal performance'
+      ],
+      price:499
+    },
+    {
+      id: 7,
+      imgSrc: 'https://media.istockphoto.com/id/1279849148/photo/a-woman-clean-a-window-pane-with-a-rag-and-soap-suds-cleaning-with-a-detergent-hands-in-pink.jpg?s=612x612&w=0&k=20&c=jDoYmgWAzEZoLCrzsOlX_okeZWzmgU8gjxVm1FYWsps=',
+      title: 'Window Cleaning',
+      description: [
+        'Washing and shining windows for a streak-free finish',
+        //'Inspection and maintenance of water heaters for optimal performance'
+      ],
+      price:499
+    }
+];
+
+
+
   const cardItems = [
     { id: 1, imageSrc: 'https://cdn.pixabay.com/photo/2024/01/16/07/51/ai-generated-8511571_1280.jpg', title: 'Home Cleaning' },
     { id: 2, imageSrc: 'https://cdn.pixabay.com/photo/2021/07/19/04/35/workers-6477163_1280.jpg', title: 'Office Cleaning' },
@@ -161,9 +237,12 @@ const HouseCleaning = () => {
             </div>
           </div>
         </div>
-        <div className="flex-6 mx-4 w-1/2">
+        <div className="flex flex-col mx-4 md:w-1/2">
+        <h2 className='font-bold text-center mt-4 mb-2 text-3xl text-gray-800'>Schedule Your Service Today!</h2>
+        <div className="flex-6">
        
         <Details services={services} service_name={"House Cleaning"} />
+        </div>
         </div>
       </div>
     </>

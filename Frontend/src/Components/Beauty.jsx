@@ -25,7 +25,9 @@ const Beauty = () => {
         'Blowdry & Styling',
         'Coloring & Highlights'
       ],
-      // price: 40
+      price: 599,
+       rating: 5,
+       review: 40
     },
     {
       id: 2,
@@ -36,7 +38,9 @@ const Beauty = () => {
         'Airbrush Makeup',
         'Hairstyling & Accessories'
       ],
-      // price: 50
+      price: 5999,
+       rating: 4.6,
+       review: 130
     },
     {
       id: 3,
@@ -47,7 +51,9 @@ const Beauty = () => {
         'Anti-aging Facial',
         'Acne Treatment'
       ],
-      // price: 35
+      price: 699,
+       rating: 3.7,
+       review: 80
     },
     {
       id: 4,
@@ -58,7 +64,9 @@ const Beauty = () => {
         'Spa Pedicure',
         'Nail Art & Extensions'
       ],
-      // price: 40
+      price: 899,
+       rating: 5,
+       review: 50
     },
     {
       id: 5,
@@ -69,7 +77,9 @@ const Beauty = () => {
         'Eyebrow Shaping',
         'Upper Lip & Chin'
       ],
-      // price: 25
+      price: 69,
+       rating: 4.7,
+       review: 90
     },
     {
       id: 6,
@@ -80,7 +90,9 @@ const Beauty = () => {
         'Deep Cleansing',
         'Microdermabrasion'
       ],
-      // price: 75
+      price: 59,
+       rating: 2.8,
+       review: 35
     },
     {
       id: 7,
@@ -91,7 +103,9 @@ const Beauty = () => {
         'Trimming & Styling',
         'Beard Oil Treatment'
       ],
-      // price: 45
+      price: 2999,
+       rating: 4.1,
+       review:29
     },
     {
       id: 8,
@@ -102,7 +116,9 @@ const Beauty = () => {
         'Anti-aging Treatment',
         'Exfoliation & Cleansing'
       ],
-      // price: 35
+      price: 699,
+       rating: 3.7,
+       review: 80
     },
     {
       id: 9,
@@ -114,7 +130,9 @@ const Beauty = () => {
         'Includes Exfoliation & Post-Wax Care'
       ],
       
-      // price: 35
+      price: 699,
+       rating: 3.7,
+       review: 80
     }
   ];
   
@@ -262,10 +280,12 @@ const Beauty = () => {
               <Reviews serviceName={"Beauty Services"} />
             </div>
           </div>
-       
-        <div className="flex-6 mx-4 w-1/2">
+          <div className="flex flex-col mx-4 md:w-1/2">
+          <h2 className='font-bold text-center mt-4 mb-2 text-3xl text-gray-800'>Schedule Your Service Today!</h2>
+        <div className="flex-6">
           
           <Details services={services} service_name={"Beauty Services"}/>
+        </div>
         </div>
         </div>
     </>

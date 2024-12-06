@@ -121,9 +121,9 @@ const BookingForm = ({ isOpen, onClose, serviceName, service }) => {
     };
 
     try {
-      console.log("sending",formDataToSend);
+      // console.log("sending",formDataToSend);
       const response = await axios.post('http://localhost:4002/bookingPost', formDataToSend);
-      console.log('Booking successfully created:', response.data);
+      // console.log('Booking successfully created:', response.data);
       setConfirmationDialog(true);
     } catch (error) {
       console.error('Error creating booking:', error.response?.data || error.message);

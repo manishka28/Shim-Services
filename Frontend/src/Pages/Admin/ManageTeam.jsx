@@ -52,7 +52,7 @@ function ManageTeam() {
   };
 
   const handleAction = (action) => {
-    console.log(`Action: ${action} on user with ID: ${selectedUserId}`);
+    // console.log(`Action: ${action} on user with ID: ${selectedUserId}`);
     handleMenuClose();
   };
   const navigate = useNavigate();

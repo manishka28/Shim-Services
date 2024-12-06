@@ -13,12 +13,12 @@ const ViewAdmin = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        console.log("email", email); // Verify the value of the email parameter
+        // console.log("email", email); // Verify the value of the email parameter
 
         // Fetch admin details and services
         const response = await fetch(`http://localhost:4002/adminDetails/${email}`);
         const data = await response.json();
-        console.log("show data", data);
+        // console.log("show data", data);
         if (data.length > 0) {
           // Extract admin details from the first entry
           const { A_Name, A_Email, A_Phone, A_Role } = data[0];

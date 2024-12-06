@@ -163,7 +163,7 @@ WHERE s.SP_Email = ?;
 
 
 export const getSPServices = (SP_Email, callback) => {
-  const query = `SELECT * FROM booking WHERE SP_Email = ?`; // Correct query to fetch all bookings for the service provider
+  const query = `SELECT * FROM bookings WHERE SP_Email = ?`; // Correct query to fetch all bookings for the service provider
   
   connection.query(query, [SP_Email], (error, results) => {
     if (error) {
@@ -172,7 +172,7 @@ export const getSPServices = (SP_Email, callback) => {
 
     // Check if results are empty and return an appropriate message
     if (results.length == 0) {
-      console.log("no service provided yet")
+      // console.log("no service provided yet")
       return callback(null, []);
     }
 

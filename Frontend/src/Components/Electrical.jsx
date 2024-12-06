@@ -29,7 +29,7 @@ const Electrical = () => {
         'Professional ceiling fan installation',
         'Safe and efficient setup'
       ],
-      price: 65
+      price: 650
     },
     {
       id: 2,
@@ -39,7 +39,7 @@ const Electrical = () => {
         'Thorough electrical inspection for safety',
         'Identify and resolve potential hazards'
       ],
-      price: 80
+      price: 800
     },
     {
       id: 3,
@@ -49,7 +49,7 @@ const Electrical = () => {
         'Replace outdated fuse boxes',
         'Ensure reliable power management'
       ],
-      price: 75
+      price: 750
     },
     {
       id: 4,
@@ -69,7 +69,7 @@ const Electrical = () => {
         'Install new light fixtures safely',
         'Enhance home lighting'
       ],
-      price: 60
+      price: 699
     },
     {
       id: 6,
@@ -79,7 +79,7 @@ const Electrical = () => {
         'Replace old or faulty outlets',
         'Ensure electrical safety and efficiency'
       ],
-      price: 55
+      price: 550
     },
     {
       id: 7,
@@ -89,7 +89,7 @@ const Electrical = () => {
         'New wiring for homes and renovations',
         'Compliant with electrical standards'
       ],
-      price: 70
+      price: 699
     }
   ];
 
@@ -196,8 +196,11 @@ const Electrical = () => {
 
           <Reviews serviceName={"Electrical Repair"}/>
         </div>
-        <div className="flex-6 mx-4 w-1/2">
+        <div className="flex flex-col mx-4 md:w-1/2">
+        <h2 className='font-bold text-center mt-4 mb-2 text-3xl text-gray-800'>Schedule Your Service Today!</h2>
+        <div className="flex-6">
           <Details services={services} service_name={"Electrical Repair"} />
+        </div>
         </div>
       </div>
     </>

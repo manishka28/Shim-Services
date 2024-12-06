@@ -12,6 +12,7 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
   const [billData, setBillData] = useState(null); // Store generated bill details
 
   const currentDate = new Date();
+  const [validationErrors, setValidationErrors] = useState({});
 
   const padZero = (num) => num.toString().padStart(2, '0');
   const formattedDate = `${currentDate.getFullYear()}-${padZero(currentDate.getMonth() + 1)}-${padZero(currentDate.getDate())} ${padZero(currentDate.getHours())}:${padZero(currentDate.getMinutes())}:${padZero(currentDate.getSeconds())}`;
@@ -48,7 +49,29 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
     setPaymentMethod(e.target.value);
   };
 
+  const validateEntries = () => {
+    const errors = {};
+  
+    // Validate labor entries
+    laborEntries.forEach((entry, index) => {
+      if (!entry.description.trim()) errors[`description-${index}`] = "Description is required";
+      if (!entry.hours || entry.hours <= 0) errors[`hours-${index}`] = "Valid hours are required";
+      if (!entry.rate || entry.rate <= 0) errors[`rate-${index}`] = "Valid rate is required";
+    });
+  
+    // Validate payment method
+    if (!paymentMethod) {
+      errors.paymentMethod = "Please select a payment method";
+    }
+  
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0; // Returns true if no errors
+  };
+
   const handleGenerateBill = async () => {
+    if (!validateEntries()) {
+      return; // Stop execution if validation fails
+    }
     const newBillData = {
       Book_ID: order.Book_ID,
       Bill_Date: formattedDate,
@@ -57,10 +80,12 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
       Service_Charge: serviceCharge,  // Include service charge in the bill
       Total: totalCost + serviceCharge  // Add service charge to total
     };
+    // console.log(newBillData);
+    
 
     try {
       const response = await axios.post('http://localhost:4002/bills', newBillData);
-      console.log(response);
+      // console.log(response);
       
       // Set the new billData with response values
       setBillData({
@@ -79,7 +104,7 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
 
   return (
     <div className="fixed z-3 inset-0 pt-3 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg w-1/2 max-h-[80vh] overflow-auto shadow-lg border border-gray-300">
+      <div className="bg-white p-6 rounded-lg w-full m-2 md:m-0 md:w-1/2 max-h-[80vh] overflow-auto shadow-lg border border-gray-300">
       
         <div className="border-b pb-4 mb-4 text-center">
           <h2 className="text-2xl font-bold text-gray-700">Invoice</h2>
@@ -124,78 +149,88 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
             </div>
 
             <div className="mt-4">
-              <button
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-                onClick={handleAddLaborEntry}
-              >
-                Add Labor Description
-              </button>
-            </div>
+      <button
+        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+        onClick={handleAddLaborEntry}
+      >
+        Add Labor Description
+      </button>
+    </div>
 
-            {laborEntries.length > 0 && (
-              <div className="mt-4">
-                <table className="w-full table-auto">
-                  <thead>
-                    <tr className="text-left">
-                      <th className="border-b py-2 px-4">Labor Description</th>
-                      <th className="border-b py-2 px-4">Labor Hours</th>
-                      <th className="border-b py-2 px-4">Labor Rate</th>
-                      <th className="border-b py-2 px-4">Total</th>
-                      <th className="border-b py-2 px-4">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {laborEntries.map((entry, index) => (
-                      <tr key={index}>
-                        <td className="border-b py-2 px-4">
-                          <input
-                            type="text"
-                            value={entry.description}
-                            onChange={(e) => handleLaborChange(index, "description", e.target.value)}
-                            className="border w-full px-2 py-1 text-lg"
-                          />
-                        </td>
-                        <td className="border-b py-2 px-4">
-                          <input
-                            type="number"
-                            value={entry.hours}
-                            onChange={(e) => handleLaborChange(index, "hours", e.target.value)}
-                            className="border w-full px-2 py-1"
-                          />
-                        </td>
-                        <td className="border-b py-2 px-4">
-                          <input
-                            type="number"
-                            value={entry.rate}
-                            onChange={(e) => handleLaborChange(index, "rate", e.target.value)}
-                            className="border w-full px-2 py-1"
-                          />
-                        </td>
-                        <td className="border-b py-2 px-4">{entry.total.toFixed(2)}</td>
-                        <td className="border-b py-2 px-4">
-                          <button
-                            onClick={() => handleDeleteLaborEntry(index)}
-                            className="text-red-500 hover:text-red-700"
-                          >
-                            <FontAwesomeIcon icon={faTrash} />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {laborEntries.length > 0 && (
-              <div className="mt-4 flex justify-between font-semibold text-lg">
-                <p>Total Labor Cost:</p>
-                <p>{totalCost.toFixed(2)}</p>
-              </div>
-            )}
-
-            {/* Display the service charge */}
-            <div className="mt-4 flex justify-between font-semibold text-lg">
+    {/* Labor Entries Table */}
+    {laborEntries.length > 0 && (
+      <div className="mt-4">
+        <table className="w-full table-auto">
+          <thead>
+            <tr className="text-left">
+              <th className="border-b py-2 px-4">Labor Description</th>
+              <th className="border-b py-2 px-4">Labor Hours</th>
+              <th className="border-b py-2 px-4">Labor Rate</th>
+              <th className="border-b py-2 px-4">Total</th>
+              <th className="border-b py-2 px-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {laborEntries.map((entry, index) => (
+              <tr key={index}>
+                <td className="border-b py-2 px-4">
+                  <input
+                    type="text"
+                    value={entry.description}
+                    onChange={(e) => handleLaborChange(index, "description", e.target.value)}
+                    className={`border w-full px-2 py-1 text-lg ${
+                      validationErrors[`description-${index}`] ? "border-red-500" : ""
+                    }`}
+                  />
+                  {validationErrors[`description-${index}`] && (
+                    <p className="text-red-500 text-sm">
+                      {validationErrors[`description-${index}`]}
+                    </p>
+                  )}
+                </td>
+                <td className="border-b py-2 px-4">
+                  <input
+                    type="number"
+                    value={entry.hours}
+                    onChange={(e) => handleLaborChange(index, "hours", e.target.value)}
+                    className={`border w-full px-2 py-1 ${
+                      validationErrors[`hours-${index}`] ? "border-red-500" : ""
+                    }`}
+                  />
+                  {validationErrors[`hours-${index}`] && (
+                    <p className="text-red-500 text-sm">{validationErrors[`hours-${index}`]}</p>
+                  )}
+                </td>
+                <td className="border-b py-2 px-4">
+                  <input
+                    type="number"
+                    value={entry.rate}
+                    onChange={(e) => handleLaborChange(index, "rate", e.target.value)}
+                    className={`border w-full px-2 py-1 ${
+                      validationErrors[`rate-${index}`] ? "border-red-500" : ""
+                    }`}
+                  />
+                  {validationErrors[`rate-${index}`] && (
+                    <p className="text-red-500 text-sm">{validationErrors[`rate-${index}`]}</p>
+                  )}
+                </td>
+                <td className="border-b py-2 px-4">{entry.total.toFixed(2)}</td>
+                <td className="border-b py-2 px-4">
+                  <button
+                    onClick={() => handleDeleteLaborEntry(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+      {/* Display the service charge */}
+      <div className="mt-4 flex justify-between font-semibold text-lg">
               <p>Service Charge (5%):</p>
               <p>{serviceCharge.toFixed(2)}</p>
             </div>
@@ -206,32 +241,42 @@ const BillModal = ({ order, onClose, onBillGenerated }) => {
               <p>{(totalCost + serviceCharge).toFixed(2)}</p>
             </div>
 
-            <div className="mt-4">
-              <label className="mr-2 font-semibold text-gray-600">Payment Mode:</label>
-              <select
-                value={paymentMethod}
-                onChange={handlePaymentMethodChange}
-                className="border px-2 py-1"
-              >
-                <option value="">Select Payment Method</option>
-                <option value="Cash">Cash</option>
-                
-                <option value="UPI">UPI</option>
-              </select>
-            </div>
 
-            <div className="border-t mt-4 pt-4">
-              <button
-                className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
-                onClick={handleGenerateBill}
-              >
-                Generate Bill
-              </button>
-            </div>
-            <div className="mt-6 text-center items-end">
+
+    {/* Payment Method Selection */}
+    <div className="mt-4">
+      <label className="mr-2 font-semibold text-gray-600">Payment Mode:</label>
+      <select
+        value={paymentMethod}
+        onChange={handlePaymentMethodChange}
+        className={`border px-2 py-1 ${
+          validationErrors.paymentMethod ? "border-red-500" : ""
+        }`}
+      >
+        <option value="">Select Payment Method</option>
+        <option value="cash">Cash</option>
+        <option value="online">Online</option>
+      </select>
+      {validationErrors.paymentMethod && (
+        <p className="text-red-500 text-sm">{validationErrors.paymentMethod}</p>
+      )}
+    </div>
+
+    {/* Generate Bill Button */}
+    <div className="border-t mt-4 pt-4">
+      <button
+        className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+        onClick={handleGenerateBill}
+      >
+        Generate Bill
+      </button>
+    </div>
+
+    {/* Close Button */}
+    <div className="mt-6 text-center items-end">
       <button
         onClick={onClose}
-        className="bg-blue-500 text-white  py-2 px-6 rounded-md shadow hover:bg-blue-600 transition duration-200"
+        className="bg-blue-500 text-white py-2 px-6 rounded-md shadow hover:bg-blue-600 transition duration-200"
       >
         <i className="fas fa-times mr-2"></i>
         Close

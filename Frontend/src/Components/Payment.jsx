@@ -6,7 +6,7 @@ function Payment() {
   const location = useLocation(); // Access the location object
   const { bookId } = location.state || {};  // Get bookId from state
   const navigate = useNavigate();  // Use useNavigate hook for navigation
-  console.log("Book Id passed", bookId);
+  // console.log("Book Id passed", bookId);
   
   const [responseId, setResponseId] = useState("");
   const [billDetails, setBillDetails] = useState({
@@ -26,7 +26,7 @@ function Payment() {
   // Log billDetails after it changes
   useEffect(() => {
     if (billDetails && billDetails.Book_ID) {
-      console.log("Updated Bill Details:", billDetails);
+      // console.log("Updated Bill Details:", billDetails);
     }
   }, [billDetails]);
 
@@ -46,7 +46,7 @@ function Payment() {
     if (bookId) {  // Fetch only when bookId exists
       try {
         const response = await axios.get(`http://localhost:4002/bills/${bookId}`);  // Endpoint to get the bill details
-        console.log("Response received:", response);
+        // console.log("Response received:", response);
         
         setBillDetails(response.data);  // Set the fetched bill details in state
       } catch (error) {
@@ -56,23 +56,44 @@ function Payment() {
   };
 
   // Function to create a Razorpay order
-  const createRazorpayOrder = () => {
+  // Function to create a Razorpay order or update book status directly if cost is zero
+const createRazorpayOrder = async () => {
+  if (billDetails.Total_Cost === 0) {
+    try {
+      // Directly update book status to 'Completed'
+      // console.log("Total cost is zero. Skipping payment process.");
+      
+      const updateBookStatusResponse = await axios.put(
+        `http://localhost:4002/bookStatusAfterPayment/${billDetails.Book_ID}`,  // Update status endpoint
+        { newStatus: 'Completed' }
+      );
+      
+      // console.log("Book status updated to completed (Total Cost = 0):", updateBookStatusResponse.data);
+
+      // Navigate to a confirmation or success page if needed
+      navigate('/orders');
+    } catch (error) {
+      console.error("Error updating book status for zero cost:", error);
+    }
+  } else {
+    // Proceed with Razorpay order creation if cost is non-zero
     const data = JSON.stringify({ amount: billDetails.Total_Cost * 100, currency: "INR" });
     const config = {
       method: "post",
-      url: "http://localhost:4002/orders",  // Your backend URL to handle the order
+      url: "http://localhost:4002/orders", // Your backend URL to handle the order
       headers: { 'Content-type': 'application/json' },
       data: data,
     };
 
-    axios.request(config)
-      .then((response) => {
-        handleRazorPayScreen(response.data.amount);
-      })
-      .catch((error) => {
-        console.error("Error creating order:", error);
-      });
-  };
+    try {
+      const response = await axios.request(config);
+      handleRazorPayScreen(response.data.amount);
+    } catch (error) {
+      console.error("Error creating order:", error);
+    }
+  }
+};
+
 
   // Function to handle Razorpay screen for payment
   // Function to handle Razorpay screen for payment
@@ -92,7 +113,7 @@ const handleRazorPayScreen = async (amount) => {
     description: "Payment for Order",
     handler: async function (response) {
       setResponseId(response.razorpay_payment_id);
-      console.log("Payment Successful, Response:", response);
+      // console.log("Payment Successful, Response:", response);
       setPaymentSuccessful(true);  // Mark payment as successful
 
       try {
@@ -101,23 +122,23 @@ const handleRazorPayScreen = async (amount) => {
           `http://localhost:4002/bills/${billDetails.Bill_ID}`,  // Update bill with razorpay_payment_id
           { razorpay_payment_id: response.razorpay_payment_id }
         );
-        console.log("Bill updated with Razorpay payment ID:", updateBillResponse.data);
+        // console.log("Bill updated with Razorpay payment ID:", updateBillResponse.data);
 
         // Update billDetails with razorpay_payment_id for display
         setBillDetails((prevDetails) => ({
           ...prevDetails,
           razorpay_payment_id: response.razorpay_payment_id,
         }));
-        console.log("Updated Bill Details:", billDetails);
+        // console.log("Updated Bill Details:", billDetails);
 
         // Step 2: Only update the book status if the bill update is successful
         try {
-          console.log("Book ID inside try", billDetails.Book_ID);
+          // console.log("Book ID inside try", billDetails.Book_ID);
           const updateBookStatusResponse = await axios.put(
             `http://localhost:4002/bookStatusAfterPayment/${billDetails.Book_ID}`,  // Use Book_ID from the response
             { newStatus: 'Completed' }  // Update status to 'completed'
           );
-          console.log("Book status updated to completed:", updateBookStatusResponse.data);
+          // console.log("Book status updated to completed:", updateBookStatusResponse.data);
         } catch (error) {
           console.error("Error updating book status:", error);
         }
@@ -140,7 +161,7 @@ const handleRazorPayScreen = async (amount) => {
             "http://localhost:4002/salary",  // Your API URL
             salaryData
           );
-          console.log("Salary API response:", salaryResponse.data);
+          // console.log("Salary API response:", salaryResponse.data);
         } catch (error) {
           console.error("Error calling /salary API:", error);
         }

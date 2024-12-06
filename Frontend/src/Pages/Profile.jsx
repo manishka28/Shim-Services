@@ -5,18 +5,21 @@ import axios from "axios";
 import ServiceProviderOrders from "../Components/ServiceProviderOrders";
 import SalaryOfSP from "../Components/SalaryOfSP";
 import { Link } from "react-router-dom";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 // Initialize Socket.IO client
-const socket = io("http://localhost:4002");
+// const socket = io("http://localhost:4002");
 
 const Profile = () => {
   const { currentUser } = useAuth();
+  // console.log("current ",currentUser);
+  
   const isServiceProvider = currentUser?.is_SP === 1;
   const [services, setServices] = useState([]);
   const [city, setCity] = useState("");
   const [mobile, setMobile] = useState("");
   const [orders, setOrders] = useState([]);
+  const [shouldFetch,setShouldFetch]=useState(true);
 
   const fullName = currentUser?.U_Name || "User";
   const email = currentUser?.U_Email || "user@example.com";
@@ -49,9 +52,9 @@ const Profile = () => {
       fetchCityAndMobile();
 
       // Listen for order status updates in real-time (using Socket.IO)
-      socket.on("orderAccepted", (orderId) => {
-        setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId));
-      });
+      // socket.on("orderAccepted", (orderId) => {
+      //   setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId));
+      // });
     }
   }, [isServiceProvider, email]);
 
@@ -72,7 +75,7 @@ const Profile = () => {
   }, [isServiceProvider, email]);
 
   return (
-    <div className="flex flex-col md:flex-row lg:flex-row justify-between p-6 bg-gray-100 min-h-screen">
+    <div className="flex flex-col-reverse md:flex-row lg:flex-row justify-between p-6 bg-gray-100 min-h-screen">
       {/* Profile Sidebar */}
       <div className="w-full md:w-1/3 lg:w-1/3 bg-white p-6 rounded-lg shadow-md">
         <div className="text-center">
@@ -91,7 +94,7 @@ const Profile = () => {
           )}
           <div className="flex items-center">
             <i className="fa-solid fa-phone-alt text-gray-600"></i>
-            <p className="ml-2">{mobile}</p>
+            <p className="ml-2">{currentUser.U_Phone}</p>
           </div>
           <button className="bg-gray-200 text-black py-2 px-4 rounded-md mt-4 hover:bg-gray-300">
             <i className="fas fa-pencil-alt mr-2"></i>Edit
@@ -119,7 +122,7 @@ const Profile = () => {
             </div>
 
             {/* Salary Component */}
-            <SalaryOfSP SP_Email={email} />
+            <SalaryOfSP SP_Email={email} shouldFetch={shouldFetch} />
           </div>
         )}
       </div>
@@ -127,7 +130,7 @@ const Profile = () => {
       {/* Orders and Service Management */}
       {isServiceProvider ? (
         <div className="w-full md:w-2/3 lg:w-2/3 bg-white p-6 rounded-lg shadow-md">
-          <ServiceProviderOrders SPEmail={email} SPCity={city} orders={orders} />
+          <ServiceProviderOrders SPEmail={email} SPCity={city} orders={orders} shouldFetch={shouldFetch} setShouldFetch={setShouldFetch}/>
         </div>
       ) : (
         <div className="w-2/3 flex items-center justify-center bg-white p-6 rounded-lg shadow-md">

@@ -31,7 +31,9 @@ const Appliance = () => {
         'Thorough servicing of appliance compressors',
         'Filter replacement and comprehensive cleaning'
       ],
-      // price: 120
+      price: 1200,
+      // rating: 4.2,
+      // review: 34
     },
     {
       id: 2,
@@ -41,7 +43,9 @@ const Appliance = () => {
         'Advanced filter replacement technology',
         'Deep cleaning of air filters'
       ],
-      // price: 80
+      price: 140,
+      //  rating: 2.3,
+      //  review: 32
     },
     {
       id: 3,
@@ -51,7 +55,9 @@ const Appliance = () => {
         'Complete gas refill for refrigerators',
         'Includes inspection and repair of leaks'
       ],
-      // price: 100
+      price: 100,
+      //  rating: 3.3,
+      //  review: 15
     },
     {
       id: 4,
@@ -61,7 +67,9 @@ const Appliance = () => {
         'Expert installation of new appliances',
         'Full diagnostic and testing post-installation'
       ],
-      // price: 120
+      price: 600,
+      //  rating: 5,
+      //  review: 23
     },
     {
       id: 5,
@@ -71,7 +79,9 @@ const Appliance = () => {
         'Comprehensive servicing for appliances',
         'Includes repairs and safety checks'
       ],
-      // price: 80
+      price: 450,
+      //  rating: 4.7,
+      //  review: 44
     },
     {
       id: 6,
@@ -81,7 +91,9 @@ const Appliance = () => {
         'Thorough cleaning of HVAC ducts',
         'Includes inspection and removal of debris'
       ],
-      // price: 80
+      price: 200,
+      //  rating: 3.8,
+      //  review: 34
     },
     {
       id: 7,
@@ -91,7 +103,9 @@ const Appliance = () => {
         'Detailed cleaning of evaporator coils',
         'Includes inspection and maintenance of the coil'
       ],
-      // price: 85
+      price: 599,
+      //  rating: 4.1,
+      //  review: 22
     },
     {
       id: 8,
@@ -101,7 +115,9 @@ const Appliance = () => {
         'Replacement of faulty thermostats',
         'Includes calibration and testing'
       ],
-      // price: 70
+      price: 1600,
+      //  rating: 5,
+      //  review: 13
     }
   ];
 
@@ -227,8 +243,11 @@ const Appliance = () => {
 
           <Reviews serviceName={"Appliance%20Repair"} />
         </div>
-        <div className="flex-6 mx-4 w-1/2">
+        <div className="flex flex-col mx-4 md:w-1/2">
+        <h2 className='font-bold text-center mt-4 mb-2 text-3xl text-gray-800'>Schedule Your Service Today!</h2>
+        <div className="flex-6 ">
           <Details services={services} service_name={"Appliance Repair"} />
+        </div>
         </div>
       </div>
       

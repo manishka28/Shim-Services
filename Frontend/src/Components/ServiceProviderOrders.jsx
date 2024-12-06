@@ -2,20 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import BillModal from "./BillModal";
 
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 // Initialize Socket.IO connection
-const socket = io("http://localhost:4002"); // Use your backend server URL
+// const socket = io("http://localhost:4002"); // Use your backend server URL
 
 
-const ServiceProviderOrders = ({ SPEmail,SPCity }) => {
+const ServiceProviderOrders = ({ SPEmail,SPCity,shouldFetch,setShouldFetch }) => {
   const [incomingOrders, setIncomingOrders] = useState([]);
   const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [completedOrders,setCompletedOrders]=useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isCannotGenerateBillModalOpen, setIsCannotGenerateBillModalOpen] = useState(false);
-  console.log("SP City",SPCity);
+  // const [shouldFetch, setShouldFetch] = useState(true);
+  // console.log("SP City",SPCity);
   
 
   const fetchPaymentMode = async (bookId) => {
@@ -23,6 +24,7 @@ const ServiceProviderOrders = ({ SPEmail,SPCity }) => {
       const response = await axios.get(`http://localhost:4002/api/payment-mode/${bookId}`);
       // console.log("Response from API:", response);  // Log response to check the structure
       if (response && response.data && response.data.paymentMode) {
+        setShouldFetch(!shouldFetch);
         return response.data.paymentMode;  // Adjust this based on actual response structure
       } else {
         console.error("Payment mode not found in the response.");
@@ -50,6 +52,7 @@ const ServiceProviderOrders = ({ SPEmail,SPCity }) => {
 
     // Fetch the bill for the completed order
     fetchBillForOrder(orderId);
+    setShouldFetch(!shouldFetch);
 
   } catch (error) {
     console.error("Error updating completion status:", error);
@@ -88,6 +91,7 @@ const fetchBillForOrder = async (orderId) => {
             "http://localhost:4002/salary",  // Your API URL
             salaryData
           );
+          setShouldFetch(!shouldFetch);
           // console.log("Salary API response:", salaryResponse.data);
         } catch (error) {
           console.error("Error calling /salary API:", error);
@@ -109,15 +113,15 @@ useEffect(() => {
       // Attempt to fetch incoming orders
       try {
         const response = await axios.get(`http://localhost:4002/available-bookings/${serviceName}`);
-        console.log(response);
+        // console.log(response);
         
         const incoming = response.data.filter(order => order.Book_Status === 'Pending' && order.Book_City===SPCity && order.U_Email!==SPEmail );
-        console.log();
+        // console.log();
         
         setIncomingOrders(incoming);
       } catch (incomingError) {
         if (incomingError.response && incomingError.response.status === 404) {
-          console.log("No incoming orders.");
+          // console.log("No incoming orders.");
           setIncomingOrders([]);
         } else {
           console.error("Error fetching incoming orders:", incomingError);
@@ -152,13 +156,14 @@ useEffect(() => {
   };
 
   fetchOrders();
+  // setShouldFetch(false);
 
 
 
 
 
   
-}, [SPEmail,SPCity]);
+}, [SPEmail,SPCity,shouldFetch]);
 
 
 
@@ -199,6 +204,7 @@ useEffect(() => {
           return [...prevState, updatedOrder];
         });
         setIncomingOrders(prevState => prevState.filter(order => order.Book_ID !== orderId));
+        setShouldFetch(!shouldFetch);
       } else {
         throw new Error('Failed to update the order status');
       }
@@ -212,6 +218,7 @@ useEffect(() => {
 
   const handleDecline = (orderId) => {
     setIncomingOrders((prevState) => prevState.filter(order => order.Book_ID !== orderId));
+    setShouldFetch(!shouldFetch);
   };
 
   const handleGenerateBill = (order) => {
@@ -225,6 +232,7 @@ useEffect(() => {
   
     setSelectedOrder(order);
     setIsModalOpen(true);
+    setShouldFetch(!shouldFetch);
   };
 
   const handleBillGenerated = (orderId) => {
@@ -233,6 +241,7 @@ useEffect(() => {
         order.Book_ID === orderId ? { ...order, billGenerated: true } : order
       )
     );
+    setShouldFetch(!shouldFetch);
   };
 
   const closeModal = () => {
@@ -251,6 +260,7 @@ useEffect(() => {
     } catch (error) {
       return false;
     }
+    setShouldFetch(!shouldFetch);
   };
 
   const fetchBillsForOrders = async (orders) => {
@@ -275,12 +285,12 @@ useEffect(() => {
           incomingOrders.map((order) => (
             <li key={order.Book_ID} className="p-4 bg-gray-100 rounded-md shadow-md">
               <h3 className="text-lg font-bold">Booking ID: {order.Book_ID}</h3>
-              <p>Customer: {order.U_Email}</p>
-              <p>Service: {order.Service_Name}</p>
-              <p>Service Category: {order.Service_Category}</p>
-              <p>Location: {order.Book_Area}, {order.Book_City}</p>
-              <p>Appointment Date: {new Date(order.Appointment_Date).toLocaleString()}</p>
-              <p>Status: {order.Book_Status}</p>
+              <p><strong>Customer:</strong> {order.U_Email}</p>
+              <p><strong>Service:</strong> {order.Service_Name}</p>
+              <p><strong>Service Category:</strong> {order.Service_Category}</p>
+              <p><strong>Location:</strong> {order.Book_Area}, {order.Book_City}</p>
+              <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toLocaleString()}</p>
+              <p><strong>Status:</strong> {order.Book_Status}</p>
               {order.Book_Status === "Pending" && (
                 <div className="mt-2 flex space-x-4">
                   <button className="bg-green-500 text-white py-1 px-4 rounded-md" onClick={() => handleAccept(order.Book_ID)}>Accept</button>
@@ -290,7 +300,7 @@ useEffect(() => {
             </li>
           ))
         ) : (
-          <p className="text-gray-500">No incoming orders.</p>
+          <p className="text-2xl font-bold text-gray-500">No incoming orders.</p>
         )}
       </ul>
     </div>
@@ -303,17 +313,17 @@ useEffect(() => {
           acceptedOrders.map((order) => (
             <li key={order.Book_ID} className="p-4 bg-gray-100 rounded-md shadow-md">
               <h3 className="text-lg font-bold">Booking ID: {order.Book_ID}</h3>
-              <p>Customer: {order.U_Email}</p>
-              <p>Service: {order.Service_Name}</p>
-              <p>Service Category: {order.Service_Category}</p>
-              <p>Location: {order.Book_Area}, {order.Book_City}</p>
-              <p>Appointment Date: {new Date(order.Appointment_Date).toLocaleString()}</p>
-              <p>Status: {order.Book_Status}</p>
+              <p><strong>Customer:</strong> {order.U_Email}</p>
+              <p><strong>Service:</strong> {order.Service_Name}</p>
+              <p><strong>Service Category:</strong> {order.Service_Category}</p>
+              <p><strong>Location:</strong> {order.Book_Area}, {order.Book_City}</p>
+              <p><strong>Appointment Date:</strong> {new Date(order.Appointment_Date).toLocaleString()}</p>
+              <p><strong>Status:</strong> {order.Book_Status}</p>
               <div>
                 {order.billGenerated ? (
                   <div>
-                    <p className="text-gray-700">Payment Mode: {order.paymentMode}</p>
-                    <p className="text-green-500">Bill has been generated.</p>
+                    <p className="text-gray-700"><strong>Payment Mode:</strong> {order.paymentMode}</p>
+                    <p className="text-green-500 font-bold">Bill has been generated.</p>
 
                     {order.paymentMode === "cash" && (
                       <label className="flex items-center mt-2">
@@ -333,7 +343,7 @@ useEffect(() => {
             </li>
           ))
         ) : (
-          <p className="text-gray-500">No accepted orders.</p>
+          <p className="text-2xl font-bold text-gray-500">No accepted orders.</p>
         )}
       </ul>
     </div>
@@ -347,16 +357,16 @@ useEffect(() => {
         completedOrders.map((order) => (
           <li key={order.Book_ID} className="p-4 bg-gray-100 rounded-md shadow-md">
             <h3 className="text-lg font-bold">Booking ID: {order.Book_ID}</h3>
-            <p>Customer: {order.U_Email}</p>
-            <p>Service: {order.Service_Name}</p>
-            <p>Service Category: {order.Service_Category}</p>
-            <p>Location: {order.Book_Area}, {order.Book_City}</p>
-            <p>Appointment Date: {new Date(order.Appointment_Date).toLocaleString()}</p>
-            <p>Status: {order.Book_Status}</p>
+            <p><strong>Customer:</strong> {order.U_Email}</p>
+            <p><strong>Service:</strong> {order.Service_Name}</p>
+            <p><strong>Service Category:</strong> {order.Service_Category}</p>
+            <p><strong>Location:</strong> {order.Book_Area}, {order.Book_City}</p>
+            <p><strong>Appointment Date:</strong> {new Date(order.Appointment_Date).toLocaleString()}</p>
+            <p><strong>Status:</strong> {order.Book_Status}</p>
           </li>
         ))
       ) : (
-        <p className="text-gray-500">No completed orders.</p>
+        <p className="text-2xl font-bold text-gray-500">No completed orders.</p>
       )}
     </ul>
   </div>

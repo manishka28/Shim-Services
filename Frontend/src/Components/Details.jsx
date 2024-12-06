@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import BookingForm from './BookingForm';  // Import the BookingForm component
 import { useAuth } from '../context/AuthContext';
 import DialogBox from './DialogBox';
+import {FaStar} from 'react-icons/fa';
 
 const Details = ({services,service_name}) => {
   const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
-  const [isLoginForm, setIsLoginForm] = useState(true); // Track whether to show login form
+  const [isLoginForm, setIsLoginForm] = useState(true); 
+  // Track whether to show login form
   const { currentUser, logout } = useAuth();
+  const [loginRole, setLoginRole] = useState({ isAdmin: false });
 
   // const services = [
   //   {
@@ -123,11 +126,22 @@ const Details = ({services,service_name}) => {
           <div key={service.id} className="flex flex-col items-center justify-between border border-black rounded-lg p-4 transition-transform duration-300 hover:scale-105 mt-2">
             <img src={service.imgSrc} className="h-40 w-40 rounded-lg" alt="service-img" />
             <h5 className="font-bold">{service.title}</h5>
-            <ul className="list-disc list-inside">
-              {service.description.map((desc, index) => (
-                <li key={index}>{desc}</li>
-              ))}
-            </ul>
+            <div className="mb-2">
+            <div className="flex items-center">
+              {/* <FaStar className="text-yellow-500 mr-1" /> */}
+              {/* <span className="font-medium"> */}
+                {/* {(service.rating ?? 0).toFixed(1)} Fallback to 0 if rating is undefined */}
+              {/* </span> */}
+              {/* <span className="ml-1">({service.review} reviews)</span> */}
+            </div>
+            <div className="border-b border-dashed border-gray-600 mt-1"></div>
+            </div>
+            {/* Description */}
+            <p className="text-sm text-gray-600 mb-2 text-center">{service.description[0]}</p>
+            {/* Price */}
+            <p className="font-bold text-green-600 text-sm mb-3">
+              Starts from ₹{service.price}
+            </p>
             {/* <p className="font-bold text-green-600">Initial Price: ₹{service.price}</p> */}
             <button onClick={() => handleBookNow(service)} className="border-2 border-green-600 text-black mt-2 px-4 py-2 rounded-md transition-all duration-300 hover:bg-green-600 hover:text-white">Book Now</button>
           </div>
@@ -139,7 +153,7 @@ const Details = ({services,service_name}) => {
       )}
 
       {isLoginDialogOpen && (
-        <DialogBox isOpen={isLoginDialogOpen} closeDialog={closeLoginDialog} isLoginForm={isLoginForm} toggleForm={toggleForm} />
+        <DialogBox isOpen={isLoginDialogOpen} closeDialog={closeLoginDialog} isLoginForm={isLoginForm} toggleForm={toggleForm} loginRole={loginRole} />
       )}
     </div>
   );

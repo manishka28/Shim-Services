@@ -16,19 +16,17 @@ export const addBookingPost = (bookingData, callback) => {
     Book_State,
     Customer_Name,
     Customer_Phone,
-   Book_Date
+    Book_Date
   } = bookingData;
-console.log("booking data",bookingData);
+// console.log("booking data bookingPost",bookingData);
   // Insert query for adding new booking
 
   const currentDate2 = new Date().toISOString().slice(0, 10);
   const query = `
-    INSERT INTO Booking (
-      U_Email, Book_Status, Service_Name, Service_Category, Appointment_Date,
-      Book_HouseNo, Book_Area, Book_City, Book_City_PIN, Book_State,
-      Customer_Name, Customer_Phone, Book_Date
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+  INSERT INTO bookings (U_Email, Book_Status, Service_Name, Service_Category, Appointment_Date, Book_HouseNo, Book_Area, Book_City, Book_City_PIN, Book_State, Customer_Name, Customer_Phone, Book_Date)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
 
   // Insert the booking data
   connection.query(query, [

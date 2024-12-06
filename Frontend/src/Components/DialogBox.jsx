@@ -3,12 +3,17 @@ import Login from './Login';
 import SignUp from './SignUp';
 
 const DialogBox = ({ isOpen, closeDialog, isLoginForm, toggleForm,loginRole }) => {
+    // console.log("is Open",isOpen);
+    // console.log(loginRole.isAdmin);
+    
+    
+    
     if (!isOpen) return null; // Do not render if dialog is not open
-    console.log(loginRole.isAdmin);
+    
     
 
     return (
-        <div className='fixed inset-0 bg-gray-900 bg-opacity-70 flex justify-center items-center z-30'>
+        <div className='fixed inset-0 top-10 md:top-0 h-1/2 md:h-full m-16 md:m-2  bg-gray-900 bg-opacity-70 flex justify-center items-center z-30'>
             <div className='relative w-full md:max-w-2xl lg:max-w-4xl h-full max-h-[90vh] md:max-h-[90vh] lg:max-h-[90vh] flex bg-white overflow-hidden rounded-lg'>
                 {/* Close Button */}
                 <button
@@ -19,7 +24,7 @@ const DialogBox = ({ isOpen, closeDialog, isLoginForm, toggleForm,loginRole }) =
                 </button>
 
                 {/* Container for Image and Form */}
-                <div className='relative flex w-full h-full'>
+                <div className='relative flex  w-full h-full'>
                     {/* Image Section */}
                     <div className={`w-1/2 h-full bg-cover bg-center transition-transform duration-700 ${isLoginForm ? 'translate-x-full' : 'translate-x-0'}`} 
                         style={{ backgroundImage: 'url(https://media.istockphoto.com/id/586932394/photo/home-renovation-and-diy.jpg?s=612x612&w=0&k=20&c=lNlEVW61NptLSTR-hm3It3zAhen5yfODlZofNLEhepg=)' }}>

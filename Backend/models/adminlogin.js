@@ -27,7 +27,7 @@ export const adminDetails = (A_Email, callback) => {
 //shruti
 
 export const adminReportAction=(A_Email, callback)=>{
-  const query='SELECT * FROM REPORT WHERE A_EMAIL=?';
+  const query='SELECT * FROM report WHERE A_EMAIL=?';
   connection.query(query,[A_Email],(err, results)=>{
     if (err) {
       console.error("Error fetching admin report actions:", err);
@@ -41,7 +41,7 @@ export const adminReportAction=(A_Email, callback)=>{
 
 
 export const invoiceBalance=(callback)=>{
-  const query=`select * from booking b  join bill bl on b.Book_ID=bl.Book_ID`;
+  const query=`select * from bookings b  join bill bl on b.Book_ID=bl.Book_ID`;
   connection.query(query,(err, results)=>{
     if (err) {
       console.error("Error fetching admin report actions:", err);

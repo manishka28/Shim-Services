@@ -86,7 +86,7 @@ const AboutUs = () => {
           ].map((card, index) => (
             <div
               key={index}
-              className="w-full sm:w-80 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105 p-6 relative"
+              className="w-full sm:w-80 bg-white shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105 p-8 relative"
             >
               <img
                 src={card.img}

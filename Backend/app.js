@@ -38,7 +38,7 @@ app.use(express.json());
 
 // Middleware to enable CORS
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173'||'https://generous-fulfillment-production.up.railway.app' ,// Production frontend',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173'||'https://shim-services5-production.up.railway.app' ,// Production frontend',
   methods: 'GET,POST,PUT,DELETE',
   credentials: true
 }));

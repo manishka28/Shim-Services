@@ -102,7 +102,7 @@ const Navigation = () => {
             </Link>
         </li>
     ))}
-    {!currentUser.is_SP && (
+    {currentUser &&!currentUser.is_SP && (
                 <li className='w-1/2'>
                     <Link 
                         to="/becomeSP" 

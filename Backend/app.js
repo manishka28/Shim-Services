@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';// Load environment variables
 // import router from "./router.js"; 
 import { createServer } from 'http'; // Import to create HTTP server
 import { Server } from 'socket.io'; // Import socket.io
+import { DateTime } from 'luxon';
 
 import { insertRating, insertReport, getRatingsByCategory, getAllRating, getServiceProviderRatings } from './models/reviews.js';
 import { getAllServiceProviders, addServiceProvider,getServiceNamesByServiceProvider, getCityAndMobileByEmail ,getSPDetails, getSPServices } from './models/serviceProvider.js';
@@ -45,7 +46,7 @@ const allowedOrigins = [
 app.use(cors({
   origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
-          console.log("Origin",origin);
+          // console.log("Origin",origin);
           
           callback(null, true);
       } else {
@@ -332,6 +333,13 @@ app.post('/bookingPost', (req, res) => {
       return res.status(400).json({ message: `Missing required field: ${field}` });
     }
   }
+  if (bookingData.Appointment_Date) {
+    // Store the date as it is, without converting it again.
+    bookingData.Appointment_Date = DateTime.fromISO(bookingData.Appointment_Date)
+                                           .toFormat('yyyy-MM-dd HH:mm:ss');
+  }
+  
+  
   addBookingPost(bookingData, (err, result) => {
     if (err) {
       console.error('Error adding booking:', err);
@@ -417,9 +425,19 @@ app.get('/available-bookings/:serviceName', (req, res) => {
     if (bookings.length === 0) {
       return res.status(404).json({ message: 'No available bookings found for this service' });
     }
+    // console.log("Bookings",bookings);
+    
+    
 
-    // Send the bookings as the response
+    // console.log("Formatted bookings", formattedBookings);
+
     return res.status(200).json(bookings);
+
+    
+
+    // return res.status(200).json(bookings);
+  
+    
   });
 });
 

@@ -21,8 +21,10 @@
     "twilio": "^5.3.5"
   },
   "scripts": {
-    "start": "nodemon app.js"
-  },
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+},
+
   "type": "module",
   "devDependencies": {
     "dotenv": "^16.4.6",

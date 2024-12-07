@@ -29,7 +29,7 @@ const BookingForm = ({ isOpen, onClose, serviceName, service }) => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get('http://localhost:4002/cities');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/cities`);
         const sortedCities = response.data.sort((a, b) => a.City_Name.localeCompare(b.City_Name));
         setCities(sortedCities);
       } catch (error) {

@@ -29,7 +29,7 @@ const Profile = () => {
     if (isServiceProvider) {
       const fetchServices = async () => {
         try {
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}sp_services/${email}`);
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/sp_services/${email}`);
           setServices(response.data);
         } catch (error) {
           //console.error("Error fetching services:", error);

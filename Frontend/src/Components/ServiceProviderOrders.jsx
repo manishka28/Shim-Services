@@ -228,7 +228,11 @@ useEffect(() => {
   
     // Get current time and add 5 hours and 30 minutes
     const currentDate = new Date();
+    // const currentDate = new Date();
+    currentDate.setHours(currentDate.getHours() + 5, currentDate.getMinutes() + 30);
+  
    
+  
     
     
   
@@ -297,7 +301,8 @@ useEffect(() => {
               <p><strong>Service:</strong> {order.Service_Name}</p>
               <p><strong>Service Category:</strong> {order.Service_Category}</p>
               <p><strong>Location:</strong> {order.Book_Area}, {order.Book_City}</p>
-              <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toLocaleString()}</p>
+              <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toISOString().replace('T', ' ').substring(0, 16)}</p>
+
               <p><strong>Status:</strong> {order.Book_Status}</p>
               {order.Book_Status === "Pending" && (
                 <div className="mt-2 flex space-x-4">
@@ -325,7 +330,9 @@ useEffect(() => {
               <p><strong>Service:</strong> {order.Service_Name}</p>
               <p><strong>Service Category:</strong> {order.Service_Category}</p>
               <p><strong>Location:</strong> {order.Book_Area}, {order.Book_City}</p>
-              <p><strong>Appointment Date:</strong> {new Date(order.Appointment_Date).toLocaleString()}</p>
+              <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toISOString().replace('T', ' ').substring(0, 16)}</p>
+
+
               <p><strong>Status:</strong> {order.Book_Status}</p>
               <div>
                 {order.billGenerated ? (

@@ -352,7 +352,7 @@ const onClosePopup = () => {
     'Painting Services': [
       'Cabinet Refinishing', 'Exterior Painting', 'Interior Painting', 'Wallpaper Installation'
     ],
-    'Pest Control Services': [
+    'Pest Control': [
       'Ant Control', 'Bed Bug Extermination', 'Insect Control', 'Mosquito Treatment', 
       'Rodent Control', 'Termite Treatment'
     ],
@@ -544,7 +544,7 @@ const onClosePopup = () => {
               <option value="House Cleaning">House Cleaning</option>
               <option value="Network Services">Network Services</option>
               <option value="Painting Services">Painting Services</option>
-              <option value="Pest Control Services">Pest Control Services</option>
+              <option value="Pest Control">Pest Control</option>
               <option value="Plumbing Services">Plumbing Services</option>
             </select>
           </div>

@@ -3,6 +3,8 @@
 ## Introduction
 ShimServices is a platform designed to bridge the gap between local service providers and customers. It aims to simplify the process of finding reliable local services while empowering service providers to reach more customers in their communities. Whether you need [examples of services, e.g., "home cleaning, plumbing, electrical services, or personal training"], ShimServices ensures that users can find trusted professionals quickly and easily.
 
+## Demo Link : https://shim-services5-production.up.railway.app/
+
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)

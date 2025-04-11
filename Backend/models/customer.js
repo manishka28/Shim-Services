@@ -27,7 +27,7 @@ export const addCustomer = (customerData, callback) => {
         return callback(err, null);
       }
   
-      // console.log('Query results for existing email or phone:', results);
+      console.log('Query results for existing email or phone:', results);
   
       if (results.length > 0) {
         return callback({ error: 'Email or Phone already exists' }, null);

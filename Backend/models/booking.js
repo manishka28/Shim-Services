@@ -28,7 +28,7 @@ import connection from '../db/connection.js';
 export const getBookingsByServiceProvider = (email, callback) => {
   const query = `
   SELECT DISTINCT b.* 
-  FROM bookings b
+  FROM booking b
   JOIN sp_services s ON  b.Service_Name = s.Service_Name
   WHERE b.SP_Email = ? OR b.Book_Status = "Pending" OR b.Book_Status="Accepted"
 `;
@@ -45,7 +45,7 @@ export const getBookingsByServiceProvider = (email, callback) => {
   });
 };
 export const cancelBooking = (bookId, callback) => {
-  const query = 'UPDATE bookings SET Book_Status = ? WHERE Book_ID = ?';
+  const query = 'UPDATE booking SET Book_Status = ? WHERE Book_ID = ?';
 
   connection.query(query, ['Pending', bookId], (err, result) => {
     if (err) {
@@ -69,7 +69,7 @@ export const acceptBooking = (bookId, spEmail) => {
   return new Promise((resolve, reject) => {
     // Query to update Book_Status and SP_Email only if SP_Email is NULL
     const updateBookingQuery = `
-      UPDATE bookings 
+      UPDATE booking
       SET Book_Status = ?, SP_Email = ? 
       WHERE Book_ID = ? AND (SP_Email IS NULL OR SP_Email = '') AND Book_Status= 'Pending' 
     `;
@@ -104,7 +104,7 @@ export const getAllBookings = (callback) => {
     b.*,
     u1.U_Name AS User_Name,
     u2.U_Name AS SP_Name
-FROM bookings b
+FROM booking b
 JOIN user u1 ON u1.U_Email = b.U_Email
 LEFT JOIN user u2 ON u2.U_Email = b.SP_Email AND b.Book_Status != 'Pending';
 
@@ -121,19 +121,28 @@ LEFT JOIN user u2 ON u2.U_Email = b.SP_Email AND b.Book_Status != 'Pending';
 // Add a new booking
 export const addBooking = (bookingData, callback) => {
   const { SP_Email, C_Email, Book_Status, Service_Name, Service_Category, Book_HouseNo, Book_Area, Book_City, Book_State, Book_Date } = bookingData;
+  // console.log(bookingData);
+ 
+  
 
   // Generate current date and time
   const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Format: YYYY-MM-DD HH:MM:SS
   const currentDate2 = new Date().toISOString().slice(0, 10);
+ 
+  
   // Insert query for adding a new booking
   const query = `
-    INSERT INTO bookings (SP_Email, C_Email, Book_Status, Service_Name, Service_Category, Appointment_Date, Book_HouseNo, Book_Area, Book_City, Book_State, Book_Date)
+    INSERT INTO booking (SP_Email, C_Email, Book_Status, Service_Name, Service_Category, Appointment_Date, Book_HouseNo, Book_Area, Book_City, Book_State, Book_Date)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
+
+ 
+  
+
   connection.query(
     query,
-    [SP_Username, C_username, Book_Status, Service_Name, Service_Category, currentDate, Book_HouseNo, Book_Area, Book_City, Book_State, currentDate2],
+    [SP_Email, C_Email, Book_Status, Service_Name, Service_Category, currentDate, Book_HouseNo, Book_Area, Book_City, Book_State, currentDate2],
     (err, result) => {
       if (err) {
         console.error('Error inserting booking:', err);
@@ -144,7 +153,7 @@ export const addBooking = (bookingData, callback) => {
   );
 };
 export const deleteBooking = (bookingId, callback) => {
-  const query = 'DELETE FROM bookings WHERE Book_ID = ?';
+  const query = 'DELETE FROM booking WHERE Book_ID = ?';
 
   connection.query(query, [bookingId], (err, result) => {
     if (err) {
@@ -161,7 +170,7 @@ export const deleteBooking = (bookingId, callback) => {
 // Get all bookings where SP_Email is NULL and Service_Name matches the service provided by SP
 export const getAvailableBookingsForService = (serviceName, callback) => {
   const query = `
-    SELECT * FROM bookings 
+    SELECT * FROM booking
     WHERE SP_Email IS NULL 
     AND Service_Name = ?
   `;

@@ -45,7 +45,7 @@ export const fetchTotalCostForSP = (details, callback) => {
   const query = `
     SELECT SUM(B.Total_Cost) AS TotalCost 
     FROM bill B 
-    JOIN bookings K ON K.Book_ID = B.Book_ID
+    JOIN booking K ON K.Book_ID = B.Book_ID
     WHERE K.SP_Email = ? 
       AND K.Book_Status = "Completed" 
       AND B.Bill_Mode = ?`;
@@ -90,7 +90,7 @@ export const fetchTotalCostForSPByMonth = (details, callback) => {
   const query = `
     SELECT SUM(B.Total_Cost) AS TotalCost 
     FROM bill B 
-    JOIN bookings K ON K.Book_ID = B.Book_ID
+    JOIN booking K ON K.Book_ID = B.Book_ID
     WHERE K.SP_Email = ? 
       AND K.Book_Status = "Completed" 
       AND B.Bill_Mode = ?

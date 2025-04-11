@@ -163,7 +163,7 @@ WHERE s.SP_Email = ?;
 
 
 export const getSPServices = (SP_Email, callback) => {
-  const query = `SELECT * FROM bookings WHERE SP_Email = ?`; // Correct query to fetch all bookings for the service provider
+  const query = `SELECT * FROM booking WHERE SP_Email = ?`; // Correct query to fetch all bookings for the service provider
   
   connection.query(query, [SP_Email], (error, results) => {
     if (error) {

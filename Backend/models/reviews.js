@@ -5,7 +5,7 @@ export const getReviewsByServiceName = (Service_Name, callback) => {
     SELECT * FROM 
     rating R
     JOIN bill B ON R.Bill_ID = B.Bill_ID
-    JOIN bookings BK ON B.Book_ID = BK.Book_ID
+    JOIN booking BK ON B.Book_ID = BK.Book_ID
     join user U on
     U.U_Email=BK.U_Email
     WHERE Service_Name = ?;
@@ -70,7 +70,7 @@ export const insertReport = (reportData, callback) => {
   const { Book_Id, Report_Description, Report_Type, Report_Status } = reportData;
 
   // Step 1: Get U_Email and SP_Email from the booking table based on Book_Id
-  const query1 = `SELECT U_Email, SP_Email FROM bookings WHERE Book_Id = ?`;
+  const query1 = `SELECT U_Email, SP_Email FROM booking WHERE Book_Id = ?`;
 
   connection.query(query1, [Book_Id], (err, results) => {
       if (err) {
@@ -127,7 +127,7 @@ export const getRatingsByCategory = (category, callback) => {
     COUNT(*) AS total_reviews
     FROM rating r
     INNER JOIN bill bl ON r.Bill_ID = bl.Bill_ID
-    INNER JOIN bookings b ON bl.Book_ID = b.Book_ID
+    INNER JOIN booking b ON bl.Book_ID = b.Book_ID
     WHERE b.Service_Name = ?
     GROUP BY b.Service_Category;
   `;
@@ -145,9 +145,9 @@ export const getRatingsByCategory = (category, callback) => {
 //shruti admin dashboard rting
 export const getAllRating=(callback)=>{
   const query=`SELECT * FROM 
-    bookings
+    booking
 JOIN 
-    bill ON bookings.Book_ID = bill.Book_ID
+    bill ON booking.Book_ID = bill.Book_ID
 JOIN 
     rating ON rating.Bill_ID = bill.Bill_ID`;
     connection.query(query, (err, results)=>{
@@ -179,7 +179,7 @@ export const getServiceProviderRatings = (serviceName, callback) => {
     bk.Service_Category
 FROM rating r
 JOIN bill b ON r.Bill_ID = b.Bill_ID
-JOIN bookings bk ON bk.Book_ID = b.Book_ID
+JOIN booking bk ON bk.Book_ID = b.Book_ID
 JOIN user u1 ON bk.U_Email = u1.U_Email  -- User who left the review
 JOIN user u2 ON bk.SP_Email = u2.U_Email  -- Service provider
 WHERE bk.Service_Name = ?

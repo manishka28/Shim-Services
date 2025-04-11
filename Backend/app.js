@@ -168,6 +168,7 @@ app.get('/bookings', (req, res) => {
 });
 
 app.post('/addbookings', (req, res) => {
+  
   const newBooking = req.body;
 
   // Validate request data

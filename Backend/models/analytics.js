@@ -152,7 +152,7 @@ export const getBookingCountByService = async () => {
   try {
     const query = `
       SELECT COUNT(*) AS booking_count, Service_Name 
-      FROM bookings 
+      FROM booking
       GROUP BY Service_Name;
     `;
     
@@ -170,7 +170,7 @@ export const getBookingCountByCity = async () => {
   try {
     const query = `
       SELECT COUNT(*) AS booking_count, Book_City 
-      FROM bookings 
+      FROM booking
       GROUP BY Book_City;
     `;
     

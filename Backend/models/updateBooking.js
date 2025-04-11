@@ -17,7 +17,7 @@ const client = twilio('ACb46b06526d1cb3bd34879cbadbad7cf7', '41af1d542cc3e8ac0ba
 // Function to update booking status and send email/SMS notifications
 export const updateBookingStatus = (bookingId, newStatus, SP_Email, callback) => { 
   // Update the booking status first
-  const query = 'UPDATE bookings SET Book_Status = ?, SP_Email = ? WHERE Book_ID = ?';
+  const query = 'UPDATE booking SET Book_Status = ?, SP_Email = ? WHERE Book_ID = ?';
 
   connection.query(query, [newStatus, SP_Email, bookingId], (err, result) => {
     if (err) {
@@ -28,7 +28,7 @@ export const updateBookingStatus = (bookingId, newStatus, SP_Email, callback) =>
     // After updating the booking status, fetch user details (name and phone)
     const fetchUserQuery = `
       SELECT *
-      FROM bookings b
+      FROM booking b
       JOIN user u ON b.U_Email = u.U_Email
       WHERE b.Book_ID = ?;
     `;
@@ -122,7 +122,7 @@ export const updateBookingStatus = (bookingId, newStatus, SP_Email, callback) =>
 // Function for handling booking status after payment
 export const updateBookingStatusAfterPayment = (bookingId, newStatus, callback) => {
   const query = `
-    UPDATE bookings
+    UPDATE booking
     SET Book_Status = ? 
     WHERE Book_ID = ?;
   `;
@@ -139,7 +139,7 @@ export const updateBookingStatusAfterPayment = (bookingId, newStatus, callback) 
 // Function for handling checkbox (mark booking as completed)
 export const updateBookingStatusAfterCheckbox = (bookingId, callback) => {
   const query = `
-    UPDATE bookings 
+    UPDATE booking
     SET Book_Status = 'Completed'
     WHERE Book_ID = ?;
   `;

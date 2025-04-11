@@ -6,31 +6,36 @@ import path from 'path';
 dotenv.config({ path: path.resolve('./.env') });
 
 
-console.log('DB_HOST:', process.env.MYSQLHOST);
-console.log('DB_USER:', process.env.MYSQLUSER);
-console.log('DB_PASSWORD:', process.env.MYSQL_ROOT_PASSWORD);
-console.log('DB_PORT:', process.env.MYSQLPORT);
-console.log('DB_NAME:', process.env.MYSQL_DATABASE);
+console.log('DB_HOST:', process.env.DB_HOST);
+console.log('DB_USER:', process.env.DB_USER);
+console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
+// console.log('DB_PORT:', process.env.DB_PORT);
+console.log('DB_NAME:', process.env.DB_NAME);
 
 
 const connection = mysql.createConnection({
-  host: process.env.MYSQLHOST,        // Replace with your database host
-  user: process.env.MYSQLUSER,
-  port: process.env.MYSQLPORT,              // Replace with your database user
+  host: process.env.DB_HOST,        // Replace with your database host
+  user: process.env.DB_USER,
+  // port: process.env.DB_PORT,              // Replace with your database user
 
 
-  password: process.env.MYSQL_ROOT_PASSWORD,     // Replace with your database password
+  password: process.env.DB_PASSWORD,     // Replace with your database password
 
-  database: process.env.MYSQL_DATABASE   // Replace with your database name
+  database: process.env.DB_NAME   // Replace with your database name
 });
 
 // Connect to the MySQL database
 connection.connect((err) => {
   if (err) {
     console.error('Error connecting to the database:', err);
+
     return;
   }
-  console.log(`Connected to the MySQL database ${process.env.MYSQL_DATABASE}`);
+  console.log(`Connected to the MySQL database ${process.env.DB_NAME }`);
+  connection.query("SHOW TABLES", (err, results) => {
+    console.log("Tables in DB:", results);
+  });
+ 
 });
 
 export default connection;

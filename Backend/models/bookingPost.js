@@ -23,9 +23,10 @@ export const addBookingPost = (bookingData, callback) => {
 
   const currentDate2 = new Date().toISOString().slice(0, 10);
   const query = `
-  INSERT INTO bookings (U_Email, Book_Status, Service_Name, Service_Category, Appointment_Date, Book_HouseNo, Book_Area, Book_City, Book_City_PIN, Book_State, Customer_Name, Customer_Phone, Book_Date)
+  INSERT INTO booking (U_Email, Book_Status, Service_Name, Service_Category, Appointment_Date, Book_HouseNo, Book_Area, Book_City, Book_City_PIN, Book_State, Customer_Name, Customer_Phone, Book_Date)
   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `;
+
 
 
   // Insert the booking data

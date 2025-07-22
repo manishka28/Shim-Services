@@ -32,9 +32,9 @@ connection.connect((err) => {
     return;
   }
   console.log(`Connected to the MySQL database ${process.env.DB_NAME }`);
-  connection.query("SHOW TABLES", (err, results) => {
-    console.log("Tables in DB:", results);
-  });
+  // connection.query("SHOW TABLES", (err, results) => {
+  //   console.log("Tables in DB:", results);
+  // });
  
 });
 

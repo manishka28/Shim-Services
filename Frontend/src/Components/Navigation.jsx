@@ -5,19 +5,19 @@ import DialogBox from './DialogBox';
 import { useAuth } from '../context/AuthContext';
 
 const Navigation = () => {
-    const [isNavOpen, setIsNavOpen] = useState(false);
+    const [isNavOpen, setIsNavOpen] = useState(false);// used for mobile view to check if the hamburger icon is clicked?
     const [isLoginOpen, setIsLoginOpen] = useState(false); // Renamed for login-specific state
     const [isLoginForm, setIsLoginForm] = useState(true);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false); // user profile dropdowm open ?
     const [ordersDropdownOpen, setOrdersDropdownOpen] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(null);
-    const [loginDropdownOpen, setLoginDropdownOpen] = useState(false);
+    const [loginDropdownOpen, setLoginDropdownOpen] = useState(false); // login dropdown --> login as user and login as admin
     const { currentUser, logout } = useAuth();
-    const dropdownRef = useRef(null);
+    const dropdownRef = useRef(null); // these are used to check close the dialog box when clicked outside , samde for other ref
     const ordersDropdownRef = useRef(null);
     const loginDropdownRef = useRef(null);
-    const location = useLocation();
-    const navigate = useNavigate();
+    const location = useLocation(); // this is used to close all dropdown if location is changed, moved from one page to another
+    const navigate = useNavigate(); // use to navigate to other pages
     const [loginRole, setLoginRole] = useState({ isAdmin: false });
 
     // Toggle between login and signup form

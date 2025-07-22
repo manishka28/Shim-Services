@@ -35,6 +35,7 @@ router.get('/bookings/:serviceName/:city', (req, res) => {
             res.status(500).json({ message: 'Error fetching bookings', error: err.message });
             return;
         }
+        
         res.status(200).json({ bookings });
     });
 });

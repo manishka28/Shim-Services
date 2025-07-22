@@ -226,10 +226,10 @@ useEffect(() => {
   const handleGenerateBill = (order) => {
     const bookingDate = new Date(order.Appointment_Date);
   
-    // Get current time and add 5 hours and 30 minutes
+    // Get current time and add 5 hours and 30 minutes --> was required when the website was deployed
     const currentDate = new Date();
     // const currentDate = new Date();
-    currentDate.setHours(currentDate.getHours() + 5, currentDate.getMinutes() + 30);
+    // currentDate.setHours(currentDate.getHours(), currentDate.getMinutes());
   
    
   
@@ -301,7 +301,15 @@ useEffect(() => {
               <p><strong>Service:</strong> {order.Service_Name}</p>
               <p><strong>Service Category:</strong> {order.Service_Category}</p>
               <p><strong>Location:</strong> {order.Book_Area}, {order.Book_City}</p>
-              <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toISOString().replace('T', ' ').substring(0, 16)}</p>
+              <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toLocaleString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,  // for AM/PM format
+})}</p>
+              {/* <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toISOString().replace('T', ' ').substring(0, 16)}</p> */}
 
               <p><strong>Status:</strong> {order.Book_Status}</p>
               {order.Book_Status === "Pending" && (
@@ -330,7 +338,15 @@ useEffect(() => {
               <p><strong>Service:</strong> {order.Service_Name}</p>
               <p><strong>Service Category:</strong> {order.Service_Category}</p>
               <p><strong>Location:</strong> {order.Book_Area}, {order.Book_City}</p>
-              <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toISOString().replace('T', ' ').substring(0, 16)}</p>
+              {/* <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toISOString().replace('T', ' ').substring(0, 16)}</p> */}
+              <p><strong>Appointment Date: </strong>{new Date(order.Appointment_Date).toLocaleString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,  // for AM/PM format
+})}</p>
 
 
               <p><strong>Status:</strong> {order.Book_Status}</p>
